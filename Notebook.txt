@@ -1,0 +1,152 @@
+Engineering Notebook for MECPP (MyEasyCPP pronounced "mek plus plus")
+
+September 7, 2015
+
+    I first came up with the idea of this language yesterday (on September 6, 2015). Just for fun, I was reading some articles about
+how C++ was so bad and why it should not be taught as a beginners language. I personally don't mind all of the subtleties of C++.
+C++ is like an animal (sorry C++): if you can tame it, then it is a powerful beast under your control; if you can't, then too bad.
+    I had always liked making programming languages that improved on an already existing programming language. I had made Py++,
+a "better" version of Python, that I had entered in the Synopsys Science Fair (and won an award for!); I had been working on
+StampHacker, a modern version of the old PBASIC programming language used in the BASIC Stamp microcontroller. Some time during
+the early development of the parser, I stopped working on it. It was already a complex web of code (as hand-written parsers
+usually are). Writing a full parser would have taken months, maybe even a year. Instead, I decided to take the code that made
+the infrastructure of the compiler and fashion it into a framework for writing compilers. Hence, I had made The Compiler Framework.
+I like to give software utterly obvious names.
+    I started rewriting StampHacker, naming it MyEasyPBASIC, except using this new framework. This was how I tested the framework. Anyway, that night
+that I was reading articles on my iPad it struck me: why don't I make a better C++? It would be cleaner, eliminate all of the
+simplicities, and I decided that it would compile to C++ for compatibility with already-existing C++ code. I named it MyEasyC++
+after the other compiler I was writing.
+
+
+I found this C++ code online here: https://en.wikipedia.org/wiki/Trabb_Pardo%E2%80%93Knuth_algorithm#C.2B.2B_implementation
+
+I don't have any ideas about what my language is going to look like yet, other than the use of reference counting for garbage
+collection and that there will be no references. I am going to rewrite this code and modify it to make it simpler and more
+modern. Hopefully, it will give me some ideas about what my language should look like.
+
+C++ Code:
+
+NotebookCPP1.cpp
+
+#include <algorithm>
+#include <cmath>
+#include <iostream>
+
+double f(int n) { // in C++14, return type can be inferred using "auto f(int n)"
+    return sqrt(abs(n)) + 5*n*n*n;
+}
+
+int main() {
+    const int N = 11; // in C++11, can be declared as "constexpr auto N = 11;"
+    int S[N];         // in C++11, can be declared as "std::array<int, N> S;"
+
+    for(int i = 0; i < N; ++i) {
+        std::cin >> S[i];
+    }
+
+    std::reverse(S, S+N); // in C++11, can be used as "std::reverse(begin(S), end(S));"
+
+    for( int i = 0; i < N; ++i) { // in C++11, can be used as "for(auto i : S)"
+        double y = f(S[i]);
+        if (y > 400) {
+            std::cout << i << " TOO LARGE\n";
+        }
+        else {
+            std::cout << y << '\n';
+        }
+    }
+}
+
+MyEasyC++ Code:
+
+NotebookMEC1.mec
+
+@use {
+    algorithm,
+    cmath,
+    iostream
+}
+
+to f(n: Int) -> D
+ouble: # in C++14, return type can be inferred using "auto f(int n)"
+    return sqrt(abs(n)) + 5*n^3
+/to
+
+start
+    set N: Int to 11 # in C++11, can be declared as "constexpr auto N = 11;"
+    create S: int[N]         # in C++11, can be declared as "std::array<int, N> S;"
+
+    for i: Int from 0 -> N:
+        std.input --> S[i]
+    /for
+
+
+    std.reverse(S, S+N); # in C++11, can be used as "std::reverse(begin(S), end(S));"
+
+    for i: Int from 0 -> N: # in C++11, can be used as "for(auto i : S)"
+        let y: Double = f(S[i])
+        if y > 400:
+            std.output <-- i <-- " TOO LARGE<newline>"
+        else:
+            std.output <-- y <-- '<newline>'
+        /if
+    /for
+end
+
+You may have noticed that I used C++ libraries in this code. You can use either C++ libraries or libraries from the custom API
+I plan to write for this language.
+
+Let's look at the changes:
+
+Instead of braces, I used : and /xxx to start and end blocks, as I was planning to do in StampHacker. In fact,
+this code borrows heavily from my previous programming languages.
+
+It also borrows from Swift (see the var: Type and the func(args) -> return).
+
+I replaced the main method with start and end.
+
+For namespace scope resolution, I just used the dot operator. It took me a while to decide between
+
+std.reverse,
+std/reverse, and
+std:reverse.
+
+There would be too many /'s in bigger programs, and the std.reverse just looked better than std:reverse.
+
+There are some other changes as well. I used the @ for directives (@use {...}). Instead of using the << and >> operators,
+I used <-- and -->.
+
+
+This code still looks pretty ugly to me. There are just so many symbols! I want the code to be structured in the same way as
+a C++ program, but with a lot less boilerplate and clutter. Let me rewrite it again:
+
+No
+
+@use {
+    algorithm,
+    cmath,
+    iostream
+}
+
+to f(n: Int) -> double: # in C++14, return type can be inferred using "auto f(int n)"
+    return sqrt(abs(n)) + 5*n^3
+/to
+
+set N as Int to 11 # in C++11, can be declared as "constexpr auto N = 11;"
+create S as int[N]         # in C++11, can be declared as "std::array<int, N> S;"
+
+for i: Int from 0 -> N:
+    std.input --> S[i]
+/for
+
+
+std.reverse(S, S+N); # in C++11, can be used as "std::reverse(begin(S), end(S));"
+
+for i: Int from 0 -> N: # in C++11, can be used as "for(auto i : S)"
+    let y: Double = f(S[i])
+    if y > 400:
+        std.output <-- i <-- " TOO LARGE<newline>"
+    else:
+        std.output <-- y <-- '<newline>'
+    /if
+/for
