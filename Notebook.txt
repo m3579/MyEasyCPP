@@ -335,3 +335,55 @@ I don't think I will do this. I will just use a normal preprocessor.
 
 After reading this: http://stackoverflow.com/questions/14041453/why-are-preprocessor-macros-evil-and-what-are-the-alternatives,
 I will need to make macros a little bit more robust in MyEasyC++.
+
+1) I will have the option to flag certain macros to display the expanded form on the console. This can be used
+during debugging.
+
+2) All arguments to macros will implicitly be placed in parenthesis unless they are literalized. Also, all macros themselves
+will implicitly be placed in parenthesis unless they are literalized.
+
+3) Macros will belong to scopes unless they are literalized
+
+In order for macros to belong to scopes, I will need to implement the "expand-during-compile-time" system I mentioned earlier.
+
+I will also check the syntax of the expanded macro.
+
+Literalized:
+
+(of a macro's argument) Placed between vertical bars (|...|). This will copy and paste the argument into the macro
+without parenthesis. Use with caution.
+
+(of a macro) Placed between vertical bars (|...|). This will not place the macro between parenthesis. It
+will also make the compiler not check the syntax of the macro. Useful for defining macros that do not act like functions
+and are intended solely to paste some code somewhere. Use with caution.
+
+Take this example:
+
+@macro hello(x) x * 2
+
+This is implicitly read as
+
+@macro hello(x) ((x) * 2)
+
+Using literalization,
+
+@macro hello(|x|) |x * 2|
+
+There are no implicit parenthesis inserted.
+
+This could be useful if you want to do something like this:
+
+@macro write |std.output <--|
+@macro done|;|
+
+write "Hello" done
+
+(This is just an example; there is no reason why you would actually want to do this)
+
+If you did not literalize the macro, then you should get a syntax error for not having anything to the right of the <--
+insertion operator.
+
+I call these macros "Safe Macros".
+
+(One of the advantages of writing a programming language is that you get to make up terms like "safe macros" and
+"literalization" :) )
