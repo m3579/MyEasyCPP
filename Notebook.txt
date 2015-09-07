@@ -120,7 +120,7 @@ I used <-- and -->.
 This code still looks pretty ugly to me. There are just so many symbols! I want the code to be structured in the same way as
 a C++ program, but with a lot less boilerplate and clutter. Let me rewrite it again:
 
-No
+NotebookMEC2.mecmain
 
 @use {
     algorithm,
@@ -128,22 +128,21 @@ No
     iostream
 }
 
-to f(n: Int) -> double: # in C++14, return type can be inferred using "auto f(int n)"
+to f(<int n>) -> double:       # in C++14, return type can be inferred using "auto f(int n)"
     return sqrt(abs(n)) + 5*n^3
 /to
 
-set N as Int to 11 # in C++11, can be declared as "constexpr auto N = 11;"
-create S as int[N]         # in C++11, can be declared as "std::array<int, N> S;"
+set <int n> to 11              # in C++11, can be declared as "constexpr auto N = 11;"
+create <Int[] of 10 s>         # in C++11, can be declared as "std::array<int, N> S;"
 
-for i: Int from 0 -> N:
-    std.input --> S[i]
+for <int i> from 0 -> N:
+    std.input --> s[i]
 /for
 
+std.reverse(s, s + n)          # in C++11, can be used as "std::reverse(begin(S), end(S));"
 
-std.reverse(S, S+N); # in C++11, can be used as "std::reverse(begin(S), end(S));"
-
-for i: Int from 0 -> N: # in C++11, can be used as "for(auto i : S)"
-    let y: Double = f(S[i])
+for <int i> from 0 -> n:        # in C++11, can be used as "for(auto i : S)"
+    let <double y> = f(s[i])
     if y > 400:
         std.output <-- i <-- " TOO LARGE<newline>"
     else:
