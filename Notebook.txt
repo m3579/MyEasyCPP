@@ -20,8 +20,19 @@ after the other compiler I was writing.
 
 I found this C++ code online here: https://en.wikipedia.org/wiki/Trabb_Pardo%E2%80%93Knuth_algorithm#C.2B.2B_implementation
 
+It is a C++ implementation of the Trabb Pardo - Knuth algorithm. The algorithm is defined by the website I cited as this:
+
+    ask for 11 numbers to be read into a sequence S
+    reverse sequence S
+    for each item in sequence S
+        call a function to do an operation
+        if result overflows
+            alert user
+        else
+            print result
+
 I don't have any ideas about what my language is going to look like yet, other than the use of reference counting for garbage
-collection and that there will be no references. I am going to rewrite this code and modify it to make it simpler and more
+collection and that there will be no references. I am going to rewrite the C++ code and modify it to make it simpler and more
 modern. Hopefully, it will give me some ideas about what my language should look like.
 
 C++ Code:
@@ -120,7 +131,7 @@ I used <-- and -->.
 This code still looks pretty ugly to me. There are just so many symbols! I want the code to be structured in the same way as
 a C++ program, but with a lot less boilerplate and clutter. Let me rewrite it again:
 
-NotebookMEC2.mecmain
+NotebookMEC2.mec
 
 @use {
     algorithm,
@@ -135,13 +146,13 @@ to f(<int n>) -> double:       # in C++14, return type can be inferred using "au
 set <int n> to 11              # in C++11, can be declared as "constexpr auto N = 11;"
 create <Int[] of 10 s>         # in C++11, can be declared as "std::array<int, N> S;"
 
-for <int i> from 0 -> N:
+for <int i> from 0 -> n:
     std.input --> s[i]
 /for
 
 std.reverse(s, s + n)          # in C++11, can be used as "std::reverse(begin(S), end(S));"
 
-for <int i> from 0 -> n:        # in C++11, can be used as "for(auto i : S)"
+for <int i> from 0 -> n:       # in C++11, can be used as "for(auto i : S)"
     let <double y> = f(s[i])
     if y > 400:
         std.output <-- i <-- " TOO LARGE<newline>"
@@ -149,3 +160,155 @@ for <int i> from 0 -> n:        # in C++11, can be used as "for(auto i : S)"
         std.output <-- y <-- '<newline>'
     /if
 /for
+
+Here, I also formatted the code properly. The comments were only a few spaces after the line of code and it was
+making the code look very messy.
+
+The main change is that I changed variable declarations from var: Type to <type var>, as I did in Py++.
+
+I think I can make this a little better.
+
+NotebookMEC3.mec
+
+@use:
+    algorithm
+    cmath
+    iostream
+
+to f(n : int) -> double:       # in C++14, return type can be inferred using "auto f(int n)"
+    return sqrt(abs(n)) + 5*n^3
+
+set n : int to 11              # in C++11, can be declared as "constexpr auto N = 11;"
+create s : Int[] of n          # in C++11, can be declared as "std::array<int, N> S;"
+
+for i : int from 0 -> n:
+    std.input --> s[i]
+
+std.reverse(s, s + n)          # in C++11, can be used as "std::reverse(begin(S), end(S));"
+
+for i : int from 0 -> n:       # in C++11, can be used as "for(auto i : S)"
+    y : double = f(s[i])
+    if y > 400:
+        std.output <-- i <-- " TOO LARGE<newline>"
+    else:
+        std.output <-- y <-- '<newline>'
+
+Here, I again changed the variable declaration from <type name> to name : type. I like this; I got it from UnityScript.
+
+Notice how the code no longer has /xxx to end blocks. It is indentation based, like Python.
+
+I'm going to keep on refining the code.
+
+NotebookMEC4.mec
+
+@use:
+    algorithm
+    cmath
+    iostream
+
+
+func f(n : int) returns double:       # in C++14, return type can be inferred using "auto f(int n)"
+    return sqrt(abs(n)) + 5*n^3
+
+start
+
+    set n to 11                    # in C++11, can be declared as "constexpr auto N = 11;"
+    create s : Int[] of n          # in C++11, can be declared as "std::array<int, N> S;"
+
+    for i from 0 -> n:
+        std.input --> s[i]
+
+    std.reverse(s, s + n)          # in C++11, can be used as "std::reverse(begin(S), end(S));"
+
+    for i from 0 -> n:       # in C++11, can be used as "for(auto i : S)"
+        y = f(s[i])
+        if y > 400:
+            std.output <-- i <-- " TOO LARGE<newline>"
+        else:
+            std.output <-- y <-- '<newline>'
+
+end
+
+I guess that somewhere along the line, I forgot about start/end.
+
+I changed the function declaration from "to name(args) -> type" to "func name(args) returns type".
+
+Now I am not just going to copy and paste the code anymore. I am actually going to rewrite the whole thing with the syntax that I
+have decided and I am going to see for myself how easy this code is.
+
+I'll paste the algorithm here as a reminder of what I am supposed to do:
+
+    ask for 11 numbers to be read into a sequence S
+    reverse sequence S
+    for each item in sequence S
+        call a function to do an operation
+        if result overflows
+            alert user
+        else
+            print result
+
+@use:
+    iostream
+    math
+
+func f(n : int) returns double:
+    return sqrt(5 * n^3)
+
+start
+
+    N : constant = 11
+
+    s : Int[] of N
+
+    for i in s:
+        std.input --> s[i]
+
+    std.reverse(s)
+
+    for i in s:
+        if i > 400:
+            std.output <-- "Too large!"
+        else:
+            std.output <-- i
+
+end
+
+After some googling (http://stackoverflow.com/questions/4854248/why-are-bitwise-shifts-and-used-for-cout-and-cin),
+I decided that instead of changing the bit shift operators << and >> to <-- and -->, the latter two would be new
+operators: insertion operators.
+
+So I didn't follow the exact syntax. However, I like not having keywords to declare variables
+
+Here's the syntax I have so far in Backus-Naur Form (I don't follow strict BNF; I use some regexes):
+
+<statement> ::= <var-decl> |
+                <if-stmt> |
+                <for-stmt>
+
+<var-decl> ::= "create " <identifier>
+
+             | <identifier> ":" <type>
+
+             | <identifier> ":" <type> "=" <value>
+
+
+<if-stmt> ::= "if " <boolean-value> ":" <statement>+ ("orif " <boolean-exp> ":" <indented-statement>+)* ("else" ":" <statement>+)?
+
+<for-stmt> ::= "for " <identifier> " from " <numeric-value> " to " <numeric-value> ":" <indented-statement>+
+             | "for " <identifier> " in " (<string-value> | <list-value>) ":" <indented-statement>+
+
+<numeric-value> ::= "(" <numeric-value> ")"
+
+          | <op-prefix> <value>
+
+          | <numeric-value> <op-postfix>
+
+          | <numeric-value> <op_binary> <numeric-value>
+
+          | <numeric-value> "if " <boolean-value> <numeric-value> ("orif " <boolean-value> <numeric-value>)* "else " <numeric-value>
+
+Of course, this is a rough sketch that is not finished.
+
+I am debating what to do with preprocessor directives. Preprocessors are a relic of the past; but this language has to resemble
+C++. My goal is that after learning this language, beginners can easily shift to C++. Knowledge of preprocessor directives
+is a necessary skill in C++, and my language will have to integrate them to truly be an easy C++.
