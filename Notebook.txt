@@ -312,3 +312,26 @@ Of course, this is a rough sketch that is not finished.
 I am debating what to do with preprocessor directives. Preprocessors are a relic of the past; but this language has to resemble
 C++. My goal is that after learning this language, beginners can easily shift to C++. Knowledge of preprocessor directives
 is a necessary skill in C++, and my language will have to integrate them to truly be an easy C++.
+
+I think I will need to have preprocessor directives. I could do something like this in my compiler:
+
+Read token
+If token is preprocessor directive:
+    Execute it
+
+For example,
+
+Read token
+If token is macro:
+    Expand it.
+    While there are macros in the expression:
+        Expand them
+
+Continue compiling the source code
+
+This would eliminate the need for a preprocessor.
+
+I don't think I will do this. I will just use a normal preprocessor.
+
+After reading this: http://stackoverflow.com/questions/14041453/why-are-preprocessor-macros-evil-and-what-are-the-alternatives,
+I will need to make macros a little bit more robust in MyEasyC++.
