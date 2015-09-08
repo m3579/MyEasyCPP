@@ -1,4 +1,4 @@
-Engineering Notebook for MECPP (MyEasyCPP pronounced "mek plus plus")
+Engineering Notebook for MEC++ (MyEasyC++ pronounced "mek plus plus")
 
 September 7, 2015
 
@@ -387,3 +387,45 @@ I call these macros "Safe Macros".
 
 (One of the advantages of writing a programming language is that you get to make up terms like "safe macros" and
 "literalization" :) )
+
+Also, to solve the problem of includes making programs larger, I have proposed this solution:
+
+When you compile a file, two files are generated: a C++ file and a .mecnames file. The .mecnames file contains an intermediate
+form of the program. To use another file in your program, you can @include it...or you can @import a .mec file. When
+you @import, the file is not pasted into the code; but now, if there is a name in the code that was not declared in the
+file, the program will then search the .mecnames file for it. In essence, you add a new namespace of values (though not in
+the strict definition of a C++ namespace).
+
+The .mecnames file could just be a serialized SyntaxTree. It could also be a serialized key-value list of the names and their
+values.
+
+Take this example:
+
+# NotebookMECHeader.mec
+
+var = 2
+
+# NotebookMECSource.mec
+
+# @include NotebookMECHeader.mec    --- Case 1
+# @import NotebookMECHeader.mecnames --- Case 2
+
+@use iostream
+
+std.output <-- var
+
+While I was writing the program, I realized that I already defined the @use directive. I have decided that @use will be
+for C++ files and @include will be for MEC++ files.
+
+In case 1, NotebookMECHeader.mec is pasted into the source file. In case 2, it is not pasted but it is added as another directory
+where the program will search for names. Now when it sees the line std.output <-- var, it will not find var declared in
+NotebookMECSource.mec so it will then go to NotebookMECHeader.mec, find that it was declared there, and use that value.
+Note that the value of var should be its latest value (if it changes in NotebookMECHeader.mec, then the program should use
+the updated value of var instead of the original).
+
+Actually, I think that helper files (I am calling header files in MEC++ helper files) should have their own file extension.
+.mecnames files should only be generated for files with that header. I think I will go with .mechelper Helper files should
+have no executable code in them (that way, the value of var is never changed). Any executable code has to go in a function or
+class or some structure where it is not immediately run. Source files can have executable code; name files (.mecnames) will
+not be generated for them.
+
