@@ -1,0 +1,65 @@
+So I've been thinking about pointers and references. In order for this language to surpass C++, I will probably need to
+implement some mechanism to solve the problems that C++ pointers and references cause. For instance, the new and delete operators.
+Every new needs a delete. This is a threshold for segmentation faults and introduces a whole new level of complexity.
+
+What I have been thinking is that I will build off of C++. My language will have pointers and references. Objects will be made and
+destroyed by the rules of RAII. However, every heap allocated piece of memory will be contained in a smart pointer. Normal
+pointers too will be a class.
+
+C++
+
+Object* foo()
+{
+    Object o;
+    Object* oPtr = &o;
+    return oPtr; // error: returning pointer to local variable
+}
+
+My Language
+
+func foo() -> Pointer<Object>():
+    Object o()
+    Pointer<Object> oPtr = o.asPtr()
+    return oPtr; // also illegal: returns a pointer to a local variable
+
+C++
+
+Object* foo()
+{
+    Object* o = new Object();
+    return o; // legal, but you need to delete this memory later
+}
+
+Object* foo()
+{
+    SmartPointer<Object> o(new Object());
+    return o; // legal and will work like a charm
+}
+
+My Language
+
+func foo() -> Pointer<Object>:
+    SmartPointer<Object> o() // implicitly creates new Object
+    return o // legal
+
+SmartPointer will be a subclass of Pointer, so it can be polymorphically returned from this function.
+
+I just realized that with template parameters, you don't have polymorphism. In C++, only pointers of objects can be used
+in polymorphism and that's the way I'm going to keep it in this language. However, using templates for pointers does not
+allow polymorphism. So my earlier approach will not work.
+
+My Language
+
+func foo() -> Pointer:Object: // uses special pointer syntax
+    SmartPointer:Object o() // uses special pointer syntax
+    return o
+
+I will have to implement a special syntax for pointers and smart pointers. This means that I cannot just write Pointer and
+SmartPointer classes in C++ and use those because there will be features in this language not present in C++.
+
+I think my only option at this point is that I will write these classes in C++ that the Pointer/SmartPointer classes will
+contain a void pointer. I will obviously keep track of any variables declared in the program and their type. Whenever I need
+to use a smart pointer, I cast the void pointer.
+
+Actually, that will not work because then I will need to check if an object passed polymorphically is actually a subclass of
+the argument type, and I don't want to hard code all of the inheritance trees in the C++ Standard Library into my compiler.

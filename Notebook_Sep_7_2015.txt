@@ -1,4 +1,4 @@
-Engineering Notebook for MEC++ (MyEasyC++ pronounced "mek plus plus")
+Engineering Notebook for MEC++ (MyEasyC++ pronounced "me c++")
 
 September 7, 2015
 
