@@ -63,3 +63,12 @@ to use a smart pointer, I cast the void pointer.
 
 Actually, that will not work because then I will need to check if an object passed polymorphically is actually a subclass of
 the argument type, and I don't want to hard code all of the inheritance trees in the C++ Standard Library into my compiler.
+
+------
+After 5 minutes...
+
+When you have a hard problem in programming, sometimes even a 5 minute break can clear your mind enough for you to come up with
+a solution. It works every time.
+
+My solution is somewhat of a hack. I can overload the new, delete, and * operators to do what I want. I don't fully know
+how I am going to go about doing this, but it's  a start.
