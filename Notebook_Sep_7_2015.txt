@@ -32,7 +32,7 @@ It is a C++ implementation of the Trabb Pardo - Knuth algorithm. The algorithm i
             print result
 
 I don't have any ideas about what my language is going to look like yet, other than the use of reference counting for garbage
-collection and that there will be no references. I am going to rewrite the C++ code and modify it to make it simpler and more
+collection and that there will be no reference variables like in C++. I am going to rewrite the C++ code and modify it to make it simpler and more
 modern. Hopefully, it will give me some ideas about what my language should look like.
 
 C++ Code:
@@ -78,8 +78,7 @@ NotebookMEC1.mec
     iostream
 }
 
-to f(n: Int) -> D
-ouble: # in C++14, return type can be inferred using "auto f(int n)"
+to f(n: Int) -> Double: # in C++14, return type can be inferred using "auto f(int n)"
     return sqrt(abs(n)) + 5*n^3
 /to
 
