@@ -1,0 +1,12 @@
+After reading these articles:
+
+http://stackoverflow.com/questions/15762176/c11-smart-pointers-and-polymorphism
+http://stackoverflow.com/questions/8066372/smart-pointers-as-class-members-for-polymorphism
+http://www.codeproject.com/Articles/541067/Cplusplus-Smart-Pointers
+http://www.drdobbs.com/cpp/c11-uniqueptr/240002708
+
+I decided that instead of trying to implement my own smart pointer system, I will use the smart pointer classes that
+already exist in the API. They satisfy all the conditions I want for smart pointers in my language, and more.
+
+They also give me the ability to (with std::shared_ptr and std::weak_ptr) to introduce a weak/strong reference system
+like in Objective-C.
