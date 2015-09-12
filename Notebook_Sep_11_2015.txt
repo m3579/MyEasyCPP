@@ -1,0 +1,76 @@
+So I was thinking for some syntaxes for the weak/strong reference system.
+
+@use vector
+
+declare class Item
+
+class Container:
+
+    create items : std.vector<StrongPointer:Item>
+
+
+class Item:
+
+    create container : WeakPointer:Container
+
+
+I think this looks good.
+
+This is what the syntax looks like now. I've added some more rules:
+
+<endchar> ::= "\n" | ";" | "\0"
+
+<statement> ::= <var-decl> |
+                <if-stmt> |
+                <for-loop> |
+                <foreach-loop> |
+                <while-loop>
+
+                <endchar>
+
+<indented-statement> ::= <indent-whitespace> <statement>
+
+<indent-whitespace> ::= " " || "\t"
+
+<block-stmts> ::= ":" <statement>
+                  | ":" "\n" <indented-statement>+
+
+<var-decl> ::= "create " <identifier>
+
+             | "init " (<class-name> | <struct-name>) <identifier> "(" (value ("," value))? ")"
+
+             | <identifier> ":" <type>
+
+             | <identifier> ":" <type> "=" <value>
+
+
+<if-stmt> ::= "if " <boolean-value> <block-stmts>
+              ("orif " <boolean-value> <block-stmts>)*
+              ("else" <block-stmts>)?
+
+<for-loop> ::= "for " <identifier> ":" <type> " from " <numeric-value> " to " <numeric-value> <block-stmts>
+             | "for " <identifier> ":" <type> " in " (<string-value> | <list-value>) <block-stmts>
+
+<foreach-loop> ::= "for " <identifier> ":" <type> " in " <identifier> <block-stmts>
+
+<while-loop> ::= "while " <boolean-value> <block-stmts>
+
+<numeric-value> ::= "(" <numeric-value> ")"
+
+          | <op-prefix> <numeric-value>
+
+          | <numeric-value> <op-postfix>
+
+          | <numeric-value> <op_binary> <numeric-value>
+
+          | <numeric-value> "if " <boolean-value> <numeric-value> ("orif " <boolean-value> <numeric-value>)* "else " <numeric-value>
+
+<pointer> ::= "Pointer" ":" <type>
+            | "WeakPointer" ":" <type>
+            | "StrongPointer" ":" <type>
+
+<boolean-value> ::= "true" | "false"
+
+<value> ::= <numeric-value>
+          | <boolean-value>
+          | <pointer>
