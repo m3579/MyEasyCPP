@@ -1,0 +1,55 @@
+After asking some questions on Stack Overflow, I decided that in C+2 you don't need to separate interface
+from implementation, but the generated C++ code will be separated into two files, a header and a source.
+If you do want to separate interface from implementation, you can, but you don't need to. For distribution
+purposes, class files will also generate a cp2intrfce file so that you can simply give others that file and
+they can import it and make their own implementation of the class.
+
+So for this file system:
+
+Class.h   - contains class interface and implementation
+
+This is generated
+
+Class.cp2data
+Class.cp2intrfce
+Class.h
+Class.cpp
+
+To import the class interface and implementation data, import the cp2data file. For just the interface detail, import the
+cp2intrfce file.
+
+All of the options for which files to generate should be configurable with command line flags.
+
+
+What should the import statement look like in C++? I think it will just be a #include. So the C++ programs may be bloated, but
+the C+2 programs are not. Here is what a compilation should look like:
+
+# Header.cp2h
+
+create i : int
+
+# Source.cp2s
+
+@import Header.cp2h
+
+let i : int = 2
+
+...Compilation...
+
+Header.cp2data
+
+var: i type: int
+
+Header.h
+
+extern int i;
+
+Header.cpp
+
+#include "Header.h"
+
+int i = 2;
+
+
+So it looks like an import statement will internally map to an include statement in C++. Compile times will improve for C+2
+programs when using an import statement over an include statement, but compile times for the generated C++ files will not.
