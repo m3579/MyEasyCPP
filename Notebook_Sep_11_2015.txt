@@ -264,3 +264,58 @@ BNF.
           | <boolean-value>
           | <memory-value>
 
+
+I am thinking about other names for this language than MEC++. That just sounds weird.
+
+The main name I am thinking about is C+2. File extensions will be cp2.
+
+I have decided that classes will be in their own files. However, you will not need to name the class in the file;
+the filename should be in the class. Classes will have an extension cp2class.
+
+# Dog.cp2class
+
+# doSomething is a method of Dog
+func doSomething() -> nothing:
+    2 + 2
+
+As for inheritance:
+
+Dog$Animal.cp2class
+
+
+No...I don't think I will do this.
+
+I need a way to separate interface from implementation.
+
+
+# Dog.cp2h
+
+class Dog:
+
+    func doSomething() -> void
+
+# Dog.cp2s
+
+class Dog :
+
+    func doSomething() -> void:
+        # do something
+
+That works.
+
+This is better:
+
+# Dog.cp2h
+
+interface Dog:
+
+    func doSomething() -> void
+
+# Dog.cp2s
+
+implementation Dog :
+
+    func doSomething() -> void:
+        # do something
+
+

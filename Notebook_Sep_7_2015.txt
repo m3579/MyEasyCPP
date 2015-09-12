@@ -1,5 +1,7 @@
 Engineering Notebook for MEC++ (MyEasyC++ pronounced "me c++")
 
+Edit September 11, 2015: Renamed language C+2 (pronounced "c plus 2")
+
 September 7, 2015
 
     I first came up with the idea of this language yesterday (on September 6, 2015). Just for fun, I was reading some articles about
