@@ -24,14 +24,14 @@ I found this C++ code online here: https://en.wikipedia.org/wiki/Trabb_Pardo%E2%
 
 It is a C++ implementation of the Trabb Pardo - Knuth algorithm. The algorithm is defined by the website I cited as this:
 
-    ask for 11 numbers to be read into a sequence S
+    "ask for 11 numbers to be read into a sequence S
     reverse sequence S
     for each item in sequence S
         call a function to do an operation
         if result overflows
             alert user
         else
-            print result
+            print result"
 
 I don't have any ideas about what my language is going to look like yet, other than the use of reference counting for garbage
 collection and that there will be no reference variables like in C++. I am going to rewrite the C++ code and modify it to make it simpler and more

@@ -319,3 +319,89 @@ implementation Dog :
         # do something
 
 
+Time to rewrite a BIG C++ program in C+2.
+
+(I like that name. It sounds nice.)
+
+I got this code from here: http://www.cplusplus.com/forum/lounge/13042/
+
+It is supposed to:
+
+    "Quite a while back (almost a year) someone posted a homework assignment where the goal was to have
+    the user enter an integer N, and then output all possible sets of integers i1, i2, ... in such that i1 < i2 < ... < in
+    and i1 + i2 + ... + in = N. Some folks provided solutions that were in excess of 40 lines of code to compute and output the
+    result sets.
+
+    Here's mine (for N=10):"
+
+#include <iostream>
+#include <string>
+#include <boost/lexical_cast.hpp>
+
+void Run( const std::string& v, int tgt, int start ) {
+    for( ; tgt >= 2 * start + 1; ++start )
+        Run( v + ' ' + boost::lexical_cast<std::string>( start ), tgt - start, start + 1 );
+    std::cout << v << ' ' << tgt << std::endl;
+}
+
+int main() {
+    Run( std::string(), 10, 1 );
+    getchar();
+}
+
+@use:
+    iostream
+    string
+    boost/lexical_cast.hpp
+
+func Run(v : const Ref:std.string, tgt : int, start : int):
+
+    repeat with; while tgt >= 2 * start + 1; do ++start:
+
+        Run(v + ' ' + boost.lexical_cast<std.string>(start), tgt - start, start + 1)
+
+    std.cout <-- v <-- ' ' <-- tgt <-- std.endl
+
+start:
+    Run((init std.string), 10, 1)
+    getchar()
+end
+
+You can see I made a few changes. I changed constant to const, made a new type of loop, and used the init statement within an
+expression. Now let me try to make this better:
+
+
+@use:
+    iostream
+    string
+    boost/lexical_cast.hpp
+
+func Run(v : const Ref:std.string, tgt : int, start : int):
+
+    repeat while(tgt >= 2 * start + 1) do (++start):
+
+        Run(v + ' ' + boost.lexical_cast<std.string>(start), tgt - start, start + 1)
+
+    std.output <-- v <-- ' ' <-- tgt <-- std.endline
+
+program:
+    Run((init std.string), 10, 1)
+    getchar()
+
+I changed the start/end to program. I also forgot in the previous code that std.cout was std.output, and I changed
+std.endl to std.endline. I also modified the repeat loop.
+
+I also realized that I forgot to specify a return type for this function. I think that in that case, the compiler should assume
+that it is a void function.
+
+Let me try writing a program now.
+
+@use iostream
+
+func addTwoNumbers(num : int, num2 : int) -> int:
+    return num + num2
+
+program:
+    std.output <-- addTwoNumbers(1, 2) <-- "\n"
+
+OK, that wasn't too painful.
