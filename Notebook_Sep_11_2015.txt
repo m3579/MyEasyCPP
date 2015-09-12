@@ -74,3 +74,193 @@ This is what the syntax looks like now. I've added some more rules:
 <value> ::= <numeric-value>
           | <boolean-value>
           | <pointer>
+
+
+I think it's time I rewrite another C++ program in my new language. I think I will choose a more complicated one this
+time.
+
+This is a smart pointer class I made in TheCompilerFramework. I based the code off of
+
+http://www.codeproject.com/Articles/15351/Implementing-a-simple-smart-pointer-in-c
+
+// Ref.h
+
+#ifndef REF_H_INCLUDED
+#define REF_H_INCLUDED
+
+namespace smartPointer
+{
+	template <typename T>
+	class Ref
+	{
+		public:
+			Ref(T* t) :
+				ptr(t), rc(0)
+			{
+				rc++;
+			}
+
+			Ref(const Ref<T>& r)
+			{
+				ptr = r.ptr;
+				rc = r.rc;
+
+				rc++;
+			}
+
+			~Ref()
+			{
+				if (--rc == 0) {
+					delete ptr;
+				}
+			}
+
+			T& operator*()
+			{
+				return *ptr;
+			}
+
+			T* operator->()
+			{
+				return ptr;
+			}
+
+            Ref<T>& operator=(Ref<T>& r)
+			{
+				if (&r != this) {
+
+					if (--rc == 0) {
+						delete ptr;
+                    }
+
+					ptr = r.ptr;
+					rc = r.rc;
+
+					rc++;
+				}
+
+				return *this;
+			}
+
+			T* getInnerPointer()
+			{
+				return ptr;
+			}
+
+			T getValue()
+			{
+				return *ptr;
+			}
+
+            int getReferenceCount()
+			{
+				return rc;
+			}
+
+		protected:
+			T* ptr;
+			int rc;
+	};
+
+} /* namespace smartPointers */
+
+
+#endif // REF_H_INCLUDED
+
+
+# Ref.<extension>
+
+guard: REF_H
+
+namespace smartPointer:
+
+    class Ref<T>:
+
+        create ptr : Pointer:T
+
+        func Create(t : Pointer:T) with ptr(t), rc(0):
+
+            rc++
+
+        func Copy(r : constant Ref:Ref<T>)
+
+            ptr = r.ptr
+            rc = r.rc
+
+            rc++
+
+        func Destroy():
+
+            if --rc == 0:
+
+                delete ptr
+
+        operator * () -> Ref:T:
+
+I stopped because I realized that this is a bad example. My language does not have a delete keyword, and I figured that
+reference variables should be used with Ref:<type>, so the name of the class conflicts.
+
+In fact, let me update the syntax. I think I will need to create a new file where I will have the latest version of the
+BNF.
+
+<endchar> ::= "\n" | ";" | "\0"
+
+<statement> ::= <var-decl> |
+                <if-stmt> |
+                <for-loop> |
+                <foreach-loop> |
+                <while-loop>
+
+                <endchar>
+
+<indented-statement> ::= <indent-whitespace> <statement>
+
+<indent-whitespace> ::= " " || "\t"
+
+<block-stmts> ::= ":" <statement>
+                  | ":" "\n" <indented-statement>+
+
+<var-decl> ::= "create " <identifier>
+
+             | "init " (<class-name> | <struct-name>) <identifier> "(" (value ("," value))? ")"
+
+             | <identifier> ":" <type>
+
+             | <identifier> ":" <type> "=" <value>
+
+
+<if-stmt> ::= "if " <boolean-value> <block-stmts>
+              ("orif " <boolean-value> <block-stmts>)*
+              ("else" <block-stmts>)?
+
+<for-loop> ::= "for " <identifier> ":" <type> " from " <numeric-value> " to " <numeric-value> <block-stmts>
+             | "for " <identifier> ":" <type> " in " (<string-value> | <list-value>) <block-stmts>
+
+<foreach-loop> ::= "for " <identifier> ":" <type> " in " <identifier> <block-stmts>
+
+<while-loop> ::= "while " <boolean-value> <block-stmts>
+
+<numeric-value> ::= "(" <numeric-value> ")"
+
+          | <op-prefix> <numeric-value>
+
+          | <numeric-value> <op-postfix>
+
+          | <numeric-value> <op_binary> <numeric-value>
+
+          | <numeric-value> "if " <boolean-value> <numeric-value> ("orif " <boolean-value> <numeric-value>)* "else " <numeric-value>
+
+<pointer> ::= "Pointer" ":" <type>
+            | "WeakPointer" ":" <type>
+            | "StrongPointer" ":" <type>
+
+<reference> ::= "Ref" ":" <type>
+
+<memory-value> ::= <pointer> | <reference>
+
+<boolean-value> ::= "true" | "false"
+
+<value> ::= <numeric-value>
+          | <boolean-value>
+          | <memory-value>
+
