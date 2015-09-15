@@ -1,10 +1,11 @@
 <endchar> ::= "\n" | ";" | "\0"
 
-<statement> ::= <var-decl> |
-                <if-stmt> |
-                <for-loop> |
-                <foreach-loop> |
-                <while-loop>
+<statement> ::= <var-decl>
+              | <if-stmt>
+              | <for-loop>
+              | <foreach-loop>
+              | <while-loop>
+              | <declare-stmt>
 
                 <endchar>
 
@@ -15,9 +16,7 @@
 <block-stmts> ::= ":" <statement>
                   | ":" "\n" <indented-statement>+
 
-<var-decl> ::= "create " <identifier>
-
-             | "init " (<class-name> | <struct-name>) <identifier> "(" (value ("," value))? ")"
+<var-decl> ::= "init " (<class-name> | <struct-name>) <identifier> "(" (value ("," value))? ")"
 
              | <identifier> ":" <type>
 
@@ -35,6 +34,9 @@
 
 <while-loop> ::= "while " <boolean-value> <block-stmts>
 
+<declare-stmt> ::= "declare " <identifier> ":" <type>
+                 | "declare " <identifier> "(" ( (<identifier> ":")? <type> ("," (<identifier> ":")? <type>)* )? ")"
+
 <numeric-value> ::= "(" <numeric-value> ")"
 
           | <op-prefix> <numeric-value>
@@ -42,8 +44,6 @@
           | <numeric-value> <op-postfix>
 
           | <numeric-value> <op_binary> <numeric-value>
-
-          | <numeric-value> "if " <boolean-value> <numeric-value> ("orif " <boolean-value> <numeric-value>)* "else " <numeric-value>
 
 <pointer> ::= "Pointer" ":" <type>
             | "WeakPointer" ":" <type>

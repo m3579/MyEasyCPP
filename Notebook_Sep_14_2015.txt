@@ -1,0 +1,163 @@
+For a change, I am going to rewrite a D program in C+2.
+
+From Wikipedia (https://en.wikipedia.org/wiki/D_(programming_language)):
+
+import std.stdio, std.algorithm, std.range;
+
+void main()
+{
+    int[] a1 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    int[] a2 = [6, 7, 8, 9];
+
+    // must be immutable to allow access from inside a pure function
+    immutable pivot = 5;
+
+    int mySum(int a, int b) pure nothrow // pure function
+    {
+        if (b <= pivot) // ref to enclosing-scope
+            return a + b;
+        else
+            return a;
+    }
+
+    // passing a delegate (closure)
+    auto result = reduce!mySum(chain(a1, a2));
+    writeln("Result: ", result); // Result: 15
+
+    // passing a delegate literal
+    result = reduce!((a, b) => (b <= pivot) ? a + b : a)(chain(a1, a2));
+    writeln("Result: ", result); // Result: 15
+}
+
+C+2 (I am making up some of the libraries; this is just for syntax)
+
+@use:
+    std.stdio
+    std.algorithm
+    std.range
+
+declare mySum(a : int, b : int) -> int
+
+pivot : int = 5
+
+start
+
+    a1 : int[] of 10
+    a2 : int[] of 4
+
+    result : auto = mySum(chain(a1, a2)) # not quite sure what reduce does and don't really care
+
+    std.output <-- "Result: " <-- result <-- "\n"
+
+    # looks like this is what my ternary operator will look like
+    result = a if b <= pivot else b   # still not sure what reduce does
+
+    #...
+
+end
+
+func mySum(a : int, b : int):
+    if b <= pivot:
+        return a + b
+    else:
+        return a
+
+Now that I think about it, I don't think that the let keyword is necessary. I like this syntax without let and create.
+
+I am going to write a random number guessing game now.
+
+#include <iostream>
+#include <ctime>
+
+int main()
+{
+    srand(time(NULL));
+
+    int min;
+    std::cout << "What is the minimum number I can pick? ";
+    std::cin >> min;
+
+    int max;
+    std::cout << "What is the maximum number I can pick? ";
+    std::cin >> max;
+
+    int guesses;
+    std::cout << "How many guesses would you like? ";
+    std::cin >> guesses;
+
+    int num = (rand() % max) + min;
+
+    bool correct = false;
+
+    for (int i = 1; i <= guesses; i++) {
+
+        int guess;
+        std::cout << "What is your guess? ";
+        std::cin >> guess;
+
+        if (guess > num) {
+            std::cout << "Too high!\n";
+            continue;
+        }
+        else if (guess < num) {
+            std::cout << "Too low!\n";
+            continue;
+        }
+        else {
+            std::cout << "Correct!\n";
+            break;
+        }
+
+    }
+
+    if (!correct) {
+        std::cout << "The correct answer was " << num << "\n";
+    }
+}
+
+@use iostream
+     ctime
+
+start
+
+    srand(time(NULL));
+
+    min : int
+    std.output <-- "What is the minimum number I can pick? "
+    std.input --> min
+
+    max : int
+    std.output <-- "What is the maximum number I can pick? "
+    std.input --> max
+
+    guesses : int
+    std.output <-- "How many guesses would you like? "
+    std.input --> guesses;
+
+    num : int = (rand() % max) + min
+
+    correct : bool = false
+
+    for i : int from 1 to guesses:
+
+        guess : int
+        std.output <-- "What is your guess? "
+        std.input --> guess
+
+        if guess > num:
+            std.output <-- "Too high!\n"
+            continue
+        orif guess < num:
+            std.output <-- "Too low!\n";
+            continue
+        else:
+            std.output <-- "Correct!\n";
+            correct = true
+            break
+
+    if not correct:
+        std.output <-- "The correct answer was " <-- num <-- "!\n"
+
+end
+
+I guess I forgot to mention that I would use words for logical operators (and, not, or instead of &&, !, ||).

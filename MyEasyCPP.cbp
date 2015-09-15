@@ -32,7 +32,12 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="main.cpp" />
+		<Unit filename="BNF.txt" />
+		<Unit filename="Notebook_Sep_10_2015.txt" />
+		<Unit filename="Notebook_Sep_11_2015.txt" />
+		<Unit filename="Notebook_Sep_12_2015.txt" />
+		<Unit filename="Notebook_Sep_7_2015.txt" />
+		<Unit filename="Notebook_Sep_9_2015.txt" />
 		<Extensions>
 			<code_completion />
 			<envvars />
