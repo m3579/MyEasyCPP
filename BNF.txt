@@ -1,3 +1,5 @@
+---------STATEMENTS
+
 <endchar> ::= "\n" | ";" | "\0"
 
 <statement> ::= <var-decl>
@@ -11,10 +13,14 @@
 
 <indented-statement> ::= <indent-whitespace> <statement>
 
-<indent-whitespace> ::= " " || "\t"
+<indent-whitespace> ::= (" " || "\t")+
+
+    (where the amount of whitespace is greater than before the line that starts the block)
 
 <block-stmts> ::= ":" <statement>
                   | ":" "\n" <indented-statement>+
+
+---------VARIABLES
 
 <var-decl> ::= "init " (<class-name> | <struct-name>) <identifier> "(" (value ("," value))? ")"
 
@@ -22,6 +28,11 @@
 
              | <identifier> ":" <type> "=" <value>
 
+
+<declare-stmt> ::= "declare " <identifier> ":" <type>
+                 | "declare " <identifier> "(" ( (<identifier> ":")? <type> ("," (<identifier> ":")? <type>)* )? ")"
+
+---------CONTROL
 
 <if-stmt> ::= "if " <boolean-value> <block-stmts>
               ("orif " <boolean-value> <block-stmts>)*
@@ -34,29 +45,78 @@
 
 <while-loop> ::= "while " <boolean-value> <block-stmts>
 
-<declare-stmt> ::= "declare " <identifier> ":" <type>
-                 | "declare " <identifier> "(" ( (<identifier> ":")? <type> ("," (<identifier> ":")? <type>)* )? ")"
+---------VALUES
 
-<numeric-value> ::= "(" <numeric-value> ")"
+NUMBERS:
+    <numeric-value> ::= "(" <numeric-value> ")"
+                      | <numeric-expression>
+                      | <number-literal>
+                      | <numeric-variable>
 
-          | <op-prefix> <numeric-value>
+        (where <numeric-variable> is a variable of a numeric type)
 
-          | <numeric-value> <op-postfix>
+    <number-literal> ::= [0-9] [0-9]*
 
-          | <numeric-value> <op_binary> <numeric-value>
+    <numeric-expression> ::= <numeric-value> <binary-arithmetic-operator> <numeric-value>
+                           | <unary-prefix-arithmetic-operator> <numeric-value>
+                           | <numeric-value> <unary-postfix-arithmetic-operator>
 
-<pointer> ::= "Pointer" ":" <type>
-            | "WeakPointer" ":" <type>
-            | "StrongPointer" ":" <type>
+    <unary-prefix-arithmetic-operator> ::= "++" | "--"
 
-<reference> ::= "Ref" ":" <type>
+    <unary-postfix-arithmetic-operator> ::= "++" | "--"
 
-<memory-value> ::= <pointer> | <reference>
+    <binary-arithmetic-operator> ::= "+" | "-" | "*" | "/" | "%" | "^"
 
-<boolean-value> ::= "true" | "false"
+BOOLEANS:
+    <boolean-value> ::= <boolean-literal>
+                      | <boolean-expression>
+                      | <boolean-variable>
+
+        (where <boolean-variable> is a variable of a boolean type)
+
+    <boolean-literal> ::= "true" | "false"
+
+    <boolean-expression> ::= <unary-boolean-prefix-operator> <boolean-value>
+                           | <boolean-value> <binary-boolean-operator> <boolean-value>
+
+    <unary-boolean-prefix-operator> ::= "not"
+
+    <binary-boolean-operator> ::= "and" | "or"
+
+STRINGS:
+    <string-value> ::= "\"" <any characters>* ( (?<!"\\") "\"")
+                     | <string-variable>
+
+        (where <string-variable> is a variable of a string type)
+
+MEMORY:
+    <pointer> ::= "Pointer" ":" <type>
+                | "WeakPointer" ":" <type>
+                | "StrongPointer" ":" <type>
+                | <pointer-variable>
+
+        (where <memory-variable> is a variable of a pointer type)
+
+    <reference> ::= "Ref" ":" <type>
+                  | <reference-variable>
+
+        (where <reference-variable> is a variable of type reference)
+
+    <memory-value> ::= <pointer> | <reference>
+
+FUNCTIONS/METHODS:
+    <call> ::= <identifier> "(" ( <identifier ("," <identifier>)* )? ")"
 
 <value> ::= <numeric-value>
           | <boolean-value>
           | <memory-value>
+          | <call>
 
+---------MISCELLANOUS
 
+<object-member-access> ::= <object-variable> "." <member>
+                         | <object-pointer-variable> "->" <member>
+
+    (where <object-variable> is a variable of an object type
+     where <object-pointer-variable> is a pointer to an object
+     where <member> is either a property of the object or a <call> on a method in the object with the appropriate arguments)
