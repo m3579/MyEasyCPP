@@ -3,11 +3,14 @@
 <endchar> ::= "\n" | ";" | "\0"
 
 <statement> ::= <var-decl>
+              | <member-decl>
+              | <declare-stmt>
               | <if-stmt>
               | <for-loop>
               | <foreach-loop>
               | <while-loop>
-              | <declare-stmt>
+              | <function>
+              | <class>
 
                 <endchar>
 
@@ -28,6 +31,7 @@
 
              | <identifier> ":" <type> "=" <value>
 
+<member-decl> ::= <access-mod>? <identifier> ":" <type>
 
 <declare-stmt> ::= "declare " <identifier> ":" <type>
                  | "declare " <identifier> "(" ( (<identifier> ":")? <type> ("," (<identifier> ":")? <type>)* )? ")"
@@ -44,6 +48,12 @@
 <foreach-loop> ::= "for " <identifier> ":" <type> " in " <identifier> <block-stmts>
 
 <while-loop> ::= "while " <boolean-value> <block-stmts>
+
+<function> ::= "func " <identifier> "(" ( (<identifier> ":")? <type> ("," (<identifier> ":")? <type>)* )? ")" "->" <type> <block-stmts>
+
+<class-declaration> ::= "class " <identifier> ("is_a" <superclass>) <block-stmts>
+
+    (where <superclass> is the superclass of the object)
 
 ---------VALUES
 
@@ -120,3 +130,6 @@ FUNCTIONS/METHODS:
     (where <object-variable> is a variable of an object type
      where <object-pointer-variable> is a pointer to an object
      where <member> is either a property of the object or a <call> on a method in the object with the appropriate arguments)
+
+<access-mod> ::= "visible" | "hidden" | "inherited"
+
