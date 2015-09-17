@@ -1,0 +1,1 @@
+Apparently "import" is used by both VC++ and GCC already. I will change it to "access".

@@ -1,3 +1,5 @@
+Note: there may be some features from the Engineering Notebook that I forgot to add in here.
+
 ---------STATEMENTS
 
 <endchar> ::= "\n" | ";" | "\0"
@@ -11,8 +13,12 @@
               | <while-loop>
               | <function>
               | <class>
+              | <directive>
 
                 <endchar>
+
+<class-stmts> ::= ( <indent-whitespace>  ( <member-decl>
+                                         | <function> ) )*
 
 <indented-statement> ::= <indent-whitespace> <statement>
 
@@ -51,7 +57,7 @@
 
 <function> ::= "func " <identifier> "(" ( (<identifier> ":")? <type> ("," (<identifier> ":")? <type>)* )? ")" "->" <type> <block-stmts>
 
-<class-declaration> ::= "class " <identifier> ("is_a" <superclass>) <block-stmts>
+<class-declaration> ::= "class " <identifier> ("is_a" <superclass>) <class-stmts>
 
     (where <superclass> is the superclass of the object)
 
@@ -94,7 +100,7 @@ BOOLEANS:
     <binary-boolean-operator> ::= "and" | "or"
 
 STRINGS:
-    <string-value> ::= "\"" <any characters>* ( (?<!"\\") "\"")
+    <string-value> ::= "\"" <any-characters>* ( (?<!"\\") "\"")
                      | <string-variable>
 
         (where <string-variable> is a variable of a string type)
@@ -122,7 +128,35 @@ FUNCTIONS/METHODS:
           | <memory-value>
           | <call>
 
----------MISCELLANOUS
+---------PREPROCESSOR DIRECTIVES
+
+(where <filename> is a valid filename on the operating system)
+
+<macro> ::= "macro" <identifier>
+            "(" (("|" <identifier> "|") | <identifier>) ("," ("|" <identifier> "|") | <identifier>))*)? ")"
+            ( ("|" <any-characters> "|") | <value>) )
+
+<error> ::= "error" <value> | ("|" <any-characters> "|")
+
+<if-dir> ::= "if" <boolean-value> <block-stmts>
+             ("@" "orif" <boolean-value> <block-stmts>)*
+             ("@" "else" <block-stmts>)?
+
+<ifdef> ::= "ifdefined" <identifier> <block-stmts>
+
+<ifndef> ::= "if!defined" <identifier> <block-stmts>
+
+<access> ::= "access" <filename>
+
+<use> ::= "use" ( <filename> ( <filename> "\n")* )?
+
+<setline> ::= "setline" <numeric-value> (<filename>)
+
+<nulldir> ::= ""
+
+<undef> ::= "undefine" <identifier>
+
+---------MISCELLANEOUS
 
 <object-member-access> ::= <object-variable> "." <member>
                          | <object-pointer-variable> "->" <member>
