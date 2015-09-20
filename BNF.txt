@@ -17,6 +17,19 @@ Note: there may be some features from the Engineering Notebook that I forgot to 
 
                 <endchar>
 
+<preprocessor-directive> ::= "@" (<macro>
+                                | <error>
+                                | <if-dir>
+                                | <ifdef>
+                                | <ifndef>
+                                | <access>
+                                | <use>
+                                | <setline>
+                                | <emptydir>
+                                | <undef>)
+
+                             <endchar>
+
 <class-stmts> ::= ( <indent-whitespace>  ( <member-decl>
                                          | <function> ) )*
 
@@ -126,11 +139,12 @@ FUNCTIONS/METHODS:
 <value> ::= <numeric-value>
           | <boolean-value>
           | <memory-value>
+          | <string-value>
           | <call>
 
 ---------PREPROCESSOR DIRECTIVES
 
-(where <filename> is a valid filename on the operating system)
+(where <filename> is a valid filename on user's operating system)
 
 <macro> ::= "macro" <identifier>
             "(" (("|" <identifier> "|") | <identifier>) ("," ("|" <identifier> "|") | <identifier>))*)? ")"
@@ -152,7 +166,7 @@ FUNCTIONS/METHODS:
 
 <setline> ::= "setline" <numeric-value> (<filename>)
 
-<nulldir> ::= ""
+<empty> ::= ""
 
 <undef> ::= "undefine" <identifier>
 
