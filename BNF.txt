@@ -6,7 +6,6 @@ Note: there may be some features from the Engineering Notebook that I forgot to 
 
 <statement> ::= <var-decl>
               | <member-decl>
-              | <declare-stmt>
               | <if-stmt>
               | <for-loop>
               | <foreach-loop>
@@ -46,14 +45,13 @@ Note: there may be some features from the Engineering Notebook that I forgot to 
 
 <var-decl> ::= "init " (<class-name> | <struct-name>) <identifier> "(" (value ("," value))? ")"
 
-             | <identifier> ":" <type>
+             | <identifier> ":" <type> ("=" <value>)
 
-             | <identifier> ":" <type> "=" <value>
+    (where <value> is of type <type>)
 
-<member-decl> ::= <access-mod>? <identifier> ":" <type>
+<member-decl> ::= <access-mod>? <identifier> ":" <type> ("=" <value>)
 
-<declare-stmt> ::= "declare " <identifier> ":" <type>
-                 | "declare " <identifier> "(" ( (<identifier> ":")? <type> ("," (<identifier> ":")? <type>)* )? ")"
+    (where <value> is of type <type>)
 
 ---------CONTROL
 
@@ -68,7 +66,7 @@ Note: there may be some features from the Engineering Notebook that I forgot to 
 
 <while-loop> ::= "while " <boolean-value> <block-stmts>
 
-<function> ::= "func " <identifier> "(" ( (<identifier> ":")? <type> ("," (<identifier> ":")? <type>)* )? ")" "->" <type> <block-stmts>
+<function> ::= "func " <identifier> "(" ( (<identifier> ":")? <type> ("," (<identifier> ":")? <type>)* )? ")" "->" <type> (<block-stmts>)?
 
 <class-declaration> ::= "class " <identifier> ("is_a" <superclass>) <class-stmts>
 
