@@ -1,0 +1,8 @@
+10/4/15
+
+Today, I started working on this compiler after a while. I
+am in the process of adding a test for numbers to the lexer,
+and also added a file named "errors.h" containing error functions.
+
+I am also thinking of adding an optional-like feature, like in
+Swift.

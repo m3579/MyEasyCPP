@@ -20,15 +20,19 @@
 #include "Lexer.hpp"
 #include "TokenType.h"
 #include "cleancode.h"
+#include "error.h"
 
 using namespace token;
 
 // TOKENS
 createTokenType(TTYPE_ENDCHAR);
 createTokenType(TTYPE_WHITESPACE);
+createTokenType(TTYPE_INTEGER_LITERAL);
+createTokenType(TTYPE_DECIMAL_LITERAL);
 
 // IDENTIFYING CHARACTERS
-const std::string WHITESPACECHARS = " \t";
+const std::string WHITESPACE_CHARS = " \t";
+const std::string NUMBER_LITERAL_CHARS = "1234567890";
 
 // FUNCTION DECLARATIONS
 bool contains(std::string str, const char sub);
@@ -39,6 +43,7 @@ lexer::Lexer createLexer(const char* sourceCode)
 
     setLexer(lexr);
 
+    // <ENDCHAR>
     makeTest(sc)
     {
         if ((sc.getCurrentChar() == '\n')
@@ -52,14 +57,15 @@ lexer::Lexer createLexer(const char* sourceCode)
     }
     endTest
 
+    // WHITESPACE
     makeTest(sc)
     {
-        if (contains(WHITESPACECHARS, sc.getCurrentChar())) {
+        if (contains(WHITESPACE_CHARS, sc.getCurrentChar())) {
             std::string whitespace(1, sc.getCurrentChar());
             int lineNumber = sc.getLineNumber();
             int columnNumber = sc.getColumnNumber();
 
-            while (contains(WHITESPACECHARS, sc.fetchNextChar())) {
+            while (contains(WHITESPACE_CHARS, sc.fetchNextChar())) {
                 whitespace += sc.getCurrentChar();
             }
 
@@ -70,6 +76,43 @@ lexer::Lexer createLexer(const char* sourceCode)
     }
     endTest
 
+    // <NUMBER-LITERAL>
+    makeTest(sc)
+    {
+        char currChar = sc.getCurrentChar();
+
+        if (contains(NUMBER_LITERAL_CHARS, currChar)
+            || currChar == '-') {
+            std::string number(1, currChar);
+            int lineNumber = sc.getLineNumber();
+            int columnNumber = sc.getColumnNumber();
+
+            int type = TTYPE_INTEGER_LITERAL;
+
+            while (sc.hasMoreSource()) {
+                char nextChar = sc.fetchNextChar();
+                if (contains(NUMBER_LITERAL_CHARS, nextChar)) {
+                    number += nextChar;
+                    continue;
+                }
+                else if (nextChar == '.') {
+                    number += nextChar;
+                    type = TTYPE_DECIMAL_LITERAL;
+                }
+                else {
+                    break;
+                }
+
+                sc.moveToNextChar();
+            }
+
+            if (sc.getCurrentChar() == '.') {
+                error(number, lineNumber, columnNumber, "You cannot end a number with a decimal point (add a 0 to the end)", true);
+                return std::shared_ptr<lexer::Lexer> { };
+            }
+        }
+    }
+    endTest
 
     return lexr;
 }

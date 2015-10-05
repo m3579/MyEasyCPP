@@ -2,10 +2,12 @@
 1442779507 source:c:\users\mihir kasmalkar\documents\_programs\codeblocks\myeasycpp\main.cpp
 	"MyLexer.h"
 
-1442799407 c:\users\mihir kasmalkar\documents\_programs\codeblocks\myeasycpp\mylexer.h
+1444026645 c:\users\mihir kasmalkar\documents\_programs\codeblocks\myeasycpp\mylexer.h
+	<memory>
 	"Lexer.hpp"
 	"TokenType.h"
 	"cleancode.h"
+	"error.h"
 
 1442462258 c:\users\mihir kasmalkar\documents\_programs\codeblocks\thecompilerframework\include\lexer.hpp
 	<vector>
@@ -23,4 +25,7 @@
 
 1442022372 c:\users\mihir kasmalkar\documents\_programs\codeblocks\thecompilerframework\cleancode.h
 	"Lexer.hpp"
+
+1444026444 c:\users\mihir kasmalkar\documents\_programs\codeblocks\myeasycpp\error.h
+	<iostream>
 
