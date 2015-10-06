@@ -1,0 +1,29 @@
+So today I was doing some thinking about how if there are normal automatic objects and garbage collected
+smart pointers, then what's the difference and what's the point of having both? I have decided that
+automatic objects cannot be used polymorphically, to stay true to C++, but smart pointers can. I have
+come up with this system:
+
+Normal Objects:
+
+Equivalent to C++ automatic objects. When passed or returned from function, duplicate is made. Cannot be
+used in polymorphic context.
+
+Singles:
+
+Equivalent to C++ pointers to objects (specifically smart pointers). Only one of the object ever exists
+on the heap instead of it being duplicated (different from singleton). Can be used in polymorphic contexts.
+
+Actually, instead of Singles, I think I will call them...Single-Instance objects. No, that still sounds
+too much like Singleton. How about...Non-duplicating objects? Yes. Or...Same-Instance objects? Yes. Same-
+instance objects. Normal and Same-Instance objects. Actually, I think I like...Non-duplicating objects
+best. Normal and Non-duplicating objects. (By the way, the ...'s represent time where I spent thinking and
+not typing.)
+
+And then there are normal reference and pointer's to objects.
+
+I am also thinking about removing weak pointers for clarity and to support the idea of Non-duplicative objects
+instead of the programmer thinking of them as pointers (because I am trying to do away with pointers).
+
+I forgot to enter what I did yesterday in detail. I am working on adding a test to the lexer for numbers: it will
+treat decimals and integers differently, but not signed and unsigned integers. Actually, it should. I will have to
+change that.

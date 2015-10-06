@@ -41,6 +41,11 @@
 		</Compiler>
 		<Unit filename="BNF.txt" />
 		<Unit filename="MyLexer.h" />
+		<Unit filename="Notebook_Oct_02_2015.txt">
+			<Option compilerVar="CC" />
+			<Option compile="1" />
+			<Option link="1" />
+		</Unit>
 		<Unit filename="Notebook_Sep_10_2015.txt" />
 		<Unit filename="Notebook_Sep_11_2015.txt" />
 		<Unit filename="Notebook_Sep_12_2015.txt" />
@@ -48,6 +53,7 @@
 		<Unit filename="Notebook_Sep_16_2015.txt" />
 		<Unit filename="Notebook_Sep_7_2015.txt" />
 		<Unit filename="Notebook_Sep_9_2015.txt" />
+		<Unit filename="error.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
