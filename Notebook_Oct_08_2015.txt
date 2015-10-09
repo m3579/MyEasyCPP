@@ -1,0 +1,23 @@
+I have decided to keep weak pointers and strong pointers. The syntax should now be Single:<type> and WeakSingle:<type>.
+
+I have updated BNF.txt.
+
+I am going to compare some C++ code against C+2 code again.
+
+As I was searching for C++ samples, I found some samples relating to arrays and I realized that I didn't add array access syntax
+in my BNF (or array creation syntax, but that was easily implemented). I implemented the array access syntax (by implemented, I mean
+added the BNF for) easily as well, but I realized that in my language, a construct such as this
+
+array : Integer[]
+
+should define an std::vector<int>, or rather, std::vector<Integer> where integer is a C+2 wrapper for ints, and
+
+array : Integer[] of 2
+
+should define a C++ array like this: int[] array[2]; (or rather, int array[2] - I don't use arrays a lot, I am foggy on the syntax).
+
+After looking back at previous journal entries, I realized that I had declared arrays like this:
+
+array : int[] of n
+
+I think I should change that to use Integer instead of int.

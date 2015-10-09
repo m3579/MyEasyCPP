@@ -1,5 +1,7 @@
 Note: there may be some features from the Engineering Notebook that I forgot to add in here.
 
+Where <type> is a valid data type (primitive type, object, struct, enum, etc.)
+
 ---------STATEMENTS
 
 <endchar> ::= "\n" | ";" | "\0"
@@ -45,9 +47,10 @@ Note: there may be some features from the Engineering Notebook that I forgot to 
 
 <var-decl> ::= "init " (<class-name> | <struct-name>) <identifier> "(" (value ("," value))? ")"
 
-             | <identifier> ":" <type> ("=" <value>)
+             | (<identifier> ":" <type>) | (<identifier> ":" <type> "[" "]" ("of" <positive-integer>))? ("=" <value>)
 
-    (where <value> is of type <type>)
+    (where <value> is of type <type>,
+     where <positive-integer> is a positive integer)
 
 <member-decl> ::= <access-mod>? <identifier> ":" <type> ("=" <value>)
 
@@ -118,8 +121,8 @@ STRINGS:
 
 MEMORY:
     <pointer> ::= "Pointer" ":" <type>
-                | "WeakPointer" ":" <type>
-                | "StrongPointer" ":" <type>
+                | "WeakSingle" ":" <type>
+                | "Single" ":" <type>
                 | <pointer-variable>
 
         (where <memory-variable> is a variable of a pointer type)
@@ -139,6 +142,8 @@ FUNCTIONS/METHODS:
           | <memory-value>
           | <string-value>
           | <call>
+
+    (where <positive-integer> is a positive integer)
 
 ---------PREPROCESSOR DIRECTIVES
 
