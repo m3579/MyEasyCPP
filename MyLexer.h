@@ -17,6 +17,8 @@
  *
  */
 
+#include <memory>
+
 #include "Lexer.hpp"
 #include "TokenType.h"
 #include "cleancode.h"
@@ -108,9 +110,13 @@ lexer::Lexer createLexer(const char* sourceCode)
 
             if (sc.getCurrentChar() == '.') {
                 error(number, lineNumber, columnNumber, "You cannot end a number with a decimal point (add a 0 to the end)", true);
-                return std::shared_ptr<lexer::Lexer> { };
+                return Token();
             }
+
+            return Token(lineNumber, columnNumber, number, type);
         }
+
+        return Token();
     }
     endTest
 

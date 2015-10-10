@@ -1,0 +1,160 @@
+I am going to compare some sample code with C+2 code. I found this here:
+http://fahad-cprogramming.blogspot.com/2011/12/find-perfect-number-in-c.html
+
+#include<iostream.h>
+#include<conio.h>
+
+void main()                 //Start of main
+{
+    clrscr();
+
+    int i=1, u=1, sum=0;
+    while(i<=500) {         // start of first loop.
+
+        while(u<=500) {         //start of second loop.
+            if(u<i) {
+                if(i%u==0 )
+                    sum=sum+u;
+            }                   //End of if statement
+
+            u++;
+        }                           //End of second loop
+
+        if(sum==i) {
+            cout<<i<<" is a perfect number."<<"\n";
+        }
+
+        i++;
+        u=1;  sum=0;
+        }                             //End of First loop
+
+   getch();
+}                            //End of main
+
+I formatted the code correctly.
+
+Here is my C+2 code:
+
+@use:
+    iostream
+    conio.h
+
+start
+
+    clrscr()
+
+    i : int = 1; u : int = 1; sum : int = 0
+
+    while i <= 500:
+        while u <= 500:
+            if u < i:
+                if i % u == 0:
+                    sum = sum + u
+            u++
+
+        if sum == i:
+                std.cout <-- i <-- " is a perfect number." <-- "\n"
+
+        i++
+        u = 1; sum = 0
+
+    getch()
+
+end
+
+I think I like it. Time to try out a more invested example:
+
+Actually, as I was looking through examples, I realized that there was no way to declare an abstract class. Let me fix that.
+
+This is now valid syntax:
+
+abstract class App:
+    abstract func something();
+
+Actually, after looking through the BNF, I think that this will be more appropriate:
+
+abstract class App:
+    declare func something()
+
+All abstract classes by default will have a pure virtual destructor (to make them abstract).
+
+Anyway, here is the code:
+
+From http://www.cplusplus.com/doc/tutorial/polymorphism/
+
+// virtual members
+#include <iostream>
+using namespace std;
+
+class Polygon {
+  protected:
+    int width, height;
+  public:
+    void set_values (int a, int b)
+      { width=a; height=b; }
+    virtual int area ()
+      { return 0; }
+};
+
+class Rectangle: public Polygon {
+  public:
+    int area ()
+      { return width * height; }
+};
+
+class Triangle: public Polygon {
+  public:
+    int area ()
+      { return (width * height / 2); }
+};
+
+int main () {
+  Rectangle rect;
+  Triangle trgl;
+  Polygon poly;
+  Polygon * ppoly1 = &rect;
+  Polygon * ppoly2 = &trgl;
+  Polygon * ppoly3 = &poly;
+  ppoly1->set_values (4,5);
+  ppoly2->set_values (4,5);
+  ppoly3->set_values (4,5);
+  cout << ppoly1->area() << '\n';
+  cout << ppoly2->area() << '\n';
+  cout << ppoly3->area() << '\n';
+  return 0;
+}
+
+In C+2,
+
+# virtual members
+-use iostream
+
+use std
+
+class Polygon:
+    inherited @width : int
+    inherited @height : int
+
+    func set_values(a : int, b : int):
+        @width = a
+        @height = b
+
+    func area():
+        return 0;
+
+class Rectangle is_a Polygon:
+
+    override func area():
+        return @width * @height
+
+class Triangle is_a Polygon:
+
+    override func area():
+        return (self.width * this.height) / @factor
+
+So you can see I've made a lot of changes. For one thing, I took out the @ in the use statement to use it in the member names. I don't
+quite like using the @ in the member names, but I do like the minus sign in front of the directive. On the last line, I was
+experimenting with different syntaxes for member access, and I think I like the normal C++ one the best (although I think that
+instead of using this->something, I will be using this.something). Actually, I liked the "@" sign notation. Although it will not be
+required, that should be an option (like using this-> in C++).
+

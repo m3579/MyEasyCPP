@@ -20,6 +20,8 @@
 
 #include <iostream>
 
+#include "quitexception.hpp"
+
 void error(std::string text, int lineNumber, int columnNumber, bool fatal);
 void printErrorMessage(std::string text, int lineNumber, int columnNumber, std::string message);
 
@@ -27,7 +29,7 @@ void error(std::string text, int lineNumber, int columnNumber, std::string messa
 {
     printErrorMessage(text, lineNumber, columnNumber, message);
     if (fatal) {
-        std::cout << "Sorry, compilation had to abort after this error\n";
+        throw quitexception("Sorry, I had to abort after this error.");
     }
 }
 

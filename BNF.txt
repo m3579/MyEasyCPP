@@ -2,23 +2,28 @@ Note: there may be some features from the Engineering Notebook that I forgot to 
 
 Where <type> is a valid data type (primitive type, object, struct, enum, etc.)
 
+(When I say "where <identifier> is a valid xxx name", I mean that the xxx exists,
+something else does not already have its name, etc.)
+
 ---------STATEMENTS
 
 <endchar> ::= "\n" | ";" | "\0"
 
-<statement> ::= <var-decl>
-              | <member-decl>
+<statement> ::= <var-stmt>
+              | <member-stmt>
               | <if-stmt>
               | <for-loop>
               | <foreach-loop>
               | <while-loop>
               | <function>
               | <class>
+              | <namespace>
+              | <use-stmt>
               | <directive>
 
                 <endchar>
 
-<preprocessor-directive> ::= "@" (<macro>
+<preprocessor-directive> ::= "-" (<macro>
                                 | <error>
                                 | <if-dir>
                                 | <ifdef>
@@ -31,8 +36,11 @@ Where <type> is a valid data type (primitive type, object, struct, enum, etc.)
 
                              <endchar>
 
-<class-stmts> ::= ( <indent-whitespace>  ( <member-decl>
-                                         | <function> ) )*
+<class-stmts> ::= ( <indent-whitespace>  ( <member-stmt>
+                                         | <access-mod>? <function>
+                                         | ("declare") <access-mod>? <func-decl-contents>) )*
+
+    (where the class is abstract if the keyword "abstract" comes before <function>)
 
 <indented-statement> ::= <indent-whitespace> <statement>
 
@@ -40,21 +48,60 @@ Where <type> is a valid data type (primitive type, object, struct, enum, etc.)
 
     (where the amount of whitespace is greater than before the line that starts the block)
 
+<var-stmt> ::= <var-decl-only> | <var-decl-assign>
+
+<member-stmt> ::= <member-decl-only> | <member-decl-assign>
+
 <block-stmts> ::= ":" <statement>
                   | ":" "\n" <indented-statement>+
 
+<namespace> ::= "namespace" <identifier> <block-stmts>
+
+    (where <identifier> is a valid namespace name)
+
+<use-stmt> ::= "use" <identifier> ("." <identifier>)*
+
+    (where the first <identifier> is a valid user made type,
+     where the expression in parenthesis only exists if the first <identifier> was a namespace
+        and if the second <identifier> is a member of the previous <identifier>)
+
 ---------VARIABLES
 
-<var-decl> ::= "init " (<class-name> | <struct-name>) <identifier> "(" (value ("," value))? ")"
+<identifier> ::= ("@") [A-Za-z_] [A-Za-z_0-9]*
 
-             | (<identifier> ":" <type>) | (<identifier> ":" <type> "[" "]" ("of" <positive-integer>))? ("=" <value>)
+    (where the "@" sign is only present if the identifier is a member)
+
+---------DECLARATIONS
+
+<var-decl-contents> ::= (<identifier> ":" <type>) | (<identifier> ":" <type> "[" "]" ("of" <positive-integer>))?
+
+    (where <identifier> is a valid variable name)
+
+<var-decl-only> ::= "declare" <var-decl-contents>
+
+<var-decl-assign> ::= "init " (<class-name> | <struct-name>) <identifier> "(" (value ("," value))? ")"
+
+             | <var-decl-content> ("=" <value>)
 
     (where <value> is of type <type>,
      where <positive-integer> is a positive integer)
 
-<member-decl> ::= <access-mod>? <identifier> ":" <type> ("=" <value>)
+<member-decl-contents> ::= <access-mod>? <identifier> ":" <type>
+
+    (where <identifier> is a valid member name)
+
+<member-decl-only> ::= "declare" <member-decl-contents>
+
+<member-decl-assign> ::= <member-decl-contents> ("=" <value>)?
 
     (where <value> is of type <type>)
+
+<func-decl-contents> ::= ("override")? "func " <identifier> "(" ( (<identifier> ":")? <type> ("," (<identifier> ":")? <type>)* )? ")" ("->" <type>)?
+
+    (where <identifier> is a valid function name,
+     where "override" is only there if the function overrides one in the superclass)
+
+<func-decl-only> ::= "declare" <func-decl-contents>
 
 ---------CONTROL
 
@@ -69,11 +116,12 @@ Where <type> is a valid data type (primitive type, object, struct, enum, etc.)
 
 <while-loop> ::= "while " <boolean-value> <block-stmts>
 
-<function> ::= "func " <identifier> "(" ( (<identifier> ":")? <type> ("," (<identifier> ":")? <type>)* )? ")" "->" <type> (<block-stmts>)?
+<function> ::= <func-decl-contents> (<block-stmts>)?
 
-<class-declaration> ::= "class " <identifier> ("is_a" <superclass>) <class-stmts>
+<class-declaration> ::= ("abstract")? "class " <identifier> (("is_a" | "is_an") <access-mod>? <superclass>) <class-stmts>
 
-    (where <superclass> is the superclass of the object)
+    (where <superclass> is the superclass of the object,
+     where <identifier> is a valid class name)
 
 ---------VALUES
 
@@ -125,7 +173,7 @@ MEMORY:
                 | "Single" ":" <type>
                 | <pointer-variable>
 
-        (where <memory-variable> is a variable of a pointer type)
+        (where <pointer-variable> is a variable of a pointer type)
 
     <reference> ::= "Ref" ":" <type>
                   | <reference-variable>
@@ -152,6 +200,8 @@ FUNCTIONS/METHODS:
 <macro> ::= "macro" <identifier>
             "(" (("|" <identifier> "|") | <identifier>) ("," ("|" <identifier> "|") | <identifier>))*)? ")"
             ( ("|" <any-characters> "|") | <value>) )
+
+    (where <identifier> is a valid macro name)
 
 <error> ::= "error" <value> | ("|" <any-characters> "|")
 
