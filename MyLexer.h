@@ -31,6 +31,7 @@ createTokenType(TTYPE_ENDCHAR);
 createTokenType(TTYPE_WHITESPACE);
 createTokenType(TTYPE_INTEGER_LITERAL);
 createTokenType(TTYPE_DECIMAL_LITERAL);
+createTokenType(TTYPE_STRING);
 
 // IDENTIFYING CHARACTERS
 const std::string WHITESPACE_CHARS = " \t";
@@ -114,6 +115,37 @@ lexer::Lexer createLexer(const char* sourceCode)
             }
 
             return Token(lineNumber, columnNumber, number, type);
+        }
+
+        return Token();
+    }
+    endTest
+
+    makeTest(sc)
+    {
+        char c = sc.getCurrentChar();
+        if (c == '"') {
+            int lineNumber = sc.getLineNumber();
+            int columnNumber = sc.getColumnNumber();
+
+            std::string theString(1, c);
+
+            while ((c=sc.fetchNextChar())) {
+
+                if (c == '\0') {
+                    error(theString, lineNumber, columnNumber, "You need to close this string", true);
+                }
+
+                theString += c;
+
+                if (c == '"') {
+                    if (!(sc.getCurrentChar() == '\\')) {
+                        break;
+                    }
+                }
+            }
+
+            return Token(lineNumber, columnNumber, theString, TTYPE_STRING);
         }
 
         return Token();

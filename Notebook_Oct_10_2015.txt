@@ -1,0 +1,28 @@
+I just finished adding support for strings in the lexer (and by that I mean adding a test for them).
+
+I have been thinking about data types. I want there to be a reasonable amount of primitive data types, but not as many
+as C++ (int_32, [actually, wait a minute: that's not a type in C++], wchar_t, signed char, unsigned char, signed long long, unsigned
+short int, etc.). There should be only 8 primitive data types:
+
+short
+positive short
+int
+positive int
+long
+positive long
+large long
+unsigned large long
+bool
+char
+positive char
+float
+double
+long double
+string
+
+I said 8 because I didn't consider the positive counterparts of the data
+types.
+
+I am actually thinking of renaming the boolean data type to truthval. This would make more sense than boolean or bool.
+I am also thinking of implicitly importing std::string, or in C+2, std.string.
+So those are the 9 (counting positive counterparts, 15) datatypes. Or more specifically, primitive data types.
