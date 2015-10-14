@@ -27,22 +27,69 @@
 using namespace token;
 
 // TOKENS
+
+// whitespace
 createTokenType(TTYPE_ENDCHAR);
 createTokenType(TTYPE_WHITESPACE);
+
+// literals
 createTokenType(TTYPE_INTEGER_LITERAL);
 createTokenType(TTYPE_DECIMAL_LITERAL);
-createTokenType(TTYPE_STRING);
+createTokenType(TTYPE_STRING_LITERAL);
+
+// keywords
+createTokenType(TTYPE_KEYWORD_NAMESPACE);
+createTokenType(TTYPE_KEYWORD_USE);
+createTokenType(TTYPE_KEYWORD_OF);
+createTokenType(TTYPE_KEYWORD_DECLARE);
+createTokenType(TTYPE_KEYWORD_INIT);
+createTokenType(TTYPE_KEYWORD_OVERRIDE);
+createTokenType(TTYPE_KEYWORD_FUNC);
+createTokenType(TTYPE_KEYWORD_IF);
+createTokenType(TTYPE_KEYWORD_ORIF);
+createTokenType(TTYPE_KEYWORD_ELSE);
+createTokenType(TTYPE_KEYWORD_FOR);
+createTokenType(TTYPE_KEYWORD_FROM);
+createTokenType(TTYPE_KEYWORD_TO);
+createTokenType(TTYPE_KEYWORD_IN);
+createTokenType(TTYPE_KEYWORD_WHILE);
+createTokenType(TTYPE_KEYWORD_GENERIC);
+createTokenType(TTYPE_KEYWORD_IS_A_OR_AN);
+createTokenType(TTYPE_KEYWORD_POINTER);
+createTokenType(TTYPE_KEYWORD_WEAKSINGLE);
+createTokenType(TTYPE_KEYWORD_SINGLE);
+createTokenType(TTYPE_KEYWORD_REF);
+createTokenType(TTYPE_KEYWORD_VISIBLE);
+createTokenType(TTYPE_KEYWORD_HIDDEN);
+createTokenType(TTYPE_KEYWORD_INHERITED);
+
+// operators
+createTokenType(TTYPE_OPERATOR_AND);
+createTokenType(TTYPE_OPERATOR_OR);
+createTokenType(TTYPE_OPERATOR_NOT);
+
+// miscellaneous
+createTokenType(TTYPE_IDENTIFIER);
+
 
 // IDENTIFYING CHARACTERS
 const std::string WHITESPACE_CHARS = " \t";
 const std::string NUMBER_LITERAL_CHARS = "1234567890";
+const std::string WORD_START_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
+const std::string WORD_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789";
 
-// FUNCTION DECLARATIONS
+// DECLARATIONS
 bool contains(std::string str, const char sub);
+
+void initTextToTTYPEMap();
+
+std::map<std::string, int> textToTTYPE;
 
 lexer::Lexer createLexer(const char* sourceCode)
 {
     lexer::Lexer lexr(sourceCode);
+
+    initTextToTTYPEMap();
 
     setLexer(lexr);
 
@@ -145,10 +192,32 @@ lexer::Lexer createLexer(const char* sourceCode)
                 }
             }
 
-            return Token(lineNumber, columnNumber, theString, TTYPE_STRING);
+            return Token(lineNumber, columnNumber, theString, TTYPE_STRING_LITERAL);
         }
 
         return Token();
+    }
+    endTest
+
+    makeTest(sc)
+    {
+        char c = sc.getCurrentChar();
+        if (contains(WORD_START_CHARS, c)) {
+            int lineNumber = sc.getLineNumber();
+            int columnNumber = sc.getColumnNumber();
+            std::string word(1, c);
+
+            while (contains(WORD_CHARS, sc.fetchNextChar())) {
+                word += sc.moveToNextChar();
+            }
+
+            if (textToTTYPE.find(word) != textToTTYPE.end()) {
+                return Token(lineNumber, columnNumber, word, textToTTYPE[word]);
+            }
+            else {
+                return Token(lineNumber, columnNumber, word, TTYPE_IDENTIFIER);
+            }
+        }
     }
     endTest
 
@@ -158,6 +227,39 @@ lexer::Lexer createLexer(const char* sourceCode)
 bool contains(std::string str, char sub)
 {
     return (str.find(sub) != std::string::npos) ? true : false;
+}
+
+void initTextToTTYPEMap()
+{
+    textToTTYPE["namespace"] = TTYPE_KEYWORD_NAMESPACE;
+    textToTTYPE["use"]       = TTYPE_KEYWORD_USE;
+    textToTTYPE["of"]        = TTYPE_KEYWORD_OF;
+    textToTTYPE["declare"]   = TTYPE_KEYWORD_DECLARE;
+    textToTTYPE["init"]      = TTYPE_KEYWORD_INIT;
+    textToTTYPE["override"]  = TTYPE_KEYWORD_OVERRIDE;
+    textToTTYPE["func"]      = TTYPE_KEYWORD_FUNC;
+    textToTTYPE["if"]        = TTYPE_KEYWORD_IF;
+    textToTTYPE["orif"]      = TTYPE_KEYWORD_ORIF;
+    textToTTYPE["else"]      = TTYPE_KEYWORD_ELSE;
+    textToTTYPE["for"]       = TTYPE_KEYWORD_FOR;
+    textToTTYPE["from"]      = TTYPE_KEYWORD_FROM;
+    textToTTYPE["to"]        = TTYPE_KEYWORD_TO;
+    textToTTYPE["in"]        = TTYPE_KEYWORD_IN;
+    textToTTYPE["while"]     = TTYPE_KEYWORD_WHILE;
+    textToTTYPE["generic"]   = TTYPE_KEYWORD_GENERIC;
+    textToTTYPE["is_a"]      = TTYPE_KEYWORD_IS_A_OR_AN;
+    textToTTYPE["is_an"]     = TTYPE_KEYWORD_IS_A_OR_AN;
+    textToTTYPE["Pointer"]   = TTYPE_KEYWORD_POINTER;
+    textToTTYPE["WeakSingle"]= TTYPE_KEYWORD_WEAKSINGLE;
+    textToTTYPE["Single"]    = TTYPE_KEYWORD_SINGLE;
+    textToTTYPE["Ref"]       = TTYPE_KEYWORD_REF;
+    textToTTYPE["visible"]   = TTYPE_KEYWORD_VISIBLE;
+    textToTTYPE["hidden"]    = TTYPE_KEYWORD_HIDDEN;
+    textToTTYPE["inherited"] = TTYPE_KEYWORD_INHERITED;
+
+    textToTTYPE["and"]       = TTYPE_OPERATOR_AND;
+    textToTTYPE["or"]        = TTYPE_OPERATOR_OR;
+    textToTTYPE["not"]       = TTYPE_OPERATOR_NOT;
 }
 
 #endif // MYLEXER_H_INCLUDED

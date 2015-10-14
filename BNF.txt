@@ -13,7 +13,6 @@ something else does not already have its name, etc.)
               | <member-stmt>
               | <if-stmt>
               | <for-loop>
-              | <foreach-loop>
               | <while-loop>
               | <function>
               | <class>
@@ -79,7 +78,7 @@ something else does not already have its name, etc.)
 
 <var-decl-only> ::= "declare" <var-decl-contents>
 
-<var-decl-assign> ::= "init " (<class-name> | <struct-name>) <identifier> "(" (value ("," value))? ")"
+<var-decl-assign> ::= "init" (<class-name> | <struct-name>) <identifier> "(" (value ("," value))? ")"
 
              | <var-decl-content> ("=" <value>)
 
@@ -112,13 +111,13 @@ something else does not already have its name, etc.)
 <for-loop> ::= "for " <identifier> ":" <type> " from " <numeric-value> " to " <numeric-value> <block-stmts>
              | "for " <identifier> ":" <type> " in " (<string-value> | <list-value>) <block-stmts>
 
-<foreach-loop> ::= "for " <identifier> ":" <type> " in " <identifier> <block-stmts>
+    (where <list-value> is a valid variable of a list type)
 
 <while-loop> ::= "while " <boolean-value> <block-stmts>
 
 <function> ::= <func-decl-contents> (<block-stmts>)?
 
-<class-declaration> ::= ("abstract")? "class " <identifier> (("is_a" | "is_an") <access-mod>? <superclass>) <class-stmts>
+<class-declaration> ::= ("generic")? "class " <identifier> (("is_a" | "is_an") <access-mod>? <superclass>) <class-stmts>
 
     (where <superclass> is the superclass of the object,
      where <identifier> is a valid class name)
