@@ -79,3 +79,248 @@ up to it. I didn't want any error printing code in the lexer, because the lexer 
 parser will not repeat when it runs. I had thought about making a flag that would stop the parser from running after certain syntax
 errors, but the problems with this approach are that 1) any useful errors that the parser made will be lost and 2) I would need to
 make some major changes to TheCompilerFramework, which I am not willing to do.
+
+-------------------------
+
+I finally got the source code for my math club project. Here it is:
+
+import random
+import sys
+
+#defines a class for cards
+class Card:
+	def __init__(self, suitId, rankId):
+		self.suitId = suitId
+		self.rankId = rankId
+
+		if self.rankId == 1:
+			self.rank = 'Ace'
+			self.value = 1.0
+		elif self.rankId == 11:
+			self.rank = 'Jack'
+			self.value = 11.0
+		elif self.rankId == 12:
+			self.rank = 'Queen'
+			self.value = 12.0
+		elif self.rankId == 13:
+			self.rank = 'King'
+			self.value = 13.0
+		elif 2 <= rankId <= 10:
+			self.rank = str(self.rankId)
+			self.value = float(self.rankId)
+		else:
+			self.rank = 'R'
+			self.value = 0.0
+
+		if self.suitId == 1:
+			self.suit = 'Diamonds'
+		elif self.suitId == 2:
+			self.suit = 'Hearts'
+		elif self.suitId == 3:
+			self.suit = 'Spades'
+		elif self.suitId == 4:
+			self.suit = 'Club'
+		else:
+			self.suit = 'S'
+		self.shortName = self.rank[0] + self.suit[0]
+		if self.rank == '10':
+			self.shortName = self.rank + self.suit[0]
+
+
+#creates a deck
+deck = []
+for suit in range(1, 5):
+	for rank in range(1, 14):
+		newCard = Card(suit, rank)
+		deck.append(newCard)
+#creates hands of fives and removes the cards from the deck
+def handOut():
+	hand = []
+	for i in range(0, 5):
+		a = random.choice(deck)
+		hand.append(a)
+		deck.remove(a)
+	return list(hand)
+
+#creates a function for the game
+p1, p2 = 0, 0
+def game():
+	global p1
+	global p2
+	player1hand = handOut()
+	player2hand = handOut()
+	def calc(hand):
+		total = 0.0
+		for card in hand:
+			if card.suit == 'Diamonds':
+				try:
+					sub = float(card.value) / float(hand[hand.index(card) + 1].value)
+				except IndexError:
+					sub = float(card.value) / float(hand[0].value)
+				total += sub
+
+			elif card.suit == 'Hearts':
+				try:
+					sub = float(card.value) * float(hand[hand.index(card) + 1].value)
+				except IndexError:
+					sub = float(card.value) * float(hand[0].value)
+				total += sub
+
+			if card.suit == 'Spades':
+				try:
+					sub = float(card.value**2)
+				except IndexError:
+					sub = float(card.value**2)
+				total += sub
+
+			if card.suit == 'Club':
+				try:
+					sub = float(card.value**3)
+
+				except IndexError:
+					sub = float(card.value**3)
+
+				total += sub
+
+		total = '%.2f' % total
+		total = float(total)
+		return total
+	player1hand2 = []
+	for card in player1hand:
+		player1hand2.append(card.shortName)
+	player2hand2 = []
+	for card in player2hand:
+		player2hand2.append(card.shortName)
+	player1total = calc(player1hand)
+	player2total = calc(player2hand)
+	player1hand = ', '.join(player1hand2)
+	player2hand = ', '.join(player2hand2)
+	print '''\nKey:\n\nDiamonds: Divide by the next number
+Hearts: Multiply by the next number
+Spades: Square
+Club: Cube
+'''
+	print '\nPlayer 1\'s hand: ' + player1hand
+	print
+	print 'Player 2\'s hand: ' + player2hand
+	print
+	inpval = False
+	while not inpval:
+		player = raw_input('Type 1 if you are player 1 to answer, or 2 if you are player 2, and then hit enter and type your answer. ')
+		if player == '1':
+			answer = raw_input('Player 1, what is your answer? ')
+			if answer == str(player1total):
+				print 'Correct! Player 1 has won this round.'
+				print
+				p1 += 1
+				print 'The score is:\n Player 1: %d\tPlayer 2: %d' %(p1, p2)
+				print
+				playAgain = raw_input('Do you want to play another round? ')
+				if playAgain.lower() == 'yes':
+					game()
+				inpval = True
+			else:
+				print 'Wrong! The correct answer was %s.' % player1total
+				print
+				print 'The score is:\n Player 1: %d\tPlayer 2: %d' %(p1, p2)
+				print
+				playAgain = raw_input('Do you want to play another round? ')
+				if playAgain.lower() == 'yes':
+					game()
+				inpval = True
+		elif player == '2':
+			answer = raw_input('Player 2, what is your answer? ')
+			if answer == str(player2total):
+				print 'Correct! Player 2 has won this round.'
+				p2 += 1
+				print
+				print 'The score is:\n Player 1: %d\tPlayer 2: %d' %(p1, p2)
+				print
+				playAgain = raw_input('Do you want to play another round? ')
+				if playAgain.lower() == 'yes':
+					game()
+				inpval = True
+			else:
+				print '\nWrong! The correct answer was %s.' % player2total
+				print
+				print 'The score is:\n Player 1: %d\tPlayer 2: %d' %(p1, p2)
+				print
+				playAgain = raw_input('Type 1 to play again: ')
+				if playAgain == '1':
+					inpval = True
+					game()
+				else:
+					print 'Bye!'
+					inpval = True
+		else:
+			print
+print
+skip = raw_input('Type 1 to skip the tutorial: ')
+if skip == "1":
+	game()
+	sys.exit()
+print '''This is a math game. There will be two players, player 1 and player 2. Each person is given five cards. The person will do the following
+operation(s) on each card based on its suit (diamonds, clubs, hearts, or spades):'''
+raw_input()
+print '''Diamonds: Divide by the next number
+Hearts: Multiply by the next number
+Spades: Square, then add to the next number
+Club: Cube, then add to the next number
+'''
+raw_input()
+print '''(If you don't understand what this means, see the example).
+The person will do this for each card in their hand. If there is no next number, then do the operation on the first card in your hand. Find the sum of the
+numbers you get by doing each operation (if you don't understand what this means, see the example). The cards will be shown like this: 4D for 4 of Diamonds,
+KH for King of Hearts, etc. Jacks are worth 11, Queens are worth 12, Kings are worth 13, and Aces are worth 1.
+'''
+raw_input()
+print '''
+EXAMPLE: (this example uses 2 less cards than usual):
+
+2C, KS, KD
+
+
+Let's look at each card:'''
+raw_input()
+print '''
+
+2C
+
+This card is the 2 of Clubs. Since its suit is clubs, we will cube it and add it to the next number. The next number is the value of the next card, a King.
+Kings are worth 13. The expression you would use to solve this is 2^3 + 13. This gives you 21.
+
+RESULT: 21
+'''
+raw_input()
+print '''
+KS
+
+This card is the King of Spades. Since its suit is spades, we will square it and add it to the next number. The next number is a king, a 13.
+The expression you would use to solve this is 13^2 + 13. The result is 182.
+
+RESULT: 182
+'''
+raw_input()
+print '''
+KD
+
+This card is the King of Diamonds. Its suit is diamonds; therefore, we will divide it by the next number. But wait, there is no next number! In this case,
+we will go back to the first number, a 2. The expression you get from this is 13 / 2. The answer to this is 6.5.
+
+RESULT: 6.5
+'''
+raw_input()
+print '''
+Now you have to add the results together: 21 + 182 + 6.5. The answer is...209.5!
+
+ANSWER: 209.5
+
+In the actual game, if you are player 1, type 1; if you are player 2, type 2. Then type the answer, 196. If it is correct, you will get a point! Otherwise, both players will go
+to the next round.
+'''
+raw_input()
+print '''
+Have fun!
+'''
+raw_input()
+game()
