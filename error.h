@@ -22,20 +22,22 @@
 
 #include "quitexception.hpp"
 
-void error(std::string text, int lineNumber, int columnNumber, bool fatal);
-void printErrorMessage(std::string text, int lineNumber, int columnNumber, std::string message);
+void error(std::string type, std::string text, int lineNumber, int columnNumber, bool fatal);
+void printErrorMessage(std::string type, std::string text, int lineNumber, int columnNumber, std::string message);
 
-void error(std::string text, int lineNumber, int columnNumber, std::string message, bool fatal)
+const std::string& ERRTYPE_SYNTAX_ERROR     = "SyntaxError";
+
+void error(std::string type, std::string text, int lineNumber, int columnNumber, std::string message, bool fatal)
 {
-    printErrorMessage(text, lineNumber, columnNumber, message);
+    printErrorMessage(type, text, lineNumber, columnNumber, message);
     if (fatal) {
         throw quitexception("Sorry, I had to abort after this error.");
     }
 }
 
-void printErrorMessage(std::string text, int lineNumber, int columnNumber, std::string message)
+void printErrorMessage(std::string type, std::string text, int lineNumber, int columnNumber, std::string message)
 {
-    std::cout << "Error: (" << lineNumber << ", " << columnNumber << ")\n"
+    std::cout << type << ": (" << lineNumber << ", " << columnNumber << ")\n"
               << "\tCode: " << text << "\n"
               << "\tError: " << message << "\n\n";
 }

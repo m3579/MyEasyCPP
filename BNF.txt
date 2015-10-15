@@ -219,7 +219,9 @@ VALUES:
 
 <ifdef> ::= "ifdefined" <identifier> <block-stmts>
 
-<ifndef> ::= "if!defined" <identifier> <block-stmts>
+<ifndef> ::= "ifnotdefined" <identifier> <block-stmts>
+
+<undef> ::= "undefine" <identifier>
 
 <access> ::= "access" <filename>
 
@@ -228,8 +230,6 @@ VALUES:
 <setline> ::= "setline" <numeric-value> (<filename>)
 
 <empty> ::= ""
-
-<undef> ::= "undefine" <identifier>
 
 ---------MISCELLANEOUS
 

@@ -63,33 +63,51 @@ createTokenType(TTYPE_KEYWORD_VISIBLE);
 createTokenType(TTYPE_KEYWORD_HIDDEN);
 createTokenType(TTYPE_KEYWORD_INHERITED);
 
+// preprocessor directives
+createTokenType(TTYPE_PPD_MACRO);
+createTokenType(TTYPE_PPD_ERROR);
+createTokenType(TTYPE_PPD_IF);
+createTokenType(TTYPE_PPD_IFDEF);
+createTokenType(TTYPE_PPD_IFNDEF);
+createTokenType(TTYPE_PPD_UNDEF);
+createTokenType(TTYPE_PPD_ACCESS);
+createTokenType(TTYPE_PPD_USE);
+createTokenType(TTYPE_PPD_SETLINE);
+createTokenType(TTYPE_PPD_EMPTY);
+
 // operators
 createTokenType(TTYPE_OPERATOR_AND);
 createTokenType(TTYPE_OPERATOR_OR);
 createTokenType(TTYPE_OPERATOR_NOT);
 
+createTokenType(TTYPE_OPERATOR_IS);
+
 // miscellaneous
 createTokenType(TTYPE_IDENTIFIER);
-
+createTokenType(TTYPE_SYNTAX_ERROR);
 
 // IDENTIFYING CHARACTERS
-const std::string WHITESPACE_CHARS = " \t";
-const std::string NUMBER_LITERAL_CHARS = "1234567890";
-const std::string WORD_START_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
-const std::string WORD_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789";
+const std::string& WHITESPACE_CHARS = " \t";
+const std::string& NUMBER_LITERAL_CHARS = "1234567890";
+const std::string& WORD_START_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
+const std::string& WORD_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789";
 
 // DECLARATIONS
 bool contains(std::string str, const char sub);
 
+// MAPS
 void initTextToTTYPEMap();
+void initTextToPPDMap();
 
 std::map<std::string, int> textToTTYPE;
+std::map<std::string, int> textToPPD;
 
 lexer::Lexer createLexer(const char* sourceCode)
 {
     lexer::Lexer lexr(sourceCode);
 
     initTextToTTYPEMap();
+    initTextToPPDMap();
 
     setLexer(lexr);
 
@@ -157,8 +175,7 @@ lexer::Lexer createLexer(const char* sourceCode)
             }
 
             if (sc.getCurrentChar() == '.') {
-                error(number, lineNumber, columnNumber, "You cannot end a number with a decimal point (add a 0 to the end)", true);
-                return Token();
+                return Token(lineNumber, columnNumber, number, TTYPE_SYNTAX_ERROR, "You cannot end a number with a decimal point (add a 0 to the end)", false);
             }
 
             return Token(lineNumber, columnNumber, number, type);
@@ -180,7 +197,7 @@ lexer::Lexer createLexer(const char* sourceCode)
             while ((c=sc.fetchNextChar())) {
 
                 if (c == '\0') {
-                    error(theString, lineNumber, columnNumber, "You need to close this string", true);
+                    return Token(lineNumber, columnNumber, theString, TTYPE_SYNTAX_ERROR, "You need to close this string", false);
                 }
 
                 theString += c;
@@ -218,6 +235,41 @@ lexer::Lexer createLexer(const char* sourceCode)
                 return Token(lineNumber, columnNumber, word, TTYPE_IDENTIFIER);
             }
         }
+
+        return Token();
+    }
+    endTest
+
+    makeTest(sc)
+    {
+        char c = sc.getCurrentChar();
+        if (c == '-') {
+            int lineNumber = sc.getLineNumber();
+            int columnNumber = sc.getColumnNumber();
+            std::string ppd(1, c);
+
+            sc.moveToNextChar();
+            while (contains(WHITESPACE_CHARS, sc.getCurrentChar())) {
+                sc.moveToNextChar();
+            }
+
+            c = sc.getCurrentChar();
+            if (contains(WORD_START_CHARS, c)) {
+                ppd += c;
+                while (contains(WORD_CHARS, sc.fetchNextChar())) {
+                    ppd += sc.moveToNextChar();
+                }
+            }
+
+            if (textToPPD.find(ppd) != textToPPD.end()) {
+                return Token(lineNumber, columnNumber, ppd, textToPPD[ppd]);
+            }
+            else {
+                return Token(lineNumber, columnNumber, ppd, TTYPE_SYNTAX_ERROR, "I cannot recognize this preprocessor directive", false);
+            }
+        }
+
+        return Token();
     }
     endTest
 
@@ -260,6 +312,22 @@ void initTextToTTYPEMap()
     textToTTYPE["and"]       = TTYPE_OPERATOR_AND;
     textToTTYPE["or"]        = TTYPE_OPERATOR_OR;
     textToTTYPE["not"]       = TTYPE_OPERATOR_NOT;
+
+    textToTTYPE["is"]        = TTYPE_OPERATOR_IS;
+}
+
+void initTextToPPDMap()
+{
+    textToPPD["macro"]       = TTYPE_PPD_MACRO;
+    textToPPD["error"]       = TTYPE_PPD_ERROR;
+    textToPPD["if"]          = TTYPE_PPD_IF;
+    textToPPD["ifdefined"]   = TTYPE_PPD_IFDEF;
+    textToPPD["ifnotdefined"]= TTYPE_PPD_IFNDEF;
+    textToPPD["undefine"]    = TTYPE_PPD_UNDEF;
+    textToPPD["access"]      = TTYPE_PPD_ACCESS;
+    textToPPD["use"]         = TTYPE_PPD_USE;
+    textToPPD["setline"]     = TTYPE_PPD_SETLINE;
+    textToPPD[""]            = TTYPE_PPD_EMPTY;
 }
 
 #endif // MYLEXER_H_INCLUDED
