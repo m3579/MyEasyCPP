@@ -64,3 +64,18 @@ I wrote if rank is 10 in the code above; it should really be if rank == 10.
 Actually, I think I will make "is" compare values and have a method for address comparison. In C+2, I am planning for all objects to
 descend from a root class, so in that class I can define a method such as "isSameObjectAs(Object)", or rather, (Ref:Object), that will
 compare addresses.
+
+-------------------------
+
+I just came back from working on the lexer. I added a test for preprocessor directives, and came across the problem of what to do
+if the user typed an invalid directive name. This caused me to think about my error handling mechanism. I want there to be as
+many errors as the user needs: there should not be errors that are redundant, but I should not print one error message and stop
+compiling altogether. Compile times in this language are going to be long, because it first needs to compile to C++ and then the C++
+needs to be compiled. I decided to add several changes to the Token class in TheCompilerFramework, and in the end I had added a
+member variable in the Token class to describe an error message that it will contain and another member variable that would
+determine whether or not the error is fatal. My plan is for the token that is there at the error to be returned with type
+TTYPE_SYNTAX_ERROR and that when the parser comes across a Token like this, it will stop, print an error message, and then it is
+up to it. I didn't want any error printing code in the lexer, because the lexer does not know enough to make error messages that the
+parser will not repeat when it runs. I had thought about making a flag that would stop the parser from running after certain syntax
+errors, but the problems with this approach are that 1) any useful errors that the parser made will be lost and 2) I would need to
+make some major changes to TheCompilerFramework, which I am not willing to do.
