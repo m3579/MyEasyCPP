@@ -80,7 +80,7 @@ something else does not already have its name, etc.)
 
 <var-decl-assign> ::= "init" (<class-name> | <struct-name>) <identifier> "(" (value ("," value))? ")"
 
-             | <var-decl-content> ("=" <value>)
+             | <var-decl-content> ("=" <value>)?
 
     (where <value> is of type <type>,
      where <positive-integer> is a positive integer)
@@ -142,7 +142,8 @@ NUMBERS:
 
     <unary-postfix-arithmetic-operator> ::= "++" | "--"
 
-    <binary-arithmetic-operator> ::= "+" | "-" | "*" | "/" | "%" | "^"
+    <binary-arithmetic-operator> ::= "+" | "-" | "*" | "/" | "%" | "^" |
+                                     ">" | "<" | ">=" | "<="
 
 BOOLEANS:
     <boolean-value> ::= <boolean-literal>
@@ -184,13 +185,21 @@ MEMORY:
 FUNCTIONS/METHODS:
     <call> ::= <identifier> "(" ( <identifier ("," <identifier>)* )? ")"
 
+VALUES:
 <value> ::= <numeric-value>
           | <boolean-value>
           | <memory-value>
           | <string-value>
           | <call>
 
-    (where <positive-integer> is a positive integer)
+          | <value> <binary-value-operator> <value>
+
+          ("as" <type>)?
+
+    (where <positive-integer> is a positive integer,
+     where <type> is a valid type that you can cast the value to)
+
+<binary-value-operator> ::= "is" | "!="
 
 ---------PREPROCESSOR DIRECTIVES
 

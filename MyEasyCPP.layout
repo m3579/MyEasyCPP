@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="main.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Notebook_Oct_09_2015.txt" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="564" topLine="17" />
+			<Cursor1 position="3818" topLine="131" />
 		</Cursor>
 	</File>
-	<File name="MyLexer.h" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Notebook_Sep_7_2015.txt" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="3887" topLine="136" />
+			<Cursor1 position="9256" topLine="253" />
 		</Cursor>
-		<Folding>
-			<Collapse line="111" />
-		</Folding>
 	</File>
-	<File name="error.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="error.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="442" topLine="25" />
 		</Cursor>
@@ -24,19 +21,19 @@
 			<Cursor1 position="785" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="BNF.txt" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="main.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="5738" topLine="158" />
-		</Cursor>
-	</File>
-	<File name="Notebook_Sep_12_2015.txt" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1198" topLine="23" />
+			<Cursor1 position="707" topLine="21" />
 		</Cursor>
 	</File>
 	<File name="Notebook_Sep_16_2015.txt" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="85" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="Notebook_Oct_08_2015.txt" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="479" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="Notebook_Oct_05_2015.rtf" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -49,24 +46,27 @@
 			<Cursor1 position="2577" topLine="131" />
 		</Cursor>
 	</File>
-	<File name="Notebook_Sep_7_2015.txt" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="BNF.txt" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="9256" topLine="253" />
+			<Cursor1 position="4259" topLine="208" />
 		</Cursor>
 	</File>
-	<File name="Notebook_Oct_09_2015.txt" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="MyLexer.h" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="3818" topLine="131" />
+			<Cursor1 position="2400" topLine="91" />
 		</Cursor>
+		<Folding>
+			<Collapse line="158" />
+		</Folding>
 	</File>
-	<File name="Notebook_Oct_10_2015.txt" open="1" top="1" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Notebook_Oct_10_2015.txt" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="979" topLine="9" />
 		</Cursor>
 	</File>
-	<File name="Notebook_Oct_08_2015.txt" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Notebook_Sep_12_2015.txt" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="479" topLine="0" />
+			<Cursor1 position="1198" topLine="23" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

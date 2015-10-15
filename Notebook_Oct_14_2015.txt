@@ -1,0 +1,66 @@
+So I found this old sample on my iPad in the app Pythonista that I had been working on in Python. It was a game I had coded
+in math club about a year ago for a competition where we had to make a math game. I decided to rewrite it in C+2. The internet is
+not working on my iPad for some reason, so I cannot email it to me to copy and paste the code here, but I will try again later. For now,
+here is the C+2 code:
+
+(Note: I am rewriting the code that used Python libraries to use C++ libraries)
+
+- use:
+    time.h
+    stdlib.h
+    iostream
+
+#defines a class for cards
+class Card:
+
+    func Create(suitId : int, rankId : int):
+        @suitId : int = suitId
+        @rankId : int = rankId
+
+        @rank : string = ""
+        @suitId : int = 0
+
+        test rankId:
+            if 1:
+                rank = "Ace"
+                value = 1.0
+            if 11:
+                rank = "Ace"
+                value = 1.0
+            if 12:
+                rank = "Jack"
+                value = 11.0
+            if 12:
+                rank = "Queen"
+                value = 12
+            if 13:
+                rank = "King"
+                value = 13
+
+            else:
+                if rankId >= 2 and rankId <= 10:
+                    rank = std.to_string(rankId)
+                    value = rankId as float
+
+        @suit : string = ""
+
+        test suitId:
+            if 1: suit = "Diamonds"
+            if 2: suit = "Hearts"
+            if 3: suit = "Spades"
+            if 4: suit = "Club"
+            else: suit = "S"
+        @shortname : string = rank.at(0) + suit.at(0)
+        if rank is 10:
+            shortname = rank + suit.at(0)
+
+I think I will pause here for a moment. What I realized was that according to my BNF, @var : int = value is a perfectly valid syntax.
+Most people would rather use this than declaring all of the variables in the class itself, but I will keep both syntaxes as an option.
+
+I also noticed my lack of comparison operators. I added some in the BNF, and I decided to make a distinction between "is" and "==" in
+that "is" will compare the addresses of two values whereas "==" will compare their values, like in Python. I made that decision after
+I wrote if rank is 10 in the code above; it should really be if rank == 10.
+
+Actually, I think I will make "is" compare values and have a method for address comparison. In C+2, I am planning for all objects to
+descend from a root class, so in that class I can define a method such as "isSameObjectAs(Object)", or rather, (Ref:Object), that will
+compare addresses.
