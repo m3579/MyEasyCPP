@@ -15,6 +15,7 @@ something else does not already have its name, etc.)
               | <for-loop>
               | <while-loop>
               | <function>
+              | <return-stmt>
               | <class>
               | <namespace>
               | <use-stmt>
@@ -116,6 +117,10 @@ something else does not already have its name, etc.)
 <while-loop> ::= "while " <boolean-value> <block-stmts>
 
 <function> ::= <func-decl-contents> (<block-stmts>)?
+
+<return-stmt> ::= "return" <value>
+
+    (where <value> is of the return type of the function)
 
 <class-declaration> ::= ("generic")? "class " <identifier> (("is_a" | "is_an") <access-mod>? <superclass>) <class-stmts>
 

@@ -1,0 +1,46 @@
+I am going to write a program in C+2 now, a non trivial one. It will define a model, view, and controller for a console line application
+that acts as a random number guessing game.
+
+// Model.cp2
+
+- use:
+    time.h
+    stdlib.h
+
+access write
+
+class Model:
+
+    func generateRandomNumber(min : int, max : int) -> int:
+        srand(time(NULL))
+
+        return rand() % max + min
+
+    func generateResponse(guess : int, number : int) -> bool:
+        if guess > number:
+            write("Too large")
+        orif guess < number:
+            write("Too small")
+        else:
+            write("Correct")
+            return true
+
+        return false
+
+Notes: I changed bool - to bool instead of truthval. As I typed truthval, it felt weird; bool is a traditional type. I think I am
+going to use bool instead of truthval.
+
+I also made a new library named write that contains the function write. Actually I think I should name them different things. But still,
+that library will probably be in C+2.
+
+I also accidentally typed // Model.cp2. It should be # Model.cp2.
+
+# Controller.cp2
+
+class Controller:
+
+    func sendMessage()
+
+I don't want to finish this thing. MVC for a console app is just to weird to implement. My MVC was weird in the fact that the Model
+was (in my opinion) not just containing functions for the logic but also for the control flow of the program, which should not happen
+(I think). But anyway, I think I like programming in C+2. Or at least I don't dislike it.
