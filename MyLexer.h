@@ -27,17 +27,21 @@
 using namespace token;
 
 // TOKENS
+#pragma mark Tokens
 
 // whitespace
+#pragma mark Whitespace
 createTokenType(TTYPE_ENDCHAR);
 createTokenType(TTYPE_WHITESPACE);
 
 // literals
+#pragma mark Literals
 createTokenType(TTYPE_INTEGER_LITERAL);
 createTokenType(TTYPE_DECIMAL_LITERAL);
 createTokenType(TTYPE_STRING_LITERAL);
 
 // keywords
+#pragma mark Keywords
 createTokenType(TTYPE_KEYWORD_NAMESPACE);
 createTokenType(TTYPE_KEYWORD_USE);
 createTokenType(TTYPE_KEYWORD_OF);
@@ -62,8 +66,11 @@ createTokenType(TTYPE_KEYWORD_REF);
 createTokenType(TTYPE_KEYWORD_VISIBLE);
 createTokenType(TTYPE_KEYWORD_HIDDEN);
 createTokenType(TTYPE_KEYWORD_INHERITED);
+createTokenType(TTYPE_KEYWORD_TRUE);
+createTokenType(TTYPE_KEYWORD_FALSE);
 
 // preprocessor directives
+#pragma mark PPDs
 createTokenType(TTYPE_PPD_MACRO);
 createTokenType(TTYPE_PPD_ERROR);
 createTokenType(TTYPE_PPD_IF);
@@ -76,6 +83,7 @@ createTokenType(TTYPE_PPD_SETLINE);
 createTokenType(TTYPE_PPD_EMPTY);
 
 // operators
+#pragma mark Operators
 createTokenType(TTYPE_OPERATOR_AND);
 createTokenType(TTYPE_OPERATOR_OR);
 createTokenType(TTYPE_OPERATOR_NOT);
@@ -83,19 +91,23 @@ createTokenType(TTYPE_OPERATOR_NOT);
 createTokenType(TTYPE_OPERATOR_IS);
 
 // miscellaneous
+#pragma mark MiscellaneousTokenTypes
 createTokenType(TTYPE_IDENTIFIER);
 createTokenType(TTYPE_SYNTAX_ERROR);
 
 // IDENTIFYING CHARACTERS
+#pragma mark IdentifyingCharacters
 const std::string& WHITESPACE_CHARS = " \t";
 const std::string& NUMBER_LITERAL_CHARS = "1234567890";
 const std::string& WORD_START_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
 const std::string& WORD_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789";
 
 // DECLARATIONS
+#pragma mark Declarations
 bool contains(std::string str, const char sub);
 
 // MAPS
+#pragma mark Maps
 void initTextToTTYPEMap();
 void initTextToPPDMap();
 
@@ -111,7 +123,8 @@ lexer::Lexer createLexer(const char* sourceCode)
 
     setLexer(lexr);
 
-    // <ENDCHAR>
+    // ENDCHAR ENDCHAR ENDCHAR ENDCHAR ENDCHAR
+#pragma mark TestEndChar
     makeTest(sc)
     {
         if ((sc.getCurrentChar() == '\n')
@@ -125,7 +138,8 @@ lexer::Lexer createLexer(const char* sourceCode)
     }
     endTest
 
-    // WHITESPACE
+    // WHITESPACE WHITESPACE WHITESPACE WHITESPACE
+#pragma mark TestWhiteSpace
     makeTest(sc)
     {
         if (contains(WHITESPACE_CHARS, sc.getCurrentChar())) {
@@ -144,7 +158,8 @@ lexer::Lexer createLexer(const char* sourceCode)
     }
     endTest
 
-    // <NUMBER-LITERAL>
+    // NUMBER LITERAL NUMBER LITERAL NUMBER LITERAL
+#pragma mark TestNumberLiteral
     makeTest(sc)
     {
         char currChar = sc.getCurrentChar();
@@ -185,6 +200,8 @@ lexer::Lexer createLexer(const char* sourceCode)
     }
     endTest
 
+    // STRING LITERAL STRING LITERAL STRING LITERAL
+#pragma mark TestStringLiteral
     makeTest(sc)
     {
         char c = sc.getCurrentChar();
@@ -216,6 +233,8 @@ lexer::Lexer createLexer(const char* sourceCode)
     }
     endTest
 
+    // WORD WORD WORD WORD WORD
+#pragma mark TestWord
     makeTest(sc)
     {
         char c = sc.getCurrentChar();
@@ -240,6 +259,8 @@ lexer::Lexer createLexer(const char* sourceCode)
     }
     endTest
 
+    // PREPROCESSOR DIRECTIVES PREPROCESSOR DIRECTIVES
+#pragma mark TestPPDs
     makeTest(sc)
     {
         char c = sc.getCurrentChar();
@@ -276,11 +297,15 @@ lexer::Lexer createLexer(const char* sourceCode)
     return lexr;
 }
 
+// IMPLEMENTATIONS
+#pragma mark Implementations
 bool contains(std::string str, char sub)
 {
     return (str.find(sub) != std::string::npos) ? true : false;
 }
 
+// MAP IMPLEMTATIONS
+#pragma mark MapImplementations
 void initTextToTTYPEMap()
 {
     textToTTYPE["namespace"] = TTYPE_KEYWORD_NAMESPACE;
@@ -308,6 +333,8 @@ void initTextToTTYPEMap()
     textToTTYPE["visible"]   = TTYPE_KEYWORD_VISIBLE;
     textToTTYPE["hidden"]    = TTYPE_KEYWORD_HIDDEN;
     textToTTYPE["inherited"] = TTYPE_KEYWORD_INHERITED;
+    textToTTYPE["true"]      = TTYPE_KEYWORD_TRUE;
+    textToTTYPE["false"]     = TTYPE_KEYWORD_FALSE;
 
     textToTTYPE["and"]       = TTYPE_OPERATOR_AND;
     textToTTYPE["or"]        = TTYPE_OPERATOR_OR;
