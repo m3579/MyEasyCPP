@@ -68,6 +68,7 @@ createTokenType(TTYPE_KEYWORD_HIDDEN);
 createTokenType(TTYPE_KEYWORD_INHERITED);
 createTokenType(TTYPE_KEYWORD_TRUE);
 createTokenType(TTYPE_KEYWORD_FALSE);
+createTokenType(TTYPE_KEYWORD_AS);
 
 // preprocessor directives
 #pragma mark PPDs
@@ -90,6 +91,29 @@ createTokenType(TTYPE_OPERATOR_NOT);
 
 createTokenType(TTYPE_OPERATOR_IS);
 
+createTokenType(TTYPE_OPERATOR_PLUS);
+createTokenType(TTYPE_OPERATOR_MINUS);
+createTokenType(TTYPE_OPERATOR_MULTIPLY);
+createTokenType(TTYPE_OPERATOR_DIVIDE);
+createTokenType(TTYPE_OPERATOR_MODULUS);
+createTokenType(TTYPE_OPERATOR_EXPONENT);
+createTokenType(TTYPE_OPERATOR_LESS_THAN);
+createTokenType(TTYPE_OPERATOR_GREATER_THAN);
+createTokenType(TTYPE_OPERATOR_EQUALS);
+createTokenType(TTYPE_OPERATOR_COLON);
+createTokenType(TTYPE_OPERATOR_LITERALIZER);
+
+createTokenType(TTYPE_OPERATOR_INCREMENT);
+createTokenType(TTYPE_OPERATOR_DECREMENT);
+createTokenType(TTYPE_OPERATOR_PLUS_EQUALS);
+createTokenType(TTYPE_OPERATOR_MINUS_EQUALS);
+createTokenType(TTYPE_OPERATOR_MULTIPLY_EQUALS);
+createTokenType(TTYPE_OPERATOR_DIVIDE_EQUALS);
+createTokenType(TTYPE_OPERATOR_MODULUS_EQUALS);
+createTokenType(TTYPE_OPERATOR_EXPONENT_EQUALS);
+createTokenType(TTYPE_OPERATOR_GREATER_THAN_OR_EQUAL_TO);
+createTokenType(TTYPE_OPERATOR_LESS_THAN_OR_EQUAL_TO);
+
 // miscellaneous
 #pragma mark MiscellaneousTokenTypes
 createTokenType(TTYPE_IDENTIFIER);
@@ -101,6 +125,8 @@ const std::string& WHITESPACE_CHARS = " \t";
 const std::string& NUMBER_LITERAL_CHARS = "1234567890";
 const std::string& WORD_START_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
 const std::string& WORD_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789";
+const std::string& FIRST_OPERATOR_CHARS = "+-*/%^><=:|";
+const std::string& FIRST_OPERATOR_CHARS = "+-="
 
 // DECLARATIONS
 #pragma mark Declarations
@@ -259,6 +285,145 @@ lexer::Lexer createLexer(const char* sourceCode)
     }
     endTest
 
+    // MEMBER MEMBER MEMBER MEMBER MEMBER
+#pragma mark TestMemberWithAtSign
+    makeTest(sc)
+    {
+        char c = sc.getCurrentChar();
+        if (c == '@') {
+            int lineNumber = sc.getLineNumber();
+            int columnNumber = sc.getColumnNumber();
+            std::string member(1, c);
+
+            while (contains(WORD_CHARS, sc.fetchNextChar())) {
+                member += sc.moveToNextChar();
+            }
+
+            return Token(lineNumber, columnNumber, member, TTYPE_IDENTIFIER);
+        }
+    }
+    endTest
+
+    // OPERATORS OPERATORS OPERATORS OPERATORS OPERATORS
+#pragma mark TestOperators
+    makeTest(sc)
+    {
+        char c = sc.getCurrentChar();
+        if (contains(FIRST_OPERATOR_CHARS, c)) {
+            int lineNumber = sc.getLineNumber();
+            int columnNumber = sc.getColumnNumber();
+            std::string theOperator(1, c);
+
+            if (contains(SECOND_OPERATOR_CHARS, c)) {
+                switch(c)
+                {
+                    case '+': {
+                        if (sc.fetchNextChar() == '+') {
+                            theOperator += sc.moveToNextChar();
+                            return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_INCREMENT);
+                        }
+                        else if (sc.fetchNextChar() == '=') {
+                            theOperator += sc.moveToNextChar();
+                            return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_DECREMENT);
+                        }
+                    }
+
+                    case '-': {
+                        if (sc.fetchNextChar() == '-') {
+                            theOperator += sc.moveToNextChar();
+                            return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_DECREMENT);
+                        }
+                        else if (sc.fetchNextChar() == '=') {
+                            theOperator += sc.moveToNextChar();
+                            return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_MINUS_EQUALS);
+                        }
+                    }
+
+                    case '*': {
+                        if (sc.fetchNextChar() == '=') {
+                            theOperator += sc.moveToNextChar();
+                            return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_MULTIPLY_EQUALS);
+                        }
+                    }
+
+                    case '/': {
+                        if (sc.fetchNextChar() == '=') {
+                            theOperator += sc.moveToNextChar();
+                            return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_DIVIDE_EQUALS);
+                        }
+                    }
+
+                    case '%': {
+                        if (sc.fetchNextChar() == '=') {
+                            theOperator += sc.moveToNextChar();
+                            return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_MODULUS_EQUALS);
+                        }
+                    }
+
+                    case '^': {
+                        if (sc.fetchNextChar() == '=') {
+                            theOperator += sc.moveToNextChar();
+                            return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_EXPONENT_EQUALS);
+                        }
+                    }
+
+                    case '>': {
+                        if (sc.fetchNextChar() == '=') {
+                            theOperator += sc.moveToNextChar();
+                            return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_GREATER_THAN_OR_EQUAL_TO);
+                        }
+                    }
+
+                    case '<': {
+                        if (sc.fetchNextChar() == '=') {
+                            theOperator += sc.moveToNextChar();
+                            return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_LESS_THAN_OR_EQUAL_TO);
+                        }
+                    }
+
+                    default: {
+                        return Token(lineNumber, columnNumber, theOperator + sc.fetchNextChar(), TTYPE_SYNTAX_ERROR, "I cannot recognize this operator", false);
+                    }
+                }
+            }
+            else {
+                switch(c)
+                {
+                    case '+': {
+                        return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_PLUS);
+                    }
+
+                    case '-': {
+                        return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_MINUS);
+                    }
+
+                    case '*': {
+                        return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_MULTIPLY);
+                    }
+
+                    case '/': {
+                        return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_DIVIDE);
+                    }
+
+                    case '%': {
+                        return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_MODULUS);
+                    }
+
+                    case '^': {
+                        return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_EXPONENT);
+                    }
+
+                    case '|': {
+                        return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_LITERALIZER);
+                    }
+                }
+            }
+        }
+
+        return Token();
+    }
+    endTest
+
     // PREPROCESSOR DIRECTIVES PREPROCESSOR DIRECTIVES
 #pragma mark TestPPDs
     makeTest(sc)
@@ -335,6 +500,7 @@ void initTextToTTYPEMap()
     textToTTYPE["inherited"] = TTYPE_KEYWORD_INHERITED;
     textToTTYPE["true"]      = TTYPE_KEYWORD_TRUE;
     textToTTYPE["false"]     = TTYPE_KEYWORD_FALSE;
+    textToTTYPE["as"]        = TTYPE_KEYWORD_AS;
 
     textToTTYPE["and"]       = TTYPE_OPERATOR_AND;
     textToTTYPE["or"]        = TTYPE_OPERATOR_OR;
