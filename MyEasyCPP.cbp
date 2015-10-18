@@ -40,7 +40,7 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="BNF.txt" />
-		<Unit filename="MyLexer.h" />
+		<Unit filename="MyLexer.hpp" />
 		<Unit filename="Notebook_Oct_04_2015.txt" />
 		<Unit filename="Notebook_Oct_05_2015.rtf" />
 		<Unit filename="Notebook_Oct_08_2015.txt" />
@@ -58,6 +58,7 @@
 		<Unit filename="Notebook_Sep_9_2015.txt" />
 		<Unit filename="error.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="playground.hpp" />
 		<Unit filename="quitexception.hpp" />
 		<Extensions>
 			<code_completion />
