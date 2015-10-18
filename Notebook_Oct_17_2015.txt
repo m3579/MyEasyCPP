@@ -1,0 +1,201 @@
+I was watching someone use LaTeX, the markup language, and then an idea occurred to me: there were some constructs that used
+a $ sign, which resembled jQuery, and I thought what if I introduced an API for C+2 like jQuery is to JavaScript? It would make
+constructs such as
+
+std.cout
+
+Or rather,
+
+std.output <-- "Hello\n";
+
+into simpler things like
+
+@write("Hello"),
+
+or $write("Hello").
+
+@ is already being used for member variables...or actually, I was thinking about not using it for member variables to make
+parsing and lexing and differentiating between normal variables and explicitly declared member variables different. I would
+use the self. or this. syntax. Let me write an example program using these constructs:
+
+access cp2query   # I will definitely change this name
+
+start
+
+    for i from 1->10:
+        init file : ofstream ($string(i) + ".txt")
+        @write(file, "Hello")
+        $close
+
+end
+
+Actually, instead of trying out both syntaxes in one program, I will have a separate copy for each:
+
+access cp2query
+
+start
+
+    for i from 1->10:
+        init file : ofstream ($string(i) + ".txt")
+        $write(file, "Hello")
+        $close(file)
+
+end
+
+access cp2query
+
+start
+
+    for i from 1->10:
+        init file : ofstream (@string(i) + ".txt")
+        @write(file, "Hello")
+        @close(file)
+
+end
+
+Or maybe something else...%? No. ...{}? Enclose the command in braces? No. Too ugly...\? Like in LaTeX? Maybe.
+
+access easycp2
+
+start
+
+    for i from 1->10:
+        init file : ofstream(\string(i) + ".txt")
+        \write(file, "Hello")
+        \close(file)
+
+end
+
+No, felt too much like a markup language. Maybe :?
+
+access easycp2
+
+start
+
+    for i from 1->10:
+        init file : ofstream(:string(i) + ".txt")
+        :write(file, "Hello")
+        :close(file)
+
+end
+No...too much like old C++. How about...
+
+---------------------
+
+I just came back from watching the person programming in LaTeX again. I don't know if $ is an actual construct of if it is just
+a symbol he is using.
+
+I am now going to write a random number guessing game:
+
+access easycp2
+
+start
+
+    $write("This is a random number guessing game")
+
+    number : int = $random(1, 10)
+
+    for i from 1 -> 6:
+        $write("What is your guess: ")
+
+        guess : int
+
+        $input(guess)
+
+        if guess == number:
+            $write("Correct!")
+            break
+        orif guess > number:
+            $write("Too high")
+        else:
+            $write("Too low")
+
+    $write("Do you want to know the number? (1 = yes, 0 = no)")
+    show : int
+    $input(show)
+
+    if show == 1:
+        $write("The number was " + $string(number) + "!")
+end
+
+I will now write a program to generate a random password:
+
+access easycp2
+
+start
+
+    chars : string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    for i from 1 -> 5:
+        @write(string[@random(string.length)], "")
+
+end
+
+I will also write a program to demonstrate object orientation (because that sample was just a little to short):
+
+class Object:
+
+    func doSomething(string filename):
+        @write("Doing something")
+
+        for i from 1->6:
+            init file : ofstream(filename)
+
+            @write(file, "Hello, World")
+
+            @write("Wrote to file")
+
+            @close(file)
+
+start
+end
+
+I am not even going to finish that sample - I could not find any uses for EasyC+2! I am going to rewrite the random number sample:
+
+access easycp2
+
+start
+
+    number : int = @random(1, 10)
+
+    @write("This is a random guessing name")
+
+    for i from 1->6:
+        @write("What is your guess? ")
+        guess : int
+        @input(guess)
+
+        if guess > number:
+            @write("Too high")
+        orif guess < number:
+            @write("Too low")
+        else:
+            @write("Correct!")
+
+    @write("Do you want to see the number (1 for yes, 0 for no)? ")
+    show : int
+    @input(show)
+
+    if show == 1:
+        @write("The number was " + @string(number) + "!")
+
+end
+
+After a bit of googling (http://www.cplusplus.com/doc/tutorial/variables/, accessed on 10/17/2015), I remembered that I could
+use the _. But that would seem very ugly, so I think I will just stick with the $, because it looks the nicest (partially because
+jQuery uses it already) and the @ key would be a pain to have to type if you use the left shift key on a QWERTY keyboard like me.
+
+I am about to add this to the BNF, but I first need to decide on a name for it. How about...I thought about cQuery, or C+2Query,
+but for some reason that does not seem relevant. I just did a quick google search right now, and according to
+http://stackoverflow.com/questions/2337412/why-jquery-is-called-jquery-what-is-the-name-reason, the query in jQuery means that
+it "queries" the web page for elements (or at least that's how I read it; accessed on 10/17/15). What about...smooth? Smooth
+sounds like a nice name. Let me google it...nothing in the first couple google searches...all of the US TESS searches seem
+to contain other words, I think it is good. So smooth, or Smooth, it is.
+
+In the BNF, I have added $ to the list of valid identifier characters. This now means that you can define a variable or a
+function named similarly to a Smooth command. I did this because I did not want to have the compiler single out Smooth statements
+and deal with them itself. I wanted them to be streamlined with other function calls. So I am going to set a convention:
+DO NOT NAME FUNCTIONS/VARIABLES WITH THE $ sign. Actually, I think I will make it only so that only the file I write the
+Smooth functions in can use the $sign...or actually, maybe I want the other programmers who want to contribute to Smooth
+make their own Smooth functions. At the end of the day, I think it is like JavaScript and jQuery: anyone can come and make
+functions named $ (or classes, for that matter), but no one's going to.

@@ -67,7 +67,7 @@ something else does not already have its name, etc.)
 
 ---------VARIABLES
 
-<identifier> ::= ("@")?2 [A-Za-z_] [A-Za-z_0-9]*
+<identifier> ::= ("@")?2 [A-Za-z_$] [A-Za-z_0-9]*
 
     (where the "@" sign is only present if the identifier is a member)
 
