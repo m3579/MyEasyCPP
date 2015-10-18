@@ -117,7 +117,7 @@ createTokenType(TTYPE_SYNTAX_ERROR);
 // IDENTIFYING CHARACTERS
 const std::string& WHITESPACE_CHARS = " \t";
 const std::string& NUMBER_LITERAL_CHARS = "1234567890";
-const std::string& WORD_START_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_$";
+const std::string& WORD_START_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
 const std::string& WORD_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789";
 const std::string& FIRST_OPERATOR_CHARS = "+-*/%^><=:|";
 const std::string& SECOND_OPERATOR_CHARS = "+-=";

@@ -34,20 +34,24 @@
 1444450735 c:\users\mihir kasmalkar\documents\_programs\codeblocks\myeasycpp\quitexception.hpp
 	<exception>
 
-1445201498 c:\users\mihir kasmalkar\documents\_programs\codeblocks\myeasycpp\mylexer.hpp
+1445207450 c:\users\mihir kasmalkar\documents\_programs\codeblocks\myeasycpp\mylexer.hpp
 	<memory>
 	"Lexer.hpp"
 	"TokenType.h"
 	"cleancode.h"
 	"error.h"
 
-1445202763 c:\users\mihir kasmalkar\documents\_programs\codeblocks\myeasycpp\smooth.hpp
+1445209312 c:\users\mihir kasmalkar\documents\_programs\codeblocks\myeasycpp\smooth.hpp
 	<cmath>
 	<array>
 	<map>
 	<string>
 	<cstdlib>
 	<limits>
+	<fstream>
+	<numeric>
+	<algorithm>
+	<sstream>
 	"cplustwo.hpp"
 
 1445201508 c:\users\mihir kasmalkar\documents\_programs\codeblocks\myeasycpp\cplustwo.hpp

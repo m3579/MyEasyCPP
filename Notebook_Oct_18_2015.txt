@@ -260,3 +260,8 @@ this syntax to the BNF:
 func something<type>()
 
 something<type>() # call the function
+
+--------------------------------
+
+For an error handling mechanism, I have decided that the generated main function should wrap all of its body in a try-catch
+that will catch any thrown errors. This will only work if the main function is written in C+2.

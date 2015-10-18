@@ -25,6 +25,10 @@
 #include <string>
 #include <cstdlib>
 #include <limits>
+#include <fstream>
+#include <numeric>
+#include <algorithm>
+#include <sstream>
 
 #include "cplustwo.hpp"
 
@@ -32,7 +36,13 @@ namespace cpt
 {
     namespace smooth
     {
-        // PYTHON FUNCTIONS
+
+        void generateError(std::string message)
+        {
+            throw std::runtime_error(message);
+        }
+
+        // PYTHON FUNCTIONS PYTHON FUNCTIONS PYTHON FUNCTIONS PYTHON FUNCTIONS PYTHON FUNCTIONS
 
         // all(iterable)
 
@@ -85,12 +95,7 @@ namespace cpt
 
         // bool([x])
 
-        bool _SMOOTH_boolean()
-        {
-            return false;
-        }
-
-        bool _SMOOTH_boolean(void* x)
+        bool _SMOOTH_bool(void* x)
         {
             if (x == nullptr) {
                 return false;
@@ -99,19 +104,23 @@ namespace cpt
             return true;
         }
 
-        bool _SMOOTH_boolean(bool x)
-        {
-            return x;
-        }
-
-
-        bool _SMOOTH_boolean(double x)
+        bool _SMOOTH_bool(double x)
         {
             if (x == 0.0) {
                 return false;
             }
 
             return true;
+        }
+
+        bool _SMOOTH_bool(std::string x)
+        {
+            if (x == "true") {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
 
         // dict()
@@ -121,20 +130,14 @@ namespace cpt
             return std::map<key, value> {};
         }
 
-        // divmod(a, b)
-        std::array<int, 2> _SMOOTH_divmod(int a, int b)
-        {
-            return std::array<int, 2> { a / b, a % b };
-        }
-
-        std::array<unsigned, 2> _SMOOTH_divmod(unsigned a, unsigned b)
-        {
-            return std::array<unsigned, 2> { a / b, a % b };
-        }
-
         std::array<long, 2> _SMOOTH_divmod(long a, long b)
         {
             return std::array<long, 2> { a / b, a % b };
+        }
+
+        std::array<int, 2> _SMOOTH_divmod(int a, int b)
+        {
+            return std::array<int, 2> { a / b, a % b };
         }
 
         std::string _SMOOTH_input(std::string prompt = "")
@@ -162,13 +165,13 @@ namespace cpt
             return std::vector<T> { };
         }
 
-        int _SMOOTH_max(std::vector<int> iterable)
+        double _SMOOTH_max(std::vector<double> iterable)
         {
             if (iterable.size() < 1) {
                 return std::numeric_limits<int>::quiet_NaN();
             }
 
-            int maximum = iterable.at(0);
+            double maximum = iterable.at(0);
             for (auto it = iterable.begin(); it != iterable.end(); ++it) {
                 if (*it > maximum) {
                     maximum = *it;
@@ -194,13 +197,13 @@ namespace cpt
             return maximum;
         }
 
-        int _SMOOTH_min(std::vector<int> iterable)
+        double _SMOOTH_min(std::vector<double> iterable)
         {
             if (iterable.size() < 1) {
                 return std::numeric_limits<int>::quiet_NaN();
             }
 
-            int minimum = iterable.at(0);
+            double minimum = iterable.at(0);
             for (auto it = iterable.begin(); it != iterable.end(); ++it) {
                 if (*it < minimum) {
                     minimum = *it;
@@ -225,6 +228,64 @@ namespace cpt
 
             return minimum;
         }
+
+        // print()
+
+        void _SMOOTH_write(std::string text)
+        {
+            std::cout << text << "\n";
+        }
+
+        // range()
+
+        std::vector<int> _SMOOTH_range(int start, int stop, int step=1)
+        {
+            std::vector<int> rangeVector(stop - start + 1);
+            std::iota(rangeVector.begin(), rangeVector.end(), start);
+            return rangeVector;
+        }
+
+        std::vector<int> _SMOOTH_range(int stop, int step=1)
+        {
+            return _SMOOTH_range(1, stop, step);
+        }
+
+        // sort()
+
+        std::vector<int> _SMOOTH_sort(std::vector<int> iterable, bool reversed = false)
+        {
+            std::vector<int> copyVector(iterable);
+            std::sort(copyVector.begin(), copyVector.end());
+            return copyVector;
+        }
+
+        std::string _SMOOTH_string(int i)
+        {
+            std::ostringstream os;
+            os << i;
+            return os.str();
+        }
+
+        int _SMOOTH_sum(std::vector<int> iterable)
+        {
+            int sum = 0;
+            for (auto it = iterable.begin(); it != iterable.end(); ++it) {
+                sum += *it;
+            }
+
+            return sum;
+        }
+
+        float _SMOOTH_sum(std::vector<float> iterable)
+        {
+            float sum = 0;
+            for (auto it = iterable.begin(); it != iterable.end(); ++it) {
+                sum += *it;
+            }
+
+            return sum;
+        }
+
     }
 }
 
