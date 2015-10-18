@@ -23,16 +23,15 @@ something else does not already have its name, etc.)
 
                 <endchar>
 
-<preprocessor-directive> ::= "-" (<macro>
-                                | <error>
-                                | <if-dir>
-                                | <ifdef>
-                                | <ifndef>
-                                | <access>
-                                | <use>
-                                | <setline>
-                                | <emptydir>
-                                | <undef>)
+<preprocessor-directive> ::= <macro>
+                            | <error>
+                            | <if-dir>
+                            | <ifdef>
+                            | <ifndef>
+                            | <access>
+                            | <use>
+                            | <setline>
+                            | <undef>
 
                              <endchar>
 
@@ -211,31 +210,30 @@ VALUES:
 
 (where <filename> is a valid filename on user's operating system)
 
-<macro> ::= "macro" <identifier>
+<macro> ::= "DefineMacro" <identifier>
             "(" (("|" <identifier> "|") | <identifier>) ("," ("|" <identifier> "|") | <identifier>))*)? ")"
+            "="
             ( ("|" <any-characters> "|") | <value>) )
 
     (where <identifier> is a valid macro name)
 
-<error> ::= "error" <value> | ("|" <any-characters> "|")
+<error> ::= "RaiseError" <value> | ("|" <any-characters> "|")
 
-<if-dir> ::= "if" <boolean-value> <block-stmts>
+<if-dir> ::= "If" <boolean-value> <block-stmts>
              ("@" "orif" <boolean-value> <block-stmts>)*
              ("@" "else" <block-stmts>)?
 
-<ifdef> ::= "ifdefined" <identifier> <block-stmts>
+<ifdef> ::= "IfDefined" <identifier> <block-stmts>
 
-<ifndef> ::= "ifnotdefined" <identifier> <block-stmts>
+<ifndef> ::= "IfNotDefined" <identifier> <block-stmts>
 
-<undef> ::= "undefine" <identifier>
+<undef> ::= "Undefine" <identifier>
 
-<access> ::= "access" <filename>
+<access> ::= "AccessFile" <filename>
 
-<use> ::= "use" ( <filename> ( <filename> "\n")* )?
+<use> ::= "UseCPPCode" ( <filename> ( <filename> "\n")* )?
 
-<setline> ::= "setline" <numeric-value> (<filename>)
-
-<empty> ::= ""
+<setline> ::= "SetLine" <numeric-value> (<filename>)
 
 ---------MISCELLANEOUS
 

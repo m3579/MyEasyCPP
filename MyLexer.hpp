@@ -81,7 +81,6 @@ createTokenType(TTYPE_PPD_UNDEF);
 createTokenType(TTYPE_PPD_ACCESS);
 createTokenType(TTYPE_PPD_USE);
 createTokenType(TTYPE_PPD_SETLINE);
-createTokenType(TTYPE_PPD_EMPTY);
 
 // operators
 #pragma mark Operators
@@ -123,7 +122,7 @@ createTokenType(TTYPE_SYNTAX_ERROR);
 #pragma mark IdentifyingCharacters
 const std::string& WHITESPACE_CHARS = " \t";
 const std::string& NUMBER_LITERAL_CHARS = "1234567890";
-const std::string& WORD_START_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
+const std::string& WORD_START_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_$";
 const std::string& WORD_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789";
 const std::string& FIRST_OPERATOR_CHARS = "+-*/%^><=:|";
 const std::string& FIRST_OPERATOR_CHARS = "+-="
@@ -511,16 +510,15 @@ void initTextToTTYPEMap()
 
 void initTextToPPDMap()
 {
-    textToPPD["macro"]       = TTYPE_PPD_MACRO;
-    textToPPD["error"]       = TTYPE_PPD_ERROR;
-    textToPPD["if"]          = TTYPE_PPD_IF;
-    textToPPD["ifdefined"]   = TTYPE_PPD_IFDEF;
-    textToPPD["ifnotdefined"]= TTYPE_PPD_IFNDEF;
-    textToPPD["undefine"]    = TTYPE_PPD_UNDEF;
-    textToPPD["access"]      = TTYPE_PPD_ACCESS;
-    textToPPD["use"]         = TTYPE_PPD_USE;
-    textToPPD["setline"]     = TTYPE_PPD_SETLINE;
-    textToPPD[""]            = TTYPE_PPD_EMPTY;
+    textToPPD["DefineMacro"]    = TTYPE_PPD_MACRO;
+    textToPPD["RaiseError"]     = TTYPE_PPD_ERROR;
+    textToPPD["If"]             = TTYPE_PPD_IF;
+    textToPPD["IfDefined"]      = TTYPE_PPD_IFDEF;
+    textToPPD["IfNotDefined"]   = TTYPE_PPD_IFNDEF;
+    textToPPD["Undefine"]       = TTYPE_PPD_UNDEF;
+    textToPPD["AccessFile"]     = TTYPE_PPD_ACCESS;
+    textToPPD["UseCPPCode"]     = TTYPE_PPD_USE;
+    textToPPD["SetLine"]        = TTYPE_PPD_SETLINE;
 }
 
 #endif // MYLEXER_H_INCLUDED

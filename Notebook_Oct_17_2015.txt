@@ -199,3 +199,109 @@ DO NOT NAME FUNCTIONS/VARIABLES WITH THE $ sign. Actually, I think I will make i
 Smooth functions in can use the $sign...or actually, maybe I want the other programmers who want to contribute to Smooth
 make their own Smooth functions. At the end of the day, I think it is like JavaScript and jQuery: anyone can come and make
 functions named $ (or classes, for that matter), but no one's going to.
+
+----------------------------------
+
+I decided to create a new file where I will enter my code samples so that I will get syntax highlighting. It is named playground.hpp.
+I will copy and paste any samples from there into here:
+
+Here's one I found online:
+
+From https://www.cs.utexas.edu/~scottm/cs307/javacode/codeSamples/WriteToFile.java accessed on 10/17/15
+
+//sample code to write 100 random ints to a file, 1 per line
+
+import java.io.PrintStream;
+import java.io.IOException;
+import java.io.File;
+
+import java.util.Random;
+
+public class WriteToFile
+{	public static void main(String[] args)
+	{	try
+		{	PrintStream writer = new PrintStream( new File("randInts.txt"));
+			Random r = new Random();
+			final int LIMIT = 100;
+
+			for(int i = 0; i < LIMIT; i++)
+			{	writer.println( r.nextInt() );
+			}
+			writer.close();
+		}
+		catch(IOException e)
+		{	System.out.println("An error occured while trying to write to the file");
+		}
+	}
+}
+
+I changed the code for the C++, I mean, C+2 a little bit:
+
+access smooth
+
+- use fstream
+
+- define LIMIT 100
+
+start
+
+    init writer : ofstream ("randInts.txt")
+
+    if not writer.is_open():
+        $write("An error occurred while trying to write to the file")
+
+    for i from 1 -> LIMIT:
+        writer <-- $rand(1, LIMIT)
+
+    writer.close()
+
+end
+
+. You can see that this code is a lot shorter/less complex than the Java code.
+
+I am thinking about removing the -'s from the preprocessor directives to improve
+readability. Yes, I will do that.
+
+I forgot that instead of define, in C+2 the keyword (I mean, preprocessor directive)
+is macro.
+
+I decided that preprocessor directives would look nicer in camelcase, but with the first
+letter uppercase. It is a good thing I noticed, because then the if preprocessor directive
+and the if statement would not be distinguishable from each other.
+
+Let me rewrite that code, with a few more PPDs:
+
+Access smooth
+
+Use fstream
+
+Macro limit = 100
+
+start
+end
+
+No, that looks ugly without even finishing the sample. I will change them.
+
+Also, it seems that in the samples I forgot that access was a PPD and I did not prefix it with
+a minus sign. That was my mistake.
+
+AccessFile smooth
+UseCPPFile fstream
+
+DefineMacro LIMIT = 100
+
+start
+
+    init writer : ofstream ("randInts.txt")
+
+    if not writer.is_open():
+        $write("I was not able to open the file")
+        return 1
+
+    for i from 1 -> LIMIT:
+        writer <-- $rand(1, 100)
+
+    writer.close()
+end
+
+I like that style.
