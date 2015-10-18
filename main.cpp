@@ -20,7 +20,8 @@
 int main()
 {
     try {
-        lexer::Lexer lexr("hello");
+
+        lexer::Lexer lexr(createLexer("Hello World"));
 
         std::vector<Token> tokens(lexr.tokenizeSource());
 
@@ -28,11 +29,14 @@ int main()
             std::cout << it->getText() << "\n";
         }
     }
+    catch(const char* message) {
+        std::cout << "Error in compiler: " << message << "\n";
+    }
     catch(quitexception& qex) {
         std::cout << qex.what() << "\n";
     }
     catch(std::exception& ex) {
-        std::cout << "Something went terribly wrong:\n"
+        std::cout << "Error in compiler:\n"
                   << "\t" << ex.what() << "\n";
     }
 }

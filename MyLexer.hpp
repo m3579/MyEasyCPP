@@ -17,6 +17,7 @@
  *
  */
 
+#include <iostream>
 #include <memory>
 
 #include "Lexer.hpp"
@@ -112,6 +113,7 @@ createTokenType(TTYPE_OPERATOR_LESS_THAN_OR_EQUAL_TO);
 
 // miscellaneous
 createTokenType(TTYPE_IDENTIFIER);
+createTokenType(TTYPE_SMOOTH_IDENTIFIER);
 createTokenType(TTYPE_SYNTAX_ERROR);
 
 // IDENTIFYING CHARACTERS
@@ -266,6 +268,25 @@ lexer::Lexer createLexer(const char* sourceCode)
             else {
                 return Token(lineNumber, columnNumber, word, TTYPE_IDENTIFIER);
             }
+        }
+
+        return Token();
+    }
+    endTest
+
+    makeTest(sc)
+    {
+        char c = sc.getCurrentChar();
+        if (c == '$') {
+            int lineNumber = sc.getLineNumber();
+            int columnNumber = sc.getColumnNumber();
+            std::string smoothIdentifier(1, c);
+
+            while (contains(WORD_CHARS, sc.fetchNextChar())) {
+                smoothIdentifier += sc.moveToNextChar();
+            }
+
+            return Token(lineNumber, columnNumber, smoothIdentifier, TTYPE_SMOOTH_IDENTIFIER);
         }
 
         return Token();
