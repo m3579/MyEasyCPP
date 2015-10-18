@@ -14,7 +14,8 @@
  *
  */
 
-#include "MyLexer.h"
+#include "MyLexer.hpp"
+#include "Smooth.hpp"
 
 int main()
 {

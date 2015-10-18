@@ -240,3 +240,23 @@ int a[2]
 but it will be recommended to use std::array over this.
 
 After I thought about it, I will need an end keyword to signal the end of the main function.
+
+------------------------------
+
+I thought about implementing my own classes to substitute the ones provided in the C++ STL, but I
+decided just to subclass them instead.
+
+-------------------------------
+
+Actually, it might not be safe to do that. I don't want do define my own classes because then any
+C++ code will not be compatible with the classes in C+2, so I think I will just define functions
+to handle standard classes more nicely instead of create new classes with nice methods.
+
+-------------------------------
+
+As I was writing methods (I mean, functions) in Smooth.hpp, I realized that I did not have a template mechanism. I added
+this syntax to the BNF:
+
+func something<type>()
+
+something<type>() # call the function

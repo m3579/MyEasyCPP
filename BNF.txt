@@ -101,7 +101,7 @@ something else does not already have its name, etc.)
 
     (where <value> is of type <type>)
 
-<func-decl-contents> ::= ("override")? "func " <identifier> "(" ( (<identifier> ":")? <type> ("," (<identifier> ":")? <type>)* )? ")" ("->" <type>)?
+<func-decl-contents> ::= ("override")? "func " <identifier> ("<" <type> ("," <type>)* ">")? "(" ( (<identifier> ":")? <type> ("," (<identifier> ":")? <type>)* )? ")" ("->" <type>)?
 
     (where <identifier> is a valid function name,
      where "override" is only there if the function overrides one in the superclass)
@@ -194,7 +194,7 @@ MEMORY:
     <memory-value> ::= <pointer> | <reference>
 
 FUNCTIONS/METHODS:
-    <call> ::= <identifier> "(" ( <identifier ("," <identifier>)* )? ")"
+    <call> ::= <identifier> ("<" <type> ("," <type>)* ">")? "(" ( <identifier ("," <identifier>)* )? ")"
 
 VALUES:
 <value> ::= <numeric-value>

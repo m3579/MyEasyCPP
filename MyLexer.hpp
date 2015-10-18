@@ -27,21 +27,17 @@
 using namespace token;
 
 // TOKENS
-#pragma mark Tokens
 
 // whitespace
-#pragma mark Whitespace
 createTokenType(TTYPE_ENDCHAR);
 createTokenType(TTYPE_WHITESPACE);
 
 // literals
-#pragma mark Literals
 createTokenType(TTYPE_INTEGER_LITERAL);
 createTokenType(TTYPE_DECIMAL_LITERAL);
 createTokenType(TTYPE_STRING_LITERAL);
 
 // keywords
-#pragma mark Keywords
 createTokenType(TTYPE_KEYWORD_NAMESPACE);
 createTokenType(TTYPE_KEYWORD_USE);
 createTokenType(TTYPE_KEYWORD_OF);
@@ -74,7 +70,6 @@ createTokenType(TTYPE_KEYWORD_START);
 createTokenType(TTYPE_KEYWORD_END);
 
 // preprocessor directives
-#pragma mark PPDs
 createTokenType(TTYPE_PPD_MACRO);
 createTokenType(TTYPE_PPD_ERROR);
 createTokenType(TTYPE_PPD_IF);
@@ -86,7 +81,6 @@ createTokenType(TTYPE_PPD_USE);
 createTokenType(TTYPE_PPD_SETLINE);
 
 // operators
-#pragma mark Operators
 createTokenType(TTYPE_OPERATOR_AND);
 createTokenType(TTYPE_OPERATOR_OR);
 createTokenType(TTYPE_OPERATOR_NOT);
@@ -117,25 +111,21 @@ createTokenType(TTYPE_OPERATOR_GREATER_THAN_OR_EQUAL_TO);
 createTokenType(TTYPE_OPERATOR_LESS_THAN_OR_EQUAL_TO);
 
 // miscellaneous
-#pragma mark MiscellaneousTokenTypes
 createTokenType(TTYPE_IDENTIFIER);
 createTokenType(TTYPE_SYNTAX_ERROR);
 
 // IDENTIFYING CHARACTERS
-#pragma mark IdentifyingCharacters
 const std::string& WHITESPACE_CHARS = " \t";
 const std::string& NUMBER_LITERAL_CHARS = "1234567890";
 const std::string& WORD_START_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_$";
 const std::string& WORD_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789";
 const std::string& FIRST_OPERATOR_CHARS = "+-*/%^><=:|";
-const std::string& FIRST_OPERATOR_CHARS = "+-="
+const std::string& SECOND_OPERATOR_CHARS = "+-=";
 
 // DECLARATIONS
-#pragma mark Declarations
 bool contains(std::string str, const char sub);
 
 // MAPS
-#pragma mark Maps
 void initTextToTTYPEMap();
 void initTextToPPDMap();
 
@@ -152,7 +142,6 @@ lexer::Lexer createLexer(const char* sourceCode)
     setLexer(lexr);
 
     // ENDCHAR ENDCHAR ENDCHAR ENDCHAR ENDCHAR
-#pragma mark TestEndChar
     makeTest(sc)
     {
         if ((sc.getCurrentChar() == '\n')
@@ -167,7 +156,6 @@ lexer::Lexer createLexer(const char* sourceCode)
     endTest
 
     // WHITESPACE WHITESPACE WHITESPACE WHITESPACE
-#pragma mark TestWhiteSpace
     makeTest(sc)
     {
         if (contains(WHITESPACE_CHARS, sc.getCurrentChar())) {
@@ -187,7 +175,6 @@ lexer::Lexer createLexer(const char* sourceCode)
     endTest
 
     // NUMBER LITERAL NUMBER LITERAL NUMBER LITERAL
-#pragma mark TestNumberLiteral
     makeTest(sc)
     {
         char currChar = sc.getCurrentChar();
@@ -229,7 +216,6 @@ lexer::Lexer createLexer(const char* sourceCode)
     endTest
 
     // STRING LITERAL STRING LITERAL STRING LITERAL
-#pragma mark TestStringLiteral
     makeTest(sc)
     {
         char c = sc.getCurrentChar();
@@ -262,7 +248,6 @@ lexer::Lexer createLexer(const char* sourceCode)
     endTest
 
     // WORD WORD WORD WORD WORD
-#pragma mark TestWord
     makeTest(sc)
     {
         char c = sc.getCurrentChar();
@@ -288,7 +273,6 @@ lexer::Lexer createLexer(const char* sourceCode)
     endTest
 
     // MEMBER MEMBER MEMBER MEMBER MEMBER
-#pragma mark TestMemberWithAtSign
     makeTest(sc)
     {
         char c = sc.getCurrentChar();
@@ -303,11 +287,12 @@ lexer::Lexer createLexer(const char* sourceCode)
 
             return Token(lineNumber, columnNumber, member, TTYPE_IDENTIFIER);
         }
+
+        return Token();
     }
     endTest
 
     // OPERATORS OPERATORS OPERATORS OPERATORS OPERATORS
-#pragma mark TestOperators
     makeTest(sc)
     {
         char c = sc.getCurrentChar();
@@ -427,7 +412,6 @@ lexer::Lexer createLexer(const char* sourceCode)
     endTest
 
     // PREPROCESSOR DIRECTIVES PREPROCESSOR DIRECTIVES
-#pragma mark TestPPDs
     makeTest(sc)
     {
         char c = sc.getCurrentChar();
@@ -465,14 +449,12 @@ lexer::Lexer createLexer(const char* sourceCode)
 }
 
 // IMPLEMENTATIONS
-#pragma mark Implementations
 bool contains(std::string str, char sub)
 {
     return (str.find(sub) != std::string::npos) ? true : false;
 }
 
 // MAP IMPLEMTATIONS
-#pragma mark MapImplementations
 void initTextToTTYPEMap()
 {
     textToTTYPE["namespace"] = TTYPE_KEYWORD_NAMESPACE;

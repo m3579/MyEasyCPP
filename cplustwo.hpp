@@ -17,12 +17,11 @@
  *
  */
 
+#include <vector>
+
 namespace cpt
 {
-    class List
-    {
 
-    };
 }
 
 #endif // CPLUSTWO_HPP_INCLUDED

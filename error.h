@@ -26,6 +26,7 @@ void error(std::string type, std::string text, int lineNumber, int columnNumber,
 void printErrorMessage(std::string type, std::string text, int lineNumber, int columnNumber, std::string message);
 
 const std::string& ERRTYPE_SYNTAX_ERROR     = "SyntaxError";
+const std::string& ERRTYPE_RUNTIME_ERROR    = "RuntimeError";
 
 void error(std::string type, std::string text, int lineNumber, int columnNumber, std::string message, bool fatal)
 {
