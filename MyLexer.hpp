@@ -47,6 +47,7 @@ createTokenType(TTYPE_KEYWORD_USE);
 createTokenType(TTYPE_KEYWORD_OF);
 createTokenType(TTYPE_KEYWORD_DECLARE);
 createTokenType(TTYPE_KEYWORD_INIT);
+createTokenType(TTYPE_KEYWORD_SET);
 createTokenType(TTYPE_KEYWORD_OVERRIDE);
 createTokenType(TTYPE_KEYWORD_FUNC);
 createTokenType(TTYPE_KEYWORD_IF);
@@ -70,6 +71,7 @@ createTokenType(TTYPE_KEYWORD_TRUE);
 createTokenType(TTYPE_KEYWORD_FALSE);
 createTokenType(TTYPE_KEYWORD_AS);
 createTokenType(TTYPE_KEYWORD_START);
+createTokenType(TTYPE_KEYWORD_END);
 
 // preprocessor directives
 #pragma mark PPDs
@@ -478,6 +480,7 @@ void initTextToTTYPEMap()
     textToTTYPE["of"]        = TTYPE_KEYWORD_OF;
     textToTTYPE["declare"]   = TTYPE_KEYWORD_DECLARE;
     textToTTYPE["init"]      = TTYPE_KEYWORD_INIT;
+    textToTTYPE["set"]       = TTYPE_KEYWORD_SET;
     textToTTYPE["override"]  = TTYPE_KEYWORD_OVERRIDE;
     textToTTYPE["func"]      = TTYPE_KEYWORD_FUNC;
     textToTTYPE["if"]        = TTYPE_KEYWORD_IF;
@@ -502,6 +505,7 @@ void initTextToTTYPEMap()
     textToTTYPE["false"]     = TTYPE_KEYWORD_FALSE;
     textToTTYPE["as"]        = TTYPE_KEYWORD_AS;
     textToTTYPE["start"]     = TTYPE_KEYWORD_START;
+    textToTTYPE["end"]       = TTYPE_KEYWORD_END;
 
     textToTTYPE["and"]       = TTYPE_OPERATOR_AND;
     textToTTYPE["or"]        = TTYPE_OPERATOR_OR;

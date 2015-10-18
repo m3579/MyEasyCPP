@@ -214,3 +214,29 @@ readability.
 
 The compiler should generate a warning, however, if a type is declared implicitly.
 Now the resulting C++ code will only be compatible with C++11.
+
+-------------------------
+
+The $ sign is not a valid C++ identifier, so I am going to need to find some way to
+mimic it in C++ source files. I could use __, but what if something is already named that?
+Or similarly named that, more likely? I could use _SMOOTH_XXX. Yes, I think that will work.
+
+I am going to write the Smooth library in C++ now.
+
+-------------------------
+
+As I am writing this library, I have decided that arrays will not be pure C++ arrays, but
+will instead be std::array.
+
+Actually, I think that it will be normal c-style arrays, but it will be recommended to use
+std::array instead. What I mean by this is that the declaration
+
+a : Int[] of 2
+
+Will produce
+
+int a[2]
+
+but it will be recommended to use std::array over this.
+
+After I thought about it, I will need an end keyword to signal the end of the main function.

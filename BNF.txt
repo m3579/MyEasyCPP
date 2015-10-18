@@ -10,6 +10,7 @@ something else does not already have its name, etc.)
 <endchar> ::= "\n" | ";" | "\0"
 
 <statement> ::= <start>
+              | <end>
               | <var-stmt>
               | <member-stmt>
               | <if-stmt>
@@ -37,6 +38,8 @@ something else does not already have its name, etc.)
                              <endchar>
 
 <start> ::= "start"
+
+<end> ::= "end"
 
 <class-stmts> ::= ( <indent-whitespace>  ( <member-stmt>
                                          | <access-mod>? <function>
