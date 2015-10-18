@@ -69,6 +69,7 @@ createTokenType(TTYPE_KEYWORD_INHERITED);
 createTokenType(TTYPE_KEYWORD_TRUE);
 createTokenType(TTYPE_KEYWORD_FALSE);
 createTokenType(TTYPE_KEYWORD_AS);
+createTokenType(TTYPE_KEYWORD_START);
 
 // preprocessor directives
 #pragma mark PPDs
@@ -500,6 +501,7 @@ void initTextToTTYPEMap()
     textToTTYPE["true"]      = TTYPE_KEYWORD_TRUE;
     textToTTYPE["false"]     = TTYPE_KEYWORD_FALSE;
     textToTTYPE["as"]        = TTYPE_KEYWORD_AS;
+    textToTTYPE["start"]     = TTYPE_KEYWORD_START;
 
     textToTTYPE["and"]       = TTYPE_OPERATOR_AND;
     textToTTYPE["or"]        = TTYPE_OPERATOR_OR;

@@ -1,0 +1,9 @@
+- Must be interoperable with C++
+- Syntax must be easy to read and learn
+- Must be modern and not old-school
+- Programs be at most no more than about 3-4x as large as Python equivalents
+- Must have library to make C++ simpler (Smooth)
+    - Smooth must contain equivalents for the built in functions in Python
+- Must natively be simpler than C++
+- Must eliminate steep learning curve for C++
+- Goal is for language to be almost as easy to use as Python

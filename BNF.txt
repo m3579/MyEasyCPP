@@ -9,7 +9,8 @@ something else does not already have its name, etc.)
 
 <endchar> ::= "\n" | ";" | "\0"
 
-<statement> ::= <var-stmt>
+<statement> ::= <start>
+              | <var-stmt>
               | <member-stmt>
               | <if-stmt>
               | <for-loop>
@@ -34,6 +35,8 @@ something else does not already have its name, etc.)
                             | <undef>
 
                              <endchar>
+
+<start> ::= "start"
 
 <class-stmts> ::= ( <indent-whitespace>  ( <member-stmt>
                                          | <access-mod>? <function>
@@ -72,7 +75,7 @@ something else does not already have its name, etc.)
 
 ---------DECLARATIONS
 
-<var-decl-contents> ::= (<identifier> ":" <type>) | (<identifier> ":" <type> "[" "]" ("of" <positive-integer>))?
+<var-decl-contents> ::= (<identifier> (":" <type>)?) | (<identifier> ":" <type> "[" "]" ("of" <positive-integer>))?
 
     (where <identifier> is a valid variable name)
 
@@ -80,7 +83,7 @@ something else does not already have its name, etc.)
 
 <var-decl-assign> ::= "init" (<class-name> | <struct-name>) <identifier> "(" (value ("," value))? ")"
 
-             | <var-decl-content> ("=" <value>)?
+             | ("set")? s<var-decl-content> ("=" <value>)?
 
     (where <value> is of type <type>,
      where <positive-integer> is a positive integer)

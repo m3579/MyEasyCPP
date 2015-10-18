@@ -1,0 +1,216 @@
+I was looking at my previous sample, and I realized it still looked ugly. I want it to be as simple as Python:
+
+import random
+
+f = open("randInts.txt")
+
+limit = 100
+
+for i in range(limit):
+    f.write(randome.randint(1, limit))
+
+f.close()
+
+My code is a lot longer than this: let's see what we can do.
+
+access smooth
+
+use fstream
+
+define LIMIT 100
+
+start
+
+    init writer : ofstream ("randInts.txt")
+
+    if not writer.is_open():
+        $write("An error occurred while trying to write to the file")
+
+    for i from 1 -> LIMIT:
+        writer <-- $rand(1, LIMIT)
+
+    writer.close()
+
+end
+
+We can start by taking out the end.
+
+
+access smooth
+
+use fstream
+
+define LIMIT 100
+
+start
+
+    init writer : ofstream ("randInts.txt")
+
+    if not writer.is_open():
+        $write("An error occurred while trying to write to the file")
+
+    for i from 1 -> LIMIT:
+        writer <-- $rand(1, LIMIT)
+
+    writer.close()
+
+We can also make this neater by not defining LIMIT as a macro.
+
+access smooth
+
+use fstream
+
+start
+
+    init writer : ofstream ("randInts.txt")
+
+    limit : const int = 100
+
+    if not writer.is_open():
+        $write("An error occurred while trying to write to the file")
+
+    for i from 1 -> LIMIT:
+        writer <-- $rand(1, LIMIT)
+
+    writer.close()
+
+Actually, instead of const, there has to be a better way of declaring it
+
+limit : int := 100
+
+No...how about
+
+const limit : int = 100
+
+No...
+
+constant limit : int = 100
+
+Too long...
+
+How about removing the requirement for a data type? Let the compiler infer it
+or use the C++11 auto keyword.
+
+Yes, I think I will do that. Let me update the BNF.
+
+
+access smooth
+
+use fstream
+
+start
+
+    init writer : ofstream ("randInts.txt")
+
+    limit = 100
+
+    if not writer.is_open():
+        $write("An error occurred while trying to write to the file")
+
+    for i from 1 -> LIMIT:
+        writer <-- $rand(1, LIMIT)
+
+    writer.close()
+
+Smooth should contain functions that do the equivalent of Python's built in functions.
+
+At this point, I think I will define some criteria:
+
+- Must be compatible with C++ (compiles to C++, includes C++, can be included by C++)
+- Syntax does not need to be compatible with C++
+
+When I say "Must be compatible with C++", I think I mean...interoperability (I just googled it to
+make sure it meant what I thought it meant).
+
+- Must be interoperable with C++
+- Syntax must be easy to read and learn
+- Must be modern and not old-school
+- Must be at most no more than about 3-4x as large as Python equivalents
+
+I think I will take out the third one (it is not measureable)
+
+- Must include Smooth library
+    - Smooth must contain equivalents for the built in functions in Python
+
+I will put all of this in a file named cac.txt (criteria and constraints).
+
+I think I will use the syntax
+
+...
+
+limit : constant int
+
+No,...
+
+set limit : int = 100
+
+Yes.
+
+I have updated the BNF.
+
+Back to the sample, let me simply rewrite it from scratch except using something like pseudocode:
+
+access smooth
+
+start
+
+writer : ofstream("randInts.txt")
+
+Let me stop here. I think that it is okay if I leave out the "init", because the call should not be
+ambiguous to a function call.
+
+access smooth
+
+start
+
+writer : $file("randInts.txt")
+
+set LIMIT = 100
+
+for i from 1 -> LIMIT:
+    writer <-- $rand(1, LIMIT)
+
+writer.close()
+
+I want to make a shorthand for "access smooth"...maybe have it automatically included? No, it would bloat
+up programs. ...I don't think there is a way to bypass this.
+
+Let's look at the Python and C+2 programs side by side:
+
+(Actually, let me first put "start" into the BNF because it seems like I haven't done that)
+
+############
+
+import random
+
+file = open("randInts.txt")
+
+limit = 100
+
+for i in range(limit):
+    file.write(random.randint(1, limit))
+
+file.close()
+
+############
+
+access smooth
+
+start
+
+writer : $file("randInts.txt")
+
+set LIMIT = 100
+
+for i from 1 -> LIMIT:
+    writer <-- $rand(1, LIMIT)
+
+writer.close()
+
+############
+
+I think this looks pretty good! They are about the same size and about the same
+readability.
+
+The compiler should generate a warning, however, if a type is declared implicitly.
+Now the resulting C++ code will only be compatible with C++11.
