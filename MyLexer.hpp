@@ -472,10 +472,10 @@ lexer::Lexer createLexer(const char* sourceCode)
 
         if (c == '#') {
             if (sc.fetchNextChar() == '=') {
-                return Token(lineNumber, columnNumber, std::string(1, c) + std::string(1, sc.moveToNextChar(), TTYPE_SYMBOL_POUND_EQUALS));
+                return Token(lineNumber, columnNumber, std::string(1, c) + std::string(1, sc.moveToNextChar()), TTYPE_SYMBOL_POUND_EQUALS);
             }
             else {
-                return Token(lineNumber, columNumber, std::string(1, c), TTYPE_SYMBOL_POUND);
+                return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_POUND);
             }
         }
 

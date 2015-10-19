@@ -17,17 +17,24 @@
 #include "MyLexer.hpp"
 #include "Smooth.hpp"
 
+void testLexer()
+{
+    lexer::Lexer lexr(createLexer("Hello World"));
+
+    std::vector<Token> tokens(lexr.tokenizeSource());
+
+    for (auto it = tokens.begin(); it != tokens.end(); it++) {
+        std::cout << "Token:\n"
+                  << "\t" << it->getText() << "\n"
+                  << "\t" << it->getLineNumber() << " " << it->getColumnNumber() << "\n"
+                  << "\t" << it->getType() << "\n";
+    }
+}
+
 int main()
 {
     try {
-
-        lexer::Lexer lexr(createLexer("Hello World"));
-
-        std::vector<Token> tokens(lexr.tokenizeSource());
-
-        for (auto it = tokens.begin(); it != tokens.end(); it++) {
-            std::cout << it->getText() << "\n";
-        }
+        testLexer();
     }
     catch(const char* message) {
         std::cout << "Error in compiler: " << message << "\n";
