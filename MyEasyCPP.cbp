@@ -62,6 +62,7 @@
 		<Unit filename="main.cpp" />
 		<Unit filename="playground.hpp" />
 		<Unit filename="quitexception.hpp" />
+		<Unit filename="test.txt" />
 		<Extensions>
 			<code_completion />
 			<envvars />

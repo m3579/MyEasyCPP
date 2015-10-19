@@ -14,12 +14,31 @@
  *
  */
 
+#include <fstream>
+
 #include "MyLexer.hpp"
 #include "Smooth.hpp"
 
 void testLexer()
 {
-    lexer::Lexer lexr(createLexer("Hello World"));
+    std::ifstream input("test.txt");
+
+    std::string sourceCode;
+
+    std::string line;
+    if (input.is_open()) {
+        while (std::getline(input, line)) {
+            sourceCode += line + "\n";
+        }
+    }
+    else {
+        std::cout << "Could not open file\n";
+        return;
+    }
+
+    input.close();
+
+    lexer::Lexer lexr(createLexer(sourceCode.c_str()));
 
     std::vector<Token> tokens(lexr.tokenizeSource());
 
@@ -27,7 +46,7 @@ void testLexer()
         std::cout << "Token:\n"
                   << "\t" << it->getText() << "\n"
                   << "\t" << it->getLineNumber() << " " << it->getColumnNumber() << "\n"
-                  << "\t" << it->getType() << "\n";
+                  << "\t|" << it->getType() << "|\n";
     }
 }
 

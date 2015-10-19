@@ -145,8 +145,8 @@ bool contains(std::string str, const char sub);
 void initTextToTTYPEMap();
 void initTextToPPDMap();
 
-std::map<std::string, int> textToTTYPE;
-std::map<std::string, int> textToPPD;
+std::map<std::string, TokenType> textToTTYPE;
+std::map<std::string, TokenType> textToPPD;
 
 lexer::Lexer createLexer(const char* sourceCode)
 {
@@ -200,13 +200,12 @@ lexer::Lexer createLexer(const char* sourceCode)
             int lineNumber = sc.getLineNumber();
             int columnNumber = sc.getColumnNumber();
 
-            int type = TTYPE_INTEGER_LITERAL;
+            TokenType type = TTYPE_INTEGER_LITERAL;
 
             while (sc.hasMoreSource()) {
                 char nextChar = sc.fetchNextChar();
                 if (contains(NUMBER_LITERAL_CHARS, nextChar)) {
                     number += nextChar;
-                    continue;
                 }
                 else if (nextChar == '.') {
                     number += nextChar;
@@ -335,68 +334,70 @@ lexer::Lexer createLexer(const char* sourceCode)
             int columnNumber = sc.getColumnNumber();
             std::string theOperator(1, c);
 
-            if (contains(SECOND_OPERATOR_CHARS, c)) {
+            char n = sc.fetchNextChar();
+
+            if (contains(SECOND_OPERATOR_CHARS, n)) {
                 switch(c)
                 {
                     case '+': {
-                        if (sc.fetchNextChar() == '+') {
+                        if (n == '+') {
                             theOperator += sc.moveToNextChar();
                             return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_INCREMENT);
                         }
-                        else if (sc.fetchNextChar() == '=') {
+                        else if (n == '=') {
                             theOperator += sc.moveToNextChar();
                             return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_DECREMENT);
                         }
                     }
 
                     case '-': {
-                        if (sc.fetchNextChar() == '-') {
+                        if (n == '-') {
                             theOperator += sc.moveToNextChar();
                             return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_DECREMENT);
                         }
-                        else if (sc.fetchNextChar() == '=') {
+                        else if (n == '=') {
                             theOperator += sc.moveToNextChar();
                             return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_MINUS_EQUALS);
                         }
                     }
 
                     case '*': {
-                        if (sc.fetchNextChar() == '=') {
+                        if (n == '=') {
                             theOperator += sc.moveToNextChar();
                             return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_MULTIPLY_EQUALS);
                         }
                     }
 
                     case '/': {
-                        if (sc.fetchNextChar() == '=') {
+                        if (n == '=') {
                             theOperator += sc.moveToNextChar();
                             return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_DIVIDE_EQUALS);
                         }
                     }
 
                     case '%': {
-                        if (sc.fetchNextChar() == '=') {
+                        if (n == '=') {
                             theOperator += sc.moveToNextChar();
                             return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_MODULUS_EQUALS);
                         }
                     }
 
                     case '^': {
-                        if (sc.fetchNextChar() == '=') {
+                        if (n == '=') {
                             theOperator += sc.moveToNextChar();
                             return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_EXPONENT_EQUALS);
                         }
                     }
 
                     case '>': {
-                        if (sc.fetchNextChar() == '=') {
+                        if (n == '=') {
                             theOperator += sc.moveToNextChar();
                             return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_GREATER_THAN_OR_EQUAL_TO);
                         }
                     }
 
                     case '<': {
-                        if (sc.fetchNextChar() == '=') {
+                        if (n == '=') {
                             theOperator += sc.moveToNextChar();
                             return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_LESS_THAN_OR_EQUAL_TO);
                         }

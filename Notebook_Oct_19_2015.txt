@@ -107,3 +107,10 @@ I just finished the test in the lexer for symbols. I have decided that the minus
 not at the beginning of the number literal test (it was in both originally, but now it is only in the operator test). In the
 parser, I will have to create a test that finds a minus sign and then a number and use that whenever I need to find a number
 in general.
+
+----------------------------------------------
+
+I added a feature in TheCompilerFramework where instead of having token types be integers, they are instead strings. This
+has allowed me to print out the token type when I am debugging. So far, I have only had to fix a few small bugs. I am going
+to create a file called test.txt where I will place all of my test code so that I do not have to recompile the program whenever
+I change the test code.
