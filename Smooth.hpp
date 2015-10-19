@@ -154,13 +154,18 @@ namespace cpt
             return std::strtol(text.c_str(), &endPtr, 10);
         }
 
+        int _SMOOTH_int(char c)
+        {
+            return static_cast<int>(c);
+        }
+
         int _SMOOTH_len(std::string s)
         {
             return s.length();
         }
 
         template<typename T>
-        std::vector<T> _SMOOTH_createList()
+        std::vector<T> _SMOOTH_list()
         {
             return std::vector<T> { };
         }
@@ -284,6 +289,13 @@ namespace cpt
             }
 
             return sum;
+        }
+
+        // SMOOTH FUNCTIONS
+        template <typename T>
+        void _SMOOTH_append(std::vector<T>& container, T item)
+        {
+            container.push_back(item);
         }
 
     }

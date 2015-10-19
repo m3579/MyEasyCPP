@@ -42,13 +42,14 @@
 		<Unit filename="BNF.txt" />
 		<Unit filename="MyLexer.hpp" />
 		<Unit filename="Notebook_Oct_04_2015.txt" />
-		<Unit filename="Notebook_Oct_05_2015.rtf" />
+		<Unit filename="Notebook_Oct_05_2015.txt" />
 		<Unit filename="Notebook_Oct_08_2015.txt" />
 		<Unit filename="Notebook_Oct_09_2015.txt" />
 		<Unit filename="Notebook_Oct_10_2015.txt" />
 		<Unit filename="Notebook_Oct_14_2015.txt" />
 		<Unit filename="Notebook_Oct_15_2015.txt" />
 		<Unit filename="Notebook_Oct_17_2015.txt" />
+		<Unit filename="Notebook_Oct_19_2015.txt" />
 		<Unit filename="Notebook_Sep_10_2015.txt" />
 		<Unit filename="Notebook_Sep_11_2015.txt" />
 		<Unit filename="Notebook_Sep_12_2015.txt" />
@@ -56,6 +57,7 @@
 		<Unit filename="Notebook_Sep_16_2015.txt" />
 		<Unit filename="Notebook_Sep_7_2015.txt" />
 		<Unit filename="Notebook_Sep_9_2015.txt" />
+		<Unit filename="Smooth.hpp" />
 		<Unit filename="error.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="playground.hpp" />

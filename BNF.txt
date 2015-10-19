@@ -22,8 +22,12 @@ something else does not already have its name, etc.)
               | <namespace>
               | <use-stmt>
               | <directive>
+              | <comment>
 
                 <endchar>
+
+<comment> ::= "#" <any-character-except-newline>*
+              | "#=" <any-character>* "=#"
 
 <preprocessor-directive> ::= <macro>
                             | <error>
@@ -64,15 +68,9 @@ something else does not already have its name, etc.)
 
     (where <identifier> is a valid namespace name)
 
-<use-stmt> ::= "use" <identifier> ("." <identifier>)*
-
-    (where the first <identifier> is a valid user made type,
-     where the expression in parenthesis only exists if the first <identifier> was a namespace
-        and if the second <identifier> is a member of the previous <identifier>)
-
 ---------VARIABLES
 
-<identifier> ::= ("@")?2 [A-Za-z_$] [A-Za-z_0-9]*
+<identifier> ::= ("@")? [A-Za-z_$] [A-Za-z_0-9]*
 
     (where the "@" sign is only present if the identifier is a member)
 
@@ -84,12 +82,13 @@ something else does not already have its name, etc.)
 
 <var-decl-only> ::= "declare" <var-decl-contents>
 
-<var-decl-assign> ::= "init" (<class-name> | <struct-name>) <identifier> "(" (value ("," value))? ")"
+<var-decl-assign> ::= (<class-name> | <struct-name>) <identifier> "(" (value ("," value))? ")" ("{" (<value> ("," <value>)*)? "}")?
 
-             | ("set")? s<var-decl-content> ("=" <value>)?
+             | ("set")? <var-decl-content> ("=" <value>)?
 
     (where <value> is of type <type>,
-     where <positive-integer> is a positive integer)
+     where <positive-integer> is a positive integer,
+     where the clause enclosed in braces contains the values that the container (if the variable is a container) will be initialized with)
 
 <member-decl-contents> ::= <access-mod>? <identifier> ":" <type>
 
@@ -115,7 +114,7 @@ something else does not already have its name, etc.)
               ("else" <block-stmts>)?
 
 <for-loop> ::= "for " <identifier> ":" <type> " from " <numeric-value> " to " <numeric-value> <block-stmts>
-             | "for " <identifier> ":" <type> " in " (<string-value> | <list-value>) <block-stmts>
+             | "for " <identifier> (":" <type> " in ")? (<string-value> | <list-value>) <block-stmts>
 
     (where <list-value> is a valid variable of a list type)
 
@@ -216,30 +215,30 @@ VALUES:
 
 (where <filename> is a valid filename on user's operating system)
 
-<macro> ::= "DefineMacro" <identifier>
+<macro> ::= "DefineMacro" ":" <identifier>
             "(" (("|" <identifier> "|") | <identifier>) ("," ("|" <identifier> "|") | <identifier>))*)? ")"
             "="
             ( ("|" <any-characters> "|") | <value>) )
 
     (where <identifier> is a valid macro name)
 
-<error> ::= "RaiseError" <value> | ("|" <any-characters> "|")
+<error> ::= "RaiseError" ":" <value> | ("|" <any-characters> "|")
 
-<if-dir> ::= "If" <boolean-value> <block-stmts>
-             ("@" "orif" <boolean-value> <block-stmts>)*
-             ("@" "else" <block-stmts>)?
+<if-dir> ::= "If" ":" <boolean-value> <block-stmts>
+             ("@" "orif" ":" <boolean-value> <block-stmts>)*
+             ("@" "else" ":" <block-stmts>)?
 
-<ifdef> ::= "IfDefined" <identifier> <block-stmts>
+<ifdef> ::= "IfDefined" ":" <identifier> <block-stmts>
 
-<ifndef> ::= "IfNotDefined" <identifier> <block-stmts>
+<ifndef> ::= "IfNotDefined" ":" <identifier> <block-stmts>
 
-<undef> ::= "Undefine" <identifier>
+<undef> ::= "Undefine" ":" <identifier>
 
-<access> ::= "AccessFile" <filename>
+<access> ::= "AccessFile" ":" ("\n")?  (<filename> (("." <member>)*)?) ("\n" (<filename> (("." <member>)*)?))*
 
-<use> ::= "UseCPPCode" ( <filename> ( <filename> "\n")* )?
+<use> ::= "UseCPP" ":" ("\n")? (<filename> (("." <member>)*)?) ("\n" (<filename> (("." <member>)*)?))*
 
-<setline> ::= "SetLine" <numeric-value> (<filename>)
+<setline> ::= "SetLine" ":" <numeric-value> (<filename>)
 
 ---------MISCELLANEOUS
 

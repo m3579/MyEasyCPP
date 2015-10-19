@@ -1,0 +1,109 @@
+I am trying to come up with a new syntax for variable declarations.
+
+int i = 100
+
+This is the one that most people are familiar with.
+
+i : int = 100
+
+This is new, but it looks nice.
+
+i = 100
+
+This one implicitly infers the type.
+
+i: Int = 100
+
+I guess you could emulate that with this:
+
+i: int = 100
+
+I think that this syntax is good.
+
+(The i : int = 100, I mean)
+
+Let me write another sample program to get a feel for the language:
+
+UseCPP: cstdio
+
+AccessFile: smooth
+
+start
+
+    letters : $list<char>()
+
+    while $input("Enter a number: ") != "":
+        $append(letters, getchar())
+
+    map : $dict<char, int>() {
+            {'a', 1},
+            {'b', 2},
+            {'c', 3},
+            {'d', 4},
+            {'e', 5},
+            {'f', 6},
+            {'g', 7},
+            {'h', 8},
+            {'i', 9},
+            {'j', 10},
+            {'k', 11},
+            {'l', 12},
+            {'m', 13},
+            {'n', 14},
+            {'o', 15},
+            {'p', 16},
+            {'q', 17},
+            {'r', 18},
+            {'s', 19},
+            {'t', 20},
+            {'u', 21},
+            {'v', 22},
+            {'w', 23},
+            {'x', 24},
+            {'y', 25},
+            {'z', 26},
+        }
+
+    numbers : $list<int>()
+
+    for char in letters:
+        $append(numbers, map[char])
+
+
+
+end
+
+I was first going to write a program to take a number of character inputs and then sort them alphabetically, but I think
+I will do something simpler:
+
+UseCPP:
+    cstdio
+    algorithm
+
+AccessFile: Smooth
+
+start
+
+    numbers : $list<int>()
+
+    while $input("Enter a number: ") != -1:
+        $append(numbers, $int(getchar()))
+
+    std.sort(numbers.begin(), numbers.end())
+
+    for i in numbers:
+        $write(i)
+
+end
+
+I think I feel comfortable with this, especially using Smooth.
+
+SO far in my lexer, I have been working on tests for features I have added recently, like Smooth functions. I will treat them
+differently from other functions because their names will need to be changed (replace the $ sign with _SMOOTH_).
+
+---------------------------------------------
+
+I just finished the test in the lexer for symbols. I have decided that the minus sign belongs in the operator test and
+not at the beginning of the number literal test (it was in both originally, but now it is only in the operator test). In the
+parser, I will have to create a test that finds a minus sign and then a number and use that whenever I need to find a number
+in general.

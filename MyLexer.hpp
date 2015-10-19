@@ -111,6 +111,20 @@ createTokenType(TTYPE_OPERATOR_EXPONENT_EQUALS);
 createTokenType(TTYPE_OPERATOR_GREATER_THAN_OR_EQUAL_TO);
 createTokenType(TTYPE_OPERATOR_LESS_THAN_OR_EQUAL_TO);
 
+// symbols
+createTokenType(TTYPE_SYMBOL_LPAR);
+createTokenType(TTYPE_SYMBOL_RPAR);
+createTokenType(TTYPE_SYMBOL_LBRACKET);
+createTokenType(TTYPE_SYMBOL_RBRACKET);
+createTokenType(TTYPE_SYMBOL_LBRACE);
+createTokenType(TTYPE_SYMBOL_RBRACE);
+createTokenType(TTYPE_SYMBOL_COLON);
+createTokenType(TTYPE_SYMBOL_COMMA);
+createTokenType(TTYPE_SYMBOL_ARROW);
+createTokenType(TTYPE_SYMBOL_POUND_EQUALS);
+createTokenType(TTYPE_SYMBOL_POUND);
+createTokenType(TTYPE_SYMBOL_EQUALS_POUND);
+
 // miscellaneous
 createTokenType(TTYPE_IDENTIFIER);
 createTokenType(TTYPE_SMOOTH_IDENTIFIER);
@@ -181,8 +195,7 @@ lexer::Lexer createLexer(const char* sourceCode)
     {
         char currChar = sc.getCurrentChar();
 
-        if (contains(NUMBER_LITERAL_CHARS, currChar)
-            || currChar == '-') {
+        if (contains(NUMBER_LITERAL_CHARS, currChar)) {
             std::string number(1, currChar);
             int lineNumber = sc.getLineNumber();
             int columnNumber = sc.getColumnNumber();
@@ -425,6 +438,53 @@ lexer::Lexer createLexer(const char* sourceCode)
                         return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_LITERALIZER);
                     }
                 }
+            }
+        }
+
+        return Token();
+    }
+    endTest
+
+    // SYMBOLS SYMBOLS SYMBOLS SYMBOLS SYMBOLS
+    makeTest(sc)
+    {
+        char c = sc.getCurrentChar();
+        int lineNumber = sc.getLineNumber();
+        int columnNumber = sc.getColumnNumber();
+
+        if (c == '(') return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_LPAR);
+        if (c == ')') return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_RPAR);
+        if (c == '[') return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_LBRACKET);
+        if (c == ']') return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_RBRACKET);
+        if (c == '{') return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_LBRACE);
+        if (c == '}') return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_RBRACE);
+        if (c == ':') return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_COLON);
+        if (c == ',') return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_COMMA);
+
+        if (c == '-') {
+            if (sc.fetchNextChar() == '>') {
+                return Token(lineNumber, columnNumber, std::string(1, c) + std::string(1, sc.moveToNextChar()), TTYPE_SYMBOL_ARROW);
+            }
+            else {
+                return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_OPERATOR_MINUS);
+            }
+        }
+
+        if (c == '#') {
+            if (sc.fetchNextChar() == '=') {
+                return Token(lineNumber, columnNumber, std::string(1, c) + std::string(1, sc.moveToNextChar(), TTYPE_SYMBOL_POUND_EQUALS));
+            }
+            else {
+                return Token(lineNumber, columNumber, std::string(1, c), TTYPE_SYMBOL_POUND);
+            }
+        }
+
+        if (c == '=') {
+            if (sc.fetchNextChar() == '#') {
+                return Token(lineNumber, columnNumber, std::string(1, c) + std::string(1, sc.moveToNextChar()), TTYPE_SYMBOL_EQUALS_POUND);
+            }
+            else {
+                return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_OPERATOR_EQUALS);
             }
         }
 
