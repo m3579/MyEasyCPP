@@ -40,6 +40,11 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="BNF.txt" />
+		<Unit filename="Logo_face.png" />
+		<Unit filename="Logo_plain.png" />
+		<Unit filename="Logo_skinny.png" />
+		<Unit filename="Logo_smooth.png" />
+		<Unit filename="Logo_wide.png" />
 		<Unit filename="MyLexer.hpp" />
 		<Unit filename="Notebook_Oct_04_2015.txt" />
 		<Unit filename="Notebook_Oct_05_2015.txt" />

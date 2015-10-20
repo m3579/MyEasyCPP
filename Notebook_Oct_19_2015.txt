@@ -114,3 +114,8 @@ I added a feature in TheCompilerFramework where instead of having token types be
 has allowed me to print out the token type when I am debugging. So far, I have only had to fix a few small bugs. I am going
 to create a file called test.txt where I will place all of my test code so that I do not have to recompile the program whenever
 I change the test code.
+
+----------------------------------------------
+
+I made several logos for C+2: a logo for Smooth, a logo for just text, and three image logos. The Smooth logo and the text
+logo are staying; I have decided on Logo_skinny.png for the image logo.
