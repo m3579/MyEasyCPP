@@ -92,29 +92,30 @@ something else does not already have its name, etc.)
 
 ---------DECLARATIONS
 
-<var-decl-contents> ::= (<identifier> (":" <type>)?) | (<identifier> ":" <type> "[" "]" "of" <positive-integer>)?
+<var-stmt> ::= ("set")?
+                <identifier> ":" ("Copying" ":")? (<class-name> | <struct-name>) "(" (value ("," value))? ")" ("{" (<value> ("," <value>)*)? "}")?
+                | (<identifier> (":" <type>)?) | (<identifier> ":" <type> "[" "]" "of" <positive-integer>)?
 
-    (where <identifier> is a valid variable name)
+                ("=" <value>)?
 
-<var-decl-only> ::= <var-decl-contents>
-
-<var-decl-assign> ::= <identifier> ":" (<class-name> | <struct-name>) "(" (value ("," value))? ")" ("{" (<value> ("," <value>)*)? "}")?
-
-             | ("set")? <var-decl-content> ("=" <value>)?
-
-    (where <value> is of type <type>,
+    (where <identifier> is a valid variable name,
+     where <value> is of type <type>,
      where <positive-integer> is a positive integer,
      where the clause enclosed in braces contains the values that the container (if the variable is a container) will be initialized with)
 
-<member-decl-contents> ::= <access-mod>? <identifier> ":" <type>
+<member-stmt> ::= ("set")?
+                 <access-mod>?
 
-    (where <identifier> is a valid member name)
+                <identifier> ":" ("Copying" ":") <class-name> | <struct-name>) "(" (value ("," value))? ")" ("{" (<value> ("," <value>)*)? "}")?
+                | (<identifier> (":" <type>)?) | (<identifier> ":" <type> "[" "]" "of" <positive-integer>)?)
 
-<member-decl-only> ::= <member-decl-contents>
+                ("=" <value>)?
 
-<member-decl-assign> ::= <member-decl-contents> ("=" <value>)?
+    (where <identifier> is a valid member name,
+     where <value> is of type <type>,
+     where <positive-integer> is a positive integer,
+     where the clause enclosed in braces contains the values that the container (if the variable is a container) will be initialized with)
 
-    (where <value> is of type <type>)
 
 <func-decl-contents> ::= ("override")? "func " <identifier> ("<" <type> ("," <type>)* ">")? "(" ( (<identifier> ":")? <type> ("," (<identifier> ":")? <type>)* )? ")" ("->" <type>)?
 
@@ -197,8 +198,7 @@ STRINGS:
 
 MEMORY:
     <pointer> ::= "Pointer" ":" <type>
-                | "WeakSingle" ":" <type>
-                | "Single" ":" <type>
+                | "WeakVar" ":" <type>
                 | <pointer-variable>
 
         (where <pointer-variable> is a variable of a pointer type)
@@ -261,10 +261,8 @@ VALUES:
 ---------MISCELLANEOUS
 
 <object-member-access> ::= <object-variable> "." <member>
-                         | <object-pointer-variable> "->" <member>
 
-    (where <object-variable> is a variable of an object type
-     where <object-pointer-variable> is a pointer to an object
+    (where <object-variable> is a variable of an object type or a pointer to a variable of am object type
      where <member> is either a property of the object or a <call> on a method in the object with the appropriate arguments)
 
 <access-mod> ::= "visible" | "hidden" | "inherited"

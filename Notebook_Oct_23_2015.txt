@@ -5,3 +5,39 @@ again. Other than that, it was mostly little details that I changed.
 
 My lexer cannot read any of the source code yet, for some reason. It only recognizes comments. That's weird; I will have to fix
 that (obviously).
+
+------------------------------------------------
+
+I decided earlier today that, because the goal of this language is not to provide "compatibility" with C++ (or to act like C++
+is a better way to phrase it), I will make objects a reference variable (a Java-style reference, not C++, so a C++ dynamically
+allocated pointer) by default, and the programmer will have to specify "Copying:" for normal objects.
+
+You can now declare an object like this:
+
+var : Object
+
+This declares a new object, but does not initialize it, like this:
+
+var : Object()
+
+This is to protect against ambiguity.
+
+------------------------------------------------
+I am going to rewrite a C++ program with the new C+2 rules.
+
+int main()
+{
+    Object* myObject = new Object(2);
+    myObject->call(2)
+    delete myObject
+}
+
+start
+    myObject : Object(2)
+    myObject.call(2)
+end
+
+Looks good.
+
+While I was writing this code sample, I changed something in the BNF: now, all method/member access's are made using the dot operator
+to make things simpler. No more -> operator; just . now.
