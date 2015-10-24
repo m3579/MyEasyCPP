@@ -1,1 +1,68 @@
-let var : int *= 1.0 / -2^abc
+#=This is a multiline comment=#
+
+# This is a single line comment
+
+start
+
+declare array: int [] of 2
+
+myclass : MyClass(value, value) { 1, 2, 3 }; set var : int = 2
+
+declare inherited member : int
+
+visible memberInt :int = 2
+
+if true:
+    std.cout <-- "Hello";
+orif false: std.cin --> member; else:
+    $myvar = 2
+
+for i : int from 1 -> 3:
+    for c : char in mystring:
+        $write(c)
+    break
+
+while true:
+    $write("Hello")
+    continue
+
+func doSomething<int, int> (arg1 : int, arg2 : int) -> int:
+    return 2
+
+declare func doSomethingElse()
+
+generic class Hello:;
+    override func hi() -> std.string:
+        @var = 2
+        return "Hello, World!";
+
+namespace Hello:
+    i : int
+
+use Hello.i
+
+- DefineMacro: macro(|hello|) |hello|
+
+- RaiseError: 2
+
+- If true:
+    - DefineMacro: mac
+- Orif false:
+    - DefineMacro: win
+- Else:
+    - DefineMacro: lin
+
+- IfDefined mac: -Undefine: mac
+
+- AccessFile: smooth
+
+- UseCPP: iostream
+
+- SetLine: 2 andFilename: file.cp2
+
+for i : int from 1 to 20:
+    skip
+
+object.call(function, object.arg1, 2.1234, -3)
+
+end

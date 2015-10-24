@@ -1,0 +1,7 @@
+I have been writing a test file for the lexer. It will contain (almost) all of the rules in the BNF (by which I mean it contains
+code samples that use these rules). As such, I had to go through the BNF. I found some mistakes, some outdated things, some things
+I changed to make them better. One major change is that I made it so that preprocessor directives have to start with a "-" sign
+again. Other than that, it was mostly little details that I changed.
+
+My lexer cannot read any of the source code yet, for some reason. It only recognizes comments. That's weird; I will have to fix
+that (obviously).

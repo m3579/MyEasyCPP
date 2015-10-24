@@ -30,6 +30,8 @@ void testLexer()
         while (std::getline(input, line)) {
             sourceCode += line + "\n";
         }
+
+        sourceCode += "\0";
     }
     else {
         std::cout << "Could not open file\n";
@@ -44,9 +46,9 @@ void testLexer()
 
     for (auto it = tokens.begin(); it != tokens.end(); it++) {
         std::cout << "Token:\n"
-                  << "\t" << it->getText() << "\n"
+                  << "\t|" << it->getText() << "|\n"
                   << "\t" << it->getLineNumber() << " " << it->getColumnNumber() << "\n"
-                  << "\t|" << it->getType() << "|\n";
+                  << "\t" << it->getType() << "\n";
     }
 }
 
@@ -58,11 +60,7 @@ int main()
     catch(const char* message) {
         std::cout << "Error in compiler: " << message << "\n";
     }
-    catch(quitexception& qex) {
-        std::cout << qex.what() << "\n";
-    }
     catch(std::exception& ex) {
-        std::cout << "Error in compiler:\n"
-                  << "\t" << ex.what() << "\n";
+        std::cout << "Error in compiler:" << ex.what() << "\n";
     }
 }

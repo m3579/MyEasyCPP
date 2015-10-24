@@ -52,9 +52,10 @@ createTokenType(TTYPE_KEYWORD_ORIF);
 createTokenType(TTYPE_KEYWORD_ELSE);
 createTokenType(TTYPE_KEYWORD_FOR);
 createTokenType(TTYPE_KEYWORD_FROM);
-createTokenType(TTYPE_KEYWORD_TO);
 createTokenType(TTYPE_KEYWORD_IN);
 createTokenType(TTYPE_KEYWORD_WHILE);
+createTokenType(TTYPE_KEYWORD_BREAK);
+createTokenType(TTYPE_KEYWORD_CONTINUE);
 createTokenType(TTYPE_KEYWORD_GENERIC);
 createTokenType(TTYPE_KEYWORD_IS_A_OR_AN);
 createTokenType(TTYPE_KEYWORD_POINTER);
@@ -110,6 +111,8 @@ createTokenType(TTYPE_OPERATOR_MODULUS_EQUALS);
 createTokenType(TTYPE_OPERATOR_EXPONENT_EQUALS);
 createTokenType(TTYPE_OPERATOR_GREATER_THAN_OR_EQUAL_TO);
 createTokenType(TTYPE_OPERATOR_LESS_THAN_OR_EQUAL_TO);
+createTokenType(TTYPE_OPERATOR_RIGHT_ARROW);
+createTokenType(TTYPE_OPERATOR_LEFT_ARROW);
 
 // symbols
 createTokenType(TTYPE_SYMBOL_LPAR);
@@ -121,14 +124,12 @@ createTokenType(TTYPE_SYMBOL_RBRACE);
 createTokenType(TTYPE_SYMBOL_COLON);
 createTokenType(TTYPE_SYMBOL_COMMA);
 createTokenType(TTYPE_SYMBOL_ARROW);
-createTokenType(TTYPE_SYMBOL_POUND_EQUALS);
-createTokenType(TTYPE_SYMBOL_POUND);
-createTokenType(TTYPE_SYMBOL_EQUALS_POUND);
 
 // miscellaneous
 createTokenType(TTYPE_IDENTIFIER);
 createTokenType(TTYPE_SMOOTH_IDENTIFIER);
 createTokenType(TTYPE_SYNTAX_ERROR);
+createTokenType(TTYPE_COMMENT);
 
 // IDENTIFYING CHARACTERS
 const std::string& WHITESPACE_CHARS = " \t";
@@ -161,8 +162,8 @@ lexer::Lexer createLexer(const char* sourceCode)
     makeTest(sc)
     {
         if ((sc.getCurrentChar() == '\n')
-          | (sc.getCurrentChar() == ';')
-          | (sc.getCurrentChar() == '\0')) {
+            || (sc.getCurrentChar() == ';')
+            || (sc.getCurrentChar() == '\0')) {
             sc.finished = true;
             return Token(sc.getLineNumber(), sc.getColumnNumber(), std::string(1, sc.getCurrentChar()), TTYPE_ENDCHAR);
         }
@@ -353,7 +354,13 @@ lexer::Lexer createLexer(const char* sourceCode)
                     case '-': {
                         if (n == '-') {
                             theOperator += sc.moveToNextChar();
-                            return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_DECREMENT);
+                            if (sc.fetchNextChar() == '>') {
+                                theOperator += sc.moveToNextChar();
+                                return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_RIGHT_ARROW);
+                            }
+                            else {
+                                return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_DECREMENT);
+                            }
                         }
                         else if (n == '=') {
                             theOperator += sc.moveToNextChar();
@@ -400,6 +407,13 @@ lexer::Lexer createLexer(const char* sourceCode)
                         if (n == '=') {
                             theOperator += sc.moveToNextChar();
                             return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_LESS_THAN_OR_EQUAL_TO);
+                        }
+                        else if (n == '-') {
+                            theOperator += sc.moveToNextChar();
+                            if (sc.fetchNextChar() == '-') {
+                                theOperator += sc.moveToNextChar();
+                                return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_LEFT_ARROW);
+                            }
                         }
                     }
 
@@ -472,20 +486,38 @@ lexer::Lexer createLexer(const char* sourceCode)
         }
 
         if (c == '#') {
-            if (sc.fetchNextChar() == '=') {
-                return Token(lineNumber, columnNumber, std::string(1, c) + std::string(1, sc.moveToNextChar()), TTYPE_SYMBOL_POUND_EQUALS);
-            }
-            else {
-                return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_POUND);
-            }
-        }
+            int lineNumber = sc.getLineNumber();
+            int columnNumber = sc.getColumnNumber();
+            std::string comment(1, c);
 
-        if (c == '=') {
-            if (sc.fetchNextChar() == '#') {
-                return Token(lineNumber, columnNumber, std::string(1, c) + std::string(1, sc.moveToNextChar()), TTYPE_SYMBOL_EQUALS_POUND);
+            if (sc.fetchNextChar() == '=') {
+                sc.moveToNextChar();
+                comment += sc.getCurrentChar();
+
+                while (sc.hasMoreSource()) {
+                    sc.moveToNextChar();
+                    comment += sc.getCurrentChar();
+                    if (sc.getCurrentChar() == '=') {
+                        sc.moveToNextChar();
+                        comment += sc.getCurrentChar();
+                        if (sc.getCurrentChar() == '#') {
+                            comment += sc.getCurrentChar();
+                            return Token(lineNumber, columnNumber, comment, TTYPE_COMMENT);
+                        }
+                    }
+                }
+
+                return Token(sc.getLineNumber(), sc.getColumnNumber(), comment, TTYPE_SYNTAX_ERROR, "You never finished this comment", true);
+
             }
             else {
-                return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_OPERATOR_EQUALS);
+                while ((sc.fetchNextChar() != '\n')
+                       && (sc.fetchNextChar() != '\0')) {
+                    sc.moveToNextChar();
+                    comment += sc.getCurrentChar();
+                }
+
+                return Token(lineNumber, columnNumber, comment, TTYPE_COMMENT);
             }
         }
 
@@ -552,9 +584,10 @@ void initTextToTTYPEMap()
     textToTTYPE["else"]      = TTYPE_KEYWORD_ELSE;
     textToTTYPE["for"]       = TTYPE_KEYWORD_FOR;
     textToTTYPE["from"]      = TTYPE_KEYWORD_FROM;
-    textToTTYPE["to"]        = TTYPE_KEYWORD_TO;
     textToTTYPE["in"]        = TTYPE_KEYWORD_IN;
     textToTTYPE["while"]     = TTYPE_KEYWORD_WHILE;
+    textToTTYPE["break"]     = TTYPE_KEYWORD_BREAK;
+    textToTTYPE["continue"]  = TTYPE_KEYWORD_CONTINUE;
     textToTTYPE["generic"]   = TTYPE_KEYWORD_GENERIC;
     textToTTYPE["is_a"]      = TTYPE_KEYWORD_IS_A_OR_AN;
     textToTTYPE["is_an"]     = TTYPE_KEYWORD_IS_A_OR_AN;

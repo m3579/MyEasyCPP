@@ -16,6 +16,7 @@ something else does not already have its name, etc.)
               | <if-stmt>
               | <for-loop>
               | <while-loop>
+              | <loop-control-stmt>
               | <function>
               | <return-stmt>
               | <class>
@@ -23,13 +24,19 @@ something else does not already have its name, etc.)
               | <use-stmt>
               | <directive>
               | <comment>
+              | <placeholder>
+
+              | ""
+
+                <comment>?
 
                 <endchar>
 
 <comment> ::= "#" <any-character-except-newline>*
               | "#=" <any-character>* "=#"
 
-<preprocessor-directive> ::= <macro>
+<preprocessor-directive> ::= <ppd-start-char>
+                              <macro>
                             | <error>
                             | <if-dir>
                             | <ifdef>
@@ -68,6 +75,15 @@ something else does not already have its name, etc.)
 
     (where <identifier> is a valid namespace name)
 
+<use-stmt> ::= "use" <namespace> ("." <member>)*
+
+    (where <namespace> is a valid namespace,
+     where <member> is a valid member in that namespace or in the previous member)
+
+<placeholder> ::= "skip"
+
+<ppd-start-char> ::= "-"
+
 ---------VARIABLES
 
 <identifier> ::= ("@")? [A-Za-z_$] [A-Za-z_0-9]*
@@ -76,13 +92,13 @@ something else does not already have its name, etc.)
 
 ---------DECLARATIONS
 
-<var-decl-contents> ::= (<identifier> (":" <type>)?) | (<identifier> ":" <type> "[" "]" ("of" <positive-integer>))?
+<var-decl-contents> ::= (<identifier> (":" <type>)?) | (<identifier> ":" <type> "[" "]" "of" <positive-integer>)?
 
     (where <identifier> is a valid variable name)
 
-<var-decl-only> ::= "declare" <var-decl-contents>
+<var-decl-only> ::= <var-decl-contents>
 
-<var-decl-assign> ::= (<class-name> | <struct-name>) <identifier> "(" (value ("," value))? ")" ("{" (<value> ("," <value>)*)? "}")?
+<var-decl-assign> ::= <identifier> ":" (<class-name> | <struct-name>) "(" (value ("," value))? ")" ("{" (<value> ("," <value>)*)? "}")?
 
              | ("set")? <var-decl-content> ("=" <value>)?
 
@@ -94,7 +110,7 @@ something else does not already have its name, etc.)
 
     (where <identifier> is a valid member name)
 
-<member-decl-only> ::= "declare" <member-decl-contents>
+<member-decl-only> ::= <member-decl-contents>
 
 <member-decl-assign> ::= <member-decl-contents> ("=" <value>)?
 
@@ -105,7 +121,7 @@ something else does not already have its name, etc.)
     (where <identifier> is a valid function name,
      where "override" is only there if the function overrides one in the superclass)
 
-<func-decl-only> ::= "declare" <func-decl-contents>
+<func-decl-only> ::= <func-decl-contents>
 
 ---------CONTROL
 
@@ -113,12 +129,14 @@ something else does not already have its name, etc.)
               ("orif " <boolean-value> <block-stmts>)*
               ("else" <block-stmts>)?
 
-<for-loop> ::= "for " <identifier> ":" <type> " from " <numeric-value> " to " <numeric-value> <block-stmts>
+<for-loop> ::= "for " <identifier> ":" <type> " from " <numeric-value> "->" <numeric-value> <block-stmts>
              | "for " <identifier> (":" <type> " in ")? (<string-value> | <list-value>) <block-stmts>
 
     (where <list-value> is a valid variable of a list type)
 
 <while-loop> ::= "while " <boolean-value> <block-stmts>
+
+<loop-control-stmt> ::= "break" | "continue"
 
 <function> ::= <func-decl-contents> (<block-stmts>)?
 
@@ -222,15 +240,15 @@ VALUES:
 
     (where <identifier> is a valid macro name)
 
-<error> ::= "RaiseError" ":" <value> | ("|" <any-characters> "|")
+<error> ::= "RaiseError" ":" <value>
 
-<if-dir> ::= "If" ":" <boolean-value> <block-stmts>
-             ("@" "orif" ":" <boolean-value> <block-stmts>)*
-             ("@" "else" ":" <block-stmts>)?
+<if-dir> ::= "If" <boolean-value> <block-stmts>
+             (<ppd-start-char> "Orif" <boolean-value> <block-stmts>)*
+             (<ppd-start-char> "Else" <block-stmts>)?
 
-<ifdef> ::= "IfDefined" ":" <identifier> <block-stmts>
+<ifdef> ::= "IfDefined" <identifier> <block-stmts>
 
-<ifndef> ::= "IfNotDefined" ":" <identifier> <block-stmts>
+<ifndef> ::= "IfNotDefined" <identifier> <block-stmts>
 
 <undef> ::= "Undefine" ":" <identifier>
 
@@ -238,7 +256,7 @@ VALUES:
 
 <use> ::= "UseCPP" ":" ("\n")? (<filename> (("." <member>)*)?) ("\n" (<filename> (("." <member>)*)?))*
 
-<setline> ::= "SetLine" ":" <numeric-value> (<filename>)
+<setline> ::= "SetLine" ":" <numeric-value> "andFilename" ":" (<filename>)
 
 ---------MISCELLANEOUS
 
