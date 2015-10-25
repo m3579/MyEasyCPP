@@ -61,6 +61,6 @@ int main()
         std::cout << "Error in compiler: " << message << "\n";
     }
     catch(std::exception& ex) {
-        std::cout << "Error in compiler:" << ex.what() << "\n";
+        std::cout << "Error in compiler: " << ex.what() << "\n";
     }
 }

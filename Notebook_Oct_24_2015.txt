@@ -1,0 +1,4 @@
+I am working on the lexer right now. I fixed the bug that it wouldn't go past the first line (I had accidentally included it
+in the other characters that the program should exit after), but after testing, there are some more bugs. I introduced a temporary
+construct, stoptesting, that will stop the lexer at that point in the program as if the program ended there, to ease testing. Right
+now, I am fixing a bug that the program does not recognize a tab (I think that that is what it is).

@@ -100,6 +100,7 @@ createTokenType(TTYPE_OPERATOR_GREATER_THAN);
 createTokenType(TTYPE_OPERATOR_EQUALS);
 createTokenType(TTYPE_OPERATOR_COLON);
 createTokenType(TTYPE_OPERATOR_LITERALIZER);
+createTokenType(TTYPE_OPERATOR_EQUALS_SIGN);
 
 createTokenType(TTYPE_OPERATOR_INCREMENT);
 createTokenType(TTYPE_OPERATOR_DECREMENT);
@@ -123,6 +124,7 @@ createTokenType(TTYPE_SYMBOL_LBRACE);
 createTokenType(TTYPE_SYMBOL_RBRACE);
 createTokenType(TTYPE_SYMBOL_COLON);
 createTokenType(TTYPE_SYMBOL_COMMA);
+createTokenType(TTYPE_SYMBOL_PERIOD);
 createTokenType(TTYPE_SYMBOL_ARROW);
 
 // miscellaneous
@@ -161,11 +163,14 @@ lexer::Lexer createLexer(const char* sourceCode)
     // ENDCHAR ENDCHAR ENDCHAR ENDCHAR ENDCHAR
     makeTest(sc)
     {
-        if ((sc.getCurrentChar() == '\n')
-            || (sc.getCurrentChar() == ';')
-            || (sc.getCurrentChar() == '\0')) {
-            sc.finished = true;
-            return Token(sc.getLineNumber(), sc.getColumnNumber(), std::string(1, sc.getCurrentChar()), TTYPE_ENDCHAR);
+        char c = sc.getCurrentChar();
+        if ((c == '\n')
+            || (c == ';')
+            || (c == '\0')) {
+
+            if (c == '\0') sc.finished = true;
+
+            return Token(sc.getLineNumber(), sc.getColumnNumber(), std::string(1, c), TTYPE_ENDCHAR);
         }
 
         return Token();
@@ -175,8 +180,9 @@ lexer::Lexer createLexer(const char* sourceCode)
     // WHITESPACE WHITESPACE WHITESPACE WHITESPACE
     makeTest(sc)
     {
-        if (contains(WHITESPACE_CHARS, sc.getCurrentChar())) {
-            std::string whitespace(1, sc.getCurrentChar());
+        char c = sc.getCurrentChar();
+        if (contains(WHITESPACE_CHARS, c)) {
+            std::string whitespace(1, c);
             int lineNumber = sc.getLineNumber();
             int columnNumber = sc.getColumnNumber();
 
@@ -275,6 +281,11 @@ lexer::Lexer createLexer(const char* sourceCode)
                 word += sc.moveToNextChar();
             }
 
+            if (word == "stoptesting") {
+                sc.finished = true;
+                return Token(lineNumber, columnNumber, word, TTYPE_ENDCHAR);
+            }
+
             if (textToTTYPE.find(word) != textToTTYPE.end()) {
                 return Token(lineNumber, columnNumber, word, textToTTYPE[word]);
             }
@@ -287,6 +298,7 @@ lexer::Lexer createLexer(const char* sourceCode)
     }
     endTest
 
+    // SMOOTH
     makeTest(sc)
     {
         char c = sc.getCurrentChar();
@@ -452,6 +464,10 @@ lexer::Lexer createLexer(const char* sourceCode)
                     case '|': {
                         return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_LITERALIZER);
                     }
+
+                    case '=': {
+                        return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_EQUALS_SIGN);
+                    }
                 }
             }
         }
@@ -467,57 +483,63 @@ lexer::Lexer createLexer(const char* sourceCode)
         int lineNumber = sc.getLineNumber();
         int columnNumber = sc.getColumnNumber();
 
-        if (c == '(') return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_LPAR);
-        if (c == ')') return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_RPAR);
-        if (c == '[') return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_LBRACKET);
-        if (c == ']') return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_RBRACKET);
-        if (c == '{') return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_LBRACE);
-        if (c == '}') return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_RBRACE);
-        if (c == ':') return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_COLON);
-        if (c == ',') return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_COMMA);
+        switch(c)
+        {
+            case '(': { return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_LPAR);         break; }
+            case ')': { return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_RPAR);         break; }
+            case '[': { return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_LBRACKET);     break; }
+            case ']': { return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_RBRACKET);     break; }
+            case '{': { return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_LBRACE);       break; }
+            case '}': { return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_RBRACE);       break; }
+            case ':': { return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_COLON);        break; }
+            case ',': { return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_COMMA);        break; }
+            case '.': { return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_PERIOD);       break; }
 
-        if (c == '-') {
-            if (sc.fetchNextChar() == '>') {
-                return Token(lineNumber, columnNumber, std::string(1, c) + std::string(1, sc.moveToNextChar()), TTYPE_SYMBOL_ARROW);
-            }
-            else {
-                return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_OPERATOR_MINUS);
-            }
-        }
-
-        if (c == '#') {
-            int lineNumber = sc.getLineNumber();
-            int columnNumber = sc.getColumnNumber();
-            std::string comment(1, c);
-
-            if (sc.fetchNextChar() == '=') {
-                sc.moveToNextChar();
-                comment += sc.getCurrentChar();
-
-                while (sc.hasMoreSource()) {
-                    sc.moveToNextChar();
-                    comment += sc.getCurrentChar();
-                    if (sc.getCurrentChar() == '=') {
-                        sc.moveToNextChar();
-                        comment += sc.getCurrentChar();
-                        if (sc.getCurrentChar() == '#') {
-                            comment += sc.getCurrentChar();
-                            return Token(lineNumber, columnNumber, comment, TTYPE_COMMENT);
-                        }
+            default: {
+                if (c == '-') {
+                    if (sc.fetchNextChar() == '>') {
+                        return Token(lineNumber, columnNumber, std::string(1, c) + std::string(1, sc.moveToNextChar()), TTYPE_SYMBOL_ARROW);
+                    }
+                    else {
+                        return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_OPERATOR_MINUS);
                     }
                 }
 
-                return Token(sc.getLineNumber(), sc.getColumnNumber(), comment, TTYPE_SYNTAX_ERROR, "You never finished this comment", true);
+                if (c == '#') {
+                    int lineNumber = sc.getLineNumber();
+                    int columnNumber = sc.getColumnNumber();
+                    std::string comment(1, c);
 
-            }
-            else {
-                while ((sc.fetchNextChar() != '\n')
-                       && (sc.fetchNextChar() != '\0')) {
-                    sc.moveToNextChar();
-                    comment += sc.getCurrentChar();
+                    if (sc.fetchNextChar() == '=') {
+                        sc.moveToNextChar();
+                        comment += sc.getCurrentChar();
+
+                        while (sc.hasMoreSource()) {
+                            sc.moveToNextChar();
+                            comment += sc.getCurrentChar();
+                            if (sc.getCurrentChar() == '=') {
+                                sc.moveToNextChar();
+                                comment += sc.getCurrentChar();
+                                if (sc.getCurrentChar() == '#') {
+                                    comment += sc.getCurrentChar();
+                                    return Token(lineNumber, columnNumber, comment, TTYPE_COMMENT);
+                                }
+                            }
+                        }
+
+                        return Token(sc.getLineNumber(), sc.getColumnNumber(), comment, TTYPE_SYNTAX_ERROR, "You never finished this comment", true);
+
+                    }
+                    else {
+                        while ((sc.fetchNextChar() != '\n')
+                               && (sc.fetchNextChar() != '\0')) {
+                            sc.moveToNextChar();
+                            comment += sc.getCurrentChar();
+                        }
+
+                        return Token(lineNumber, columnNumber, comment, TTYPE_COMMENT);
+                    }
                 }
-
-                return Token(lineNumber, columnNumber, comment, TTYPE_COMMENT);
             }
         }
 
