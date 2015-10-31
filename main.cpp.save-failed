@@ -15,7 +15,6 @@
  */
 
 #include <fstream>
-#include <iomanip>
 
 #include "MyLexer.hpp"
 #include "Smooth.hpp"
@@ -45,19 +44,12 @@ void testLexer()
 
     std::vector<Token> tokens(lexr.tokenizeSource());
 
-    std::ofstream outputFile("output.txt");
-
-    std::streambuf* oldStdout = std::cout.rdbuf();
-    std::cout.rdbuf(outputFile.rdbuf());
-
     for (auto it = tokens.begin(); it != tokens.end(); it++) {
         std::cout << "Token:\n"
-                  << "\t|" << it->getText() << "|\n"
-                  << "\t" << it->getLineNumber() << " " << it->getColumnNumber() << "\n"
-                  << "\t" << it->getType() << "\n\n";
+                  << "\t\t|" << it->getText() << "|"
+                  << "\t\t" << it->getLineNumber() << " " << it->getColumnNumber()
+                  << "\t\t" << it->getType() << "\n";
     }
-
-    std::cout.rdbuf(oldStdout);
 }
 
 int main()

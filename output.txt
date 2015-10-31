@@ -1,0 +1,2316 @@
+Token:
+	|#=This is a multiline comment=##|
+	1 1
+	TTYPE_COMMENT
+
+Token:
+	|
+|
+	1 32
+	TTYPE_ENDCHAR
+
+Token:
+	|
+|
+	2 1
+	TTYPE_ENDCHAR
+
+Token:
+	|# This is a single line comment|
+	3 1
+	TTYPE_COMMENT
+
+Token:
+	|
+|
+	3 32
+	TTYPE_ENDCHAR
+
+Token:
+	|
+|
+	4 1
+	TTYPE_ENDCHAR
+
+Token:
+	|start|
+	5 1
+	TTYPE_KEYWORD_START
+
+Token:
+	|
+|
+	5 6
+	TTYPE_ENDCHAR
+
+Token:
+	|
+|
+	6 1
+	TTYPE_ENDCHAR
+
+Token:
+	|declare|
+	7 1
+	TTYPE_KEYWORD_DECLARE
+
+Token:
+	| |
+	7 8
+	TTYPE_WHITESPACE
+
+Token:
+	|array|
+	7 9
+	TTYPE_IDENTIFIER
+
+Token:
+	|: |
+	7 14
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	| |
+	7 15
+	TTYPE_WHITESPACE
+
+Token:
+	|int|
+	7 16
+	TTYPE_IDENTIFIER
+
+Token:
+	| |
+	7 19
+	TTYPE_WHITESPACE
+
+Token:
+	|[|
+	7 20
+	TTYPE_SYMBOL_LBRACKET
+
+Token:
+	|]|
+	7 21
+	TTYPE_SYMBOL_RBRACKET
+
+Token:
+	| |
+	7 22
+	TTYPE_WHITESPACE
+
+Token:
+	|of|
+	7 23
+	TTYPE_KEYWORD_OF
+
+Token:
+	| |
+	7 25
+	TTYPE_WHITESPACE
+
+Token:
+	|2|
+	7 26
+	TTYPE_INTEGER_LITERAL
+
+Token:
+	|
+|
+	7 27
+	TTYPE_ENDCHAR
+
+Token:
+	|
+|
+	8 1
+	TTYPE_ENDCHAR
+
+Token:
+	|myclass|
+	9 1
+	TTYPE_IDENTIFIER
+
+Token:
+	| |
+	9 8
+	TTYPE_WHITESPACE
+
+Token:
+	|: |
+	9 9
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	| |
+	9 10
+	TTYPE_WHITESPACE
+
+Token:
+	|MyClass|
+	9 11
+	TTYPE_IDENTIFIER
+
+Token:
+	|(|
+	9 18
+	TTYPE_SYMBOL_LPAR
+
+Token:
+	|value|
+	9 19
+	TTYPE_IDENTIFIER
+
+Token:
+	|,|
+	9 24
+	TTYPE_SYMBOL_COMMA
+
+Token:
+	| |
+	9 25
+	TTYPE_WHITESPACE
+
+Token:
+	|value|
+	9 26
+	TTYPE_IDENTIFIER
+
+Token:
+	|)|
+	9 31
+	TTYPE_SYMBOL_RPAR
+
+Token:
+	| |
+	9 32
+	TTYPE_WHITESPACE
+
+Token:
+	|{|
+	9 33
+	TTYPE_SYMBOL_LBRACE
+
+Token:
+	| |
+	9 34
+	TTYPE_WHITESPACE
+
+Token:
+	|1|
+	9 35
+	TTYPE_INTEGER_LITERAL
+
+Token:
+	|,|
+	9 36
+	TTYPE_SYMBOL_COMMA
+
+Token:
+	| |
+	9 37
+	TTYPE_WHITESPACE
+
+Token:
+	|2|
+	9 38
+	TTYPE_INTEGER_LITERAL
+
+Token:
+	|,|
+	9 39
+	TTYPE_SYMBOL_COMMA
+
+Token:
+	| |
+	9 40
+	TTYPE_WHITESPACE
+
+Token:
+	|3|
+	9 41
+	TTYPE_INTEGER_LITERAL
+
+Token:
+	| |
+	9 42
+	TTYPE_WHITESPACE
+
+Token:
+	|}|
+	9 43
+	TTYPE_SYMBOL_RBRACE
+
+Token:
+	|;|
+	9 44
+	TTYPE_ENDCHAR
+
+Token:
+	| |
+	9 45
+	TTYPE_WHITESPACE
+
+Token:
+	|set|
+	9 46
+	TTYPE_KEYWORD_SET
+
+Token:
+	| |
+	9 49
+	TTYPE_WHITESPACE
+
+Token:
+	|var|
+	9 50
+	TTYPE_IDENTIFIER
+
+Token:
+	| |
+	9 53
+	TTYPE_WHITESPACE
+
+Token:
+	|: |
+	9 54
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	| |
+	9 55
+	TTYPE_WHITESPACE
+
+Token:
+	|int|
+	9 56
+	TTYPE_IDENTIFIER
+
+Token:
+	| |
+	9 59
+	TTYPE_WHITESPACE
+
+Token:
+	|=|
+	9 60
+	TTYPE_OPERATOR_EQUALS_SIGN
+
+Token:
+	| |
+	9 61
+	TTYPE_WHITESPACE
+
+Token:
+	|2|
+	9 62
+	TTYPE_INTEGER_LITERAL
+
+Token:
+	|
+|
+	9 63
+	TTYPE_ENDCHAR
+
+Token:
+	|
+|
+	10 1
+	TTYPE_ENDCHAR
+
+Token:
+	|declare|
+	11 1
+	TTYPE_KEYWORD_DECLARE
+
+Token:
+	| |
+	11 8
+	TTYPE_WHITESPACE
+
+Token:
+	|inherited|
+	11 9
+	TTYPE_KEYWORD_INHERITED
+
+Token:
+	| |
+	11 18
+	TTYPE_WHITESPACE
+
+Token:
+	|member|
+	11 19
+	TTYPE_IDENTIFIER
+
+Token:
+	| |
+	11 25
+	TTYPE_WHITESPACE
+
+Token:
+	|: |
+	11 26
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	| |
+	11 27
+	TTYPE_WHITESPACE
+
+Token:
+	|int|
+	11 28
+	TTYPE_IDENTIFIER
+
+Token:
+	|
+|
+	11 31
+	TTYPE_ENDCHAR
+
+Token:
+	|
+|
+	12 1
+	TTYPE_ENDCHAR
+
+Token:
+	|visible|
+	13 1
+	TTYPE_KEYWORD_VISIBLE
+
+Token:
+	| |
+	13 8
+	TTYPE_WHITESPACE
+
+Token:
+	|memberInt|
+	13 9
+	TTYPE_IDENTIFIER
+
+Token:
+	| |
+	13 18
+	TTYPE_WHITESPACE
+
+Token:
+	|:i|
+	13 19
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	|int|
+	13 20
+	TTYPE_IDENTIFIER
+
+Token:
+	| |
+	13 23
+	TTYPE_WHITESPACE
+
+Token:
+	|=|
+	13 24
+	TTYPE_OPERATOR_EQUALS_SIGN
+
+Token:
+	| |
+	13 25
+	TTYPE_WHITESPACE
+
+Token:
+	|2|
+	13 26
+	TTYPE_INTEGER_LITERAL
+
+Token:
+	|
+|
+	13 27
+	TTYPE_ENDCHAR
+
+Token:
+	|
+|
+	14 1
+	TTYPE_ENDCHAR
+
+Token:
+	|if|
+	15 1
+	TTYPE_KEYWORD_IF
+
+Token:
+	| |
+	15 3
+	TTYPE_WHITESPACE
+
+Token:
+	|true|
+	15 4
+	TTYPE_KEYWORD_TRUE
+
+Token:
+	|:
+|
+	15 8
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	|
+|
+	15 9
+	TTYPE_ENDCHAR
+
+Token:
+	|    |
+	16 1
+	TTYPE_WHITESPACE
+
+Token:
+	|std|
+	16 5
+	TTYPE_IDENTIFIER
+
+Token:
+	|.|
+	16 8
+	TTYPE_SYMBOL_PERIOD
+
+Token:
+	|cout|
+	16 9
+	TTYPE_IDENTIFIER
+
+Token:
+	| |
+	16 13
+	TTYPE_WHITESPACE
+
+Token:
+	|<--|
+	16 14
+	TTYPE_OPERATOR_LEFT_ARROW
+
+Token:
+	| |
+	16 17
+	TTYPE_WHITESPACE
+
+Token:
+	|"Hello"|
+	16 18
+	TTYPE_STRING_LITERAL
+
+Token:
+	|;|
+	16 25
+	TTYPE_ENDCHAR
+
+Token:
+	|
+|
+	16 26
+	TTYPE_ENDCHAR
+
+Token:
+	|orif|
+	17 1
+	TTYPE_KEYWORD_ORIF
+
+Token:
+	| |
+	17 5
+	TTYPE_WHITESPACE
+
+Token:
+	|false|
+	17 6
+	TTYPE_KEYWORD_FALSE
+
+Token:
+	|: |
+	17 11
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	| |
+	17 12
+	TTYPE_WHITESPACE
+
+Token:
+	|std|
+	17 13
+	TTYPE_IDENTIFIER
+
+Token:
+	|.|
+	17 16
+	TTYPE_SYMBOL_PERIOD
+
+Token:
+	|cin|
+	17 17
+	TTYPE_IDENTIFIER
+
+Token:
+	| |
+	17 20
+	TTYPE_WHITESPACE
+
+Token:
+	|-->|
+	17 21
+	TTYPE_OPERATOR_RIGHT_ARROW
+
+Token:
+	| |
+	17 24
+	TTYPE_WHITESPACE
+
+Token:
+	|member|
+	17 25
+	TTYPE_IDENTIFIER
+
+Token:
+	|;|
+	17 31
+	TTYPE_ENDCHAR
+
+Token:
+	| |
+	17 32
+	TTYPE_WHITESPACE
+
+Token:
+	|else|
+	17 33
+	TTYPE_KEYWORD_ELSE
+
+Token:
+	|:
+|
+	17 37
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	|
+|
+	17 38
+	TTYPE_ENDCHAR
+
+Token:
+	|    |
+	18 1
+	TTYPE_WHITESPACE
+
+Token:
+	|$myvar|
+	18 5
+	TTYPE_SMOOTH_IDENTIFIER
+
+Token:
+	| |
+	18 11
+	TTYPE_WHITESPACE
+
+Token:
+	|=|
+	18 12
+	TTYPE_OPERATOR_EQUALS_SIGN
+
+Token:
+	| |
+	18 13
+	TTYPE_WHITESPACE
+
+Token:
+	|2|
+	18 14
+	TTYPE_INTEGER_LITERAL
+
+Token:
+	|
+|
+	18 15
+	TTYPE_ENDCHAR
+
+Token:
+	|
+|
+	19 1
+	TTYPE_ENDCHAR
+
+Token:
+	|for|
+	20 1
+	TTYPE_KEYWORD_FOR
+
+Token:
+	| |
+	20 4
+	TTYPE_WHITESPACE
+
+Token:
+	|i|
+	20 5
+	TTYPE_IDENTIFIER
+
+Token:
+	| |
+	20 6
+	TTYPE_WHITESPACE
+
+Token:
+	|: |
+	20 7
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	| |
+	20 8
+	TTYPE_WHITESPACE
+
+Token:
+	|int|
+	20 9
+	TTYPE_IDENTIFIER
+
+Token:
+	| |
+	20 12
+	TTYPE_WHITESPACE
+
+Token:
+	|from|
+	20 13
+	TTYPE_KEYWORD_FROM
+
+Token:
+	| |
+	20 17
+	TTYPE_WHITESPACE
+
+Token:
+	|1|
+	20 18
+	TTYPE_INTEGER_LITERAL
+
+Token:
+	| |
+	20 19
+	TTYPE_WHITESPACE
+
+Token:
+	|-|
+	20 20
+	TTYPE_OPERATOR_MINUS
+
+Token:
+	|>|
+	20 21
+	TTYPE_OPERATOR_GREATER_THAN
+
+Token:
+	| |
+	20 22
+	TTYPE_WHITESPACE
+
+Token:
+	|3|
+	20 23
+	TTYPE_INTEGER_LITERAL
+
+Token:
+	|:
+|
+	20 24
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	|
+|
+	20 25
+	TTYPE_ENDCHAR
+
+Token:
+	|    |
+	21 1
+	TTYPE_WHITESPACE
+
+Token:
+	|for|
+	21 5
+	TTYPE_KEYWORD_FOR
+
+Token:
+	| |
+	21 8
+	TTYPE_WHITESPACE
+
+Token:
+	|c|
+	21 9
+	TTYPE_IDENTIFIER
+
+Token:
+	| |
+	21 10
+	TTYPE_WHITESPACE
+
+Token:
+	|: |
+	21 11
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	| |
+	21 12
+	TTYPE_WHITESPACE
+
+Token:
+	|char|
+	21 13
+	TTYPE_IDENTIFIER
+
+Token:
+	| |
+	21 17
+	TTYPE_WHITESPACE
+
+Token:
+	|in|
+	21 18
+	TTYPE_KEYWORD_IN
+
+Token:
+	| |
+	21 20
+	TTYPE_WHITESPACE
+
+Token:
+	|mystring|
+	21 21
+	TTYPE_IDENTIFIER
+
+Token:
+	|:
+|
+	21 29
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	|
+|
+	21 30
+	TTYPE_ENDCHAR
+
+Token:
+	|        |
+	22 1
+	TTYPE_WHITESPACE
+
+Token:
+	|$write|
+	22 9
+	TTYPE_SMOOTH_IDENTIFIER
+
+Token:
+	|(|
+	22 15
+	TTYPE_SYMBOL_LPAR
+
+Token:
+	|c|
+	22 16
+	TTYPE_IDENTIFIER
+
+Token:
+	|)|
+	22 17
+	TTYPE_SYMBOL_RPAR
+
+Token:
+	|
+|
+	22 18
+	TTYPE_ENDCHAR
+
+Token:
+	|    |
+	23 1
+	TTYPE_WHITESPACE
+
+Token:
+	|break|
+	23 5
+	TTYPE_KEYWORD_BREAK
+
+Token:
+	|
+|
+	23 10
+	TTYPE_ENDCHAR
+
+Token:
+	|
+|
+	24 1
+	TTYPE_ENDCHAR
+
+Token:
+	|while|
+	25 1
+	TTYPE_KEYWORD_WHILE
+
+Token:
+	| |
+	25 6
+	TTYPE_WHITESPACE
+
+Token:
+	|true|
+	25 7
+	TTYPE_KEYWORD_TRUE
+
+Token:
+	|:
+|
+	25 11
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	|
+|
+	25 12
+	TTYPE_ENDCHAR
+
+Token:
+	|    |
+	26 1
+	TTYPE_WHITESPACE
+
+Token:
+	|$write|
+	26 5
+	TTYPE_SMOOTH_IDENTIFIER
+
+Token:
+	|(|
+	26 11
+	TTYPE_SYMBOL_LPAR
+
+Token:
+	|"Hello"|
+	26 12
+	TTYPE_STRING_LITERAL
+
+Token:
+	|)|
+	26 19
+	TTYPE_SYMBOL_RPAR
+
+Token:
+	|
+|
+	26 20
+	TTYPE_ENDCHAR
+
+Token:
+	|    |
+	27 1
+	TTYPE_WHITESPACE
+
+Token:
+	|continue|
+	27 5
+	TTYPE_KEYWORD_CONTINUE
+
+Token:
+	|
+|
+	27 13
+	TTYPE_ENDCHAR
+
+Token:
+	|
+|
+	28 1
+	TTYPE_ENDCHAR
+
+Token:
+	|func|
+	29 1
+	TTYPE_KEYWORD_FUNC
+
+Token:
+	| |
+	29 5
+	TTYPE_WHITESPACE
+
+Token:
+	|doSomething|
+	29 6
+	TTYPE_IDENTIFIER
+
+Token:
+	|<|
+	29 17
+	TTYPE_OPERATOR_LESS_THAN
+
+Token:
+	|int|
+	29 18
+	TTYPE_IDENTIFIER
+
+Token:
+	|,|
+	29 21
+	TTYPE_SYMBOL_COMMA
+
+Token:
+	| |
+	29 22
+	TTYPE_WHITESPACE
+
+Token:
+	|int|
+	29 23
+	TTYPE_IDENTIFIER
+
+Token:
+	|>|
+	29 26
+	TTYPE_OPERATOR_GREATER_THAN
+
+Token:
+	| |
+	29 27
+	TTYPE_WHITESPACE
+
+Token:
+	|(|
+	29 28
+	TTYPE_SYMBOL_LPAR
+
+Token:
+	|arg1|
+	29 29
+	TTYPE_IDENTIFIER
+
+Token:
+	| |
+	29 33
+	TTYPE_WHITESPACE
+
+Token:
+	|: |
+	29 34
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	| |
+	29 35
+	TTYPE_WHITESPACE
+
+Token:
+	|int|
+	29 36
+	TTYPE_IDENTIFIER
+
+Token:
+	|,|
+	29 39
+	TTYPE_SYMBOL_COMMA
+
+Token:
+	| |
+	29 40
+	TTYPE_WHITESPACE
+
+Token:
+	|arg2|
+	29 41
+	TTYPE_IDENTIFIER
+
+Token:
+	| |
+	29 45
+	TTYPE_WHITESPACE
+
+Token:
+	|: |
+	29 46
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	| |
+	29 47
+	TTYPE_WHITESPACE
+
+Token:
+	|int|
+	29 48
+	TTYPE_IDENTIFIER
+
+Token:
+	|)|
+	29 51
+	TTYPE_SYMBOL_RPAR
+
+Token:
+	| |
+	29 52
+	TTYPE_WHITESPACE
+
+Token:
+	|-|
+	29 53
+	TTYPE_OPERATOR_MINUS
+
+Token:
+	|>|
+	29 54
+	TTYPE_OPERATOR_GREATER_THAN
+
+Token:
+	| |
+	29 55
+	TTYPE_WHITESPACE
+
+Token:
+	|int|
+	29 56
+	TTYPE_IDENTIFIER
+
+Token:
+	|:
+|
+	29 59
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	|
+|
+	29 60
+	TTYPE_ENDCHAR
+
+Token:
+	|    |
+	30 1
+	TTYPE_WHITESPACE
+
+Token:
+	|return|
+	30 5
+	TTYPE_IDENTIFIER
+
+Token:
+	| |
+	30 11
+	TTYPE_WHITESPACE
+
+Token:
+	|2|
+	30 12
+	TTYPE_INTEGER_LITERAL
+
+Token:
+	|
+|
+	30 13
+	TTYPE_ENDCHAR
+
+Token:
+	|
+|
+	31 1
+	TTYPE_ENDCHAR
+
+Token:
+	|declare|
+	32 1
+	TTYPE_KEYWORD_DECLARE
+
+Token:
+	| |
+	32 8
+	TTYPE_WHITESPACE
+
+Token:
+	|func|
+	32 9
+	TTYPE_KEYWORD_FUNC
+
+Token:
+	| |
+	32 13
+	TTYPE_WHITESPACE
+
+Token:
+	|doSomethingElse|
+	32 14
+	TTYPE_IDENTIFIER
+
+Token:
+	|(|
+	32 29
+	TTYPE_SYMBOL_LPAR
+
+Token:
+	|)|
+	32 30
+	TTYPE_SYMBOL_RPAR
+
+Token:
+	|
+|
+	32 31
+	TTYPE_ENDCHAR
+
+Token:
+	|
+|
+	33 1
+	TTYPE_ENDCHAR
+
+Token:
+	|generic|
+	34 1
+	TTYPE_KEYWORD_GENERIC
+
+Token:
+	| |
+	34 8
+	TTYPE_WHITESPACE
+
+Token:
+	|class|
+	34 9
+	TTYPE_IDENTIFIER
+
+Token:
+	| |
+	34 14
+	TTYPE_WHITESPACE
+
+Token:
+	|Hello|
+	34 15
+	TTYPE_IDENTIFIER
+
+Token:
+	|:
+|
+	34 20
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	|
+|
+	34 21
+	TTYPE_ENDCHAR
+
+Token:
+	|    |
+	35 1
+	TTYPE_WHITESPACE
+
+Token:
+	|override|
+	35 5
+	TTYPE_KEYWORD_OVERRIDE
+
+Token:
+	| |
+	35 13
+	TTYPE_WHITESPACE
+
+Token:
+	|static|
+	35 14
+	TTYPE_KEYWORD_STATIC
+
+Token:
+	| |
+	35 20
+	TTYPE_WHITESPACE
+
+Token:
+	|inherited|
+	35 21
+	TTYPE_KEYWORD_INHERITED
+
+Token:
+	| |
+	35 30
+	TTYPE_WHITESPACE
+
+Token:
+	|func|
+	35 31
+	TTYPE_KEYWORD_FUNC
+
+Token:
+	| |
+	35 35
+	TTYPE_WHITESPACE
+
+Token:
+	|hi|
+	35 36
+	TTYPE_IDENTIFIER
+
+Token:
+	|(|
+	35 38
+	TTYPE_SYMBOL_LPAR
+
+Token:
+	|)|
+	35 39
+	TTYPE_SYMBOL_RPAR
+
+Token:
+	| |
+	35 40
+	TTYPE_WHITESPACE
+
+Token:
+	|-|
+	35 41
+	TTYPE_OPERATOR_MINUS
+
+Token:
+	|>|
+	35 42
+	TTYPE_OPERATOR_GREATER_THAN
+
+Token:
+	| |
+	35 43
+	TTYPE_WHITESPACE
+
+Token:
+	|std|
+	35 44
+	TTYPE_IDENTIFIER
+
+Token:
+	|.|
+	35 47
+	TTYPE_SYMBOL_PERIOD
+
+Token:
+	|string|
+	35 48
+	TTYPE_IDENTIFIER
+
+Token:
+	|:
+|
+	35 54
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	|
+|
+	35 55
+	TTYPE_ENDCHAR
+
+Token:
+	|        |
+	36 1
+	TTYPE_WHITESPACE
+
+Token:
+	|@var|
+	36 9
+	TTYPE_IDENTIFIER
+
+Token:
+	| |
+	36 13
+	TTYPE_WHITESPACE
+
+Token:
+	|=|
+	36 14
+	TTYPE_OPERATOR_EQUALS_SIGN
+
+Token:
+	| |
+	36 15
+	TTYPE_WHITESPACE
+
+Token:
+	|2|
+	36 16
+	TTYPE_INTEGER_LITERAL
+
+Token:
+	|
+|
+	36 17
+	TTYPE_ENDCHAR
+
+Token:
+	|        |
+	37 1
+	TTYPE_WHITESPACE
+
+Token:
+	|return|
+	37 9
+	TTYPE_IDENTIFIER
+
+Token:
+	| |
+	37 15
+	TTYPE_WHITESPACE
+
+Token:
+	|"Hello, World!"|
+	37 16
+	TTYPE_STRING_LITERAL
+
+Token:
+	|;|
+	37 31
+	TTYPE_ENDCHAR
+
+Token:
+	|
+|
+	37 32
+	TTYPE_ENDCHAR
+
+Token:
+	|
+|
+	38 1
+	TTYPE_ENDCHAR
+
+Token:
+	|namespace|
+	39 1
+	TTYPE_KEYWORD_NAMESPACE
+
+Token:
+	| |
+	39 10
+	TTYPE_WHITESPACE
+
+Token:
+	|Hello|
+	39 11
+	TTYPE_IDENTIFIER
+
+Token:
+	|:
+|
+	39 16
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	|
+|
+	39 17
+	TTYPE_ENDCHAR
+
+Token:
+	|    |
+	40 1
+	TTYPE_WHITESPACE
+
+Token:
+	|i|
+	40 5
+	TTYPE_IDENTIFIER
+
+Token:
+	| |
+	40 6
+	TTYPE_WHITESPACE
+
+Token:
+	|: |
+	40 7
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	| |
+	40 8
+	TTYPE_WHITESPACE
+
+Token:
+	|int|
+	40 9
+	TTYPE_IDENTIFIER
+
+Token:
+	|
+|
+	40 12
+	TTYPE_ENDCHAR
+
+Token:
+	|
+|
+	41 1
+	TTYPE_ENDCHAR
+
+Token:
+	|use|
+	42 1
+	TTYPE_KEYWORD_USE
+
+Token:
+	| |
+	42 4
+	TTYPE_WHITESPACE
+
+Token:
+	|Hello|
+	42 5
+	TTYPE_IDENTIFIER
+
+Token:
+	|.|
+	42 10
+	TTYPE_SYMBOL_PERIOD
+
+Token:
+	|i|
+	42 11
+	TTYPE_IDENTIFIER
+
+Token:
+	|
+|
+	42 12
+	TTYPE_ENDCHAR
+
+Token:
+	|
+|
+	43 1
+	TTYPE_ENDCHAR
+
+Token:
+	|-|
+	44 1
+	TTYPE_OPERATOR_MINUS
+
+Token:
+	| |
+	44 2
+	TTYPE_WHITESPACE
+
+Token:
+	|DefineMacro|
+	44 3
+	TTYPE_IDENTIFIER
+
+Token:
+	|: |
+	44 14
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	| |
+	44 15
+	TTYPE_WHITESPACE
+
+Token:
+	|macro|
+	44 16
+	TTYPE_IDENTIFIER
+
+Token:
+	|(|
+	44 21
+	TTYPE_SYMBOL_LPAR
+
+Token:
+	|||
+	44 22
+	TTYPE_OPERATOR_LITERALIZER
+
+Token:
+	|hello|
+	44 23
+	TTYPE_IDENTIFIER
+
+Token:
+	|||
+	44 28
+	TTYPE_OPERATOR_LITERALIZER
+
+Token:
+	|)|
+	44 29
+	TTYPE_SYMBOL_RPAR
+
+Token:
+	| |
+	44 30
+	TTYPE_WHITESPACE
+
+Token:
+	|||
+	44 31
+	TTYPE_OPERATOR_LITERALIZER
+
+Token:
+	|hello|
+	44 32
+	TTYPE_IDENTIFIER
+
+Token:
+	|||
+	44 37
+	TTYPE_OPERATOR_LITERALIZER
+
+Token:
+	|
+|
+	44 38
+	TTYPE_ENDCHAR
+
+Token:
+	|
+|
+	45 1
+	TTYPE_ENDCHAR
+
+Token:
+	|-|
+	46 1
+	TTYPE_OPERATOR_MINUS
+
+Token:
+	| |
+	46 2
+	TTYPE_WHITESPACE
+
+Token:
+	|RaiseError|
+	46 3
+	TTYPE_IDENTIFIER
+
+Token:
+	|: |
+	46 13
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	| |
+	46 14
+	TTYPE_WHITESPACE
+
+Token:
+	|2|
+	46 15
+	TTYPE_INTEGER_LITERAL
+
+Token:
+	|
+|
+	46 16
+	TTYPE_ENDCHAR
+
+Token:
+	|
+|
+	47 1
+	TTYPE_ENDCHAR
+
+Token:
+	|-|
+	48 1
+	TTYPE_OPERATOR_MINUS
+
+Token:
+	| |
+	48 2
+	TTYPE_WHITESPACE
+
+Token:
+	|If|
+	48 3
+	TTYPE_IDENTIFIER
+
+Token:
+	| |
+	48 5
+	TTYPE_WHITESPACE
+
+Token:
+	|true|
+	48 6
+	TTYPE_KEYWORD_TRUE
+
+Token:
+	|:
+|
+	48 10
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	|
+|
+	48 11
+	TTYPE_ENDCHAR
+
+Token:
+	|    |
+	49 1
+	TTYPE_WHITESPACE
+
+Token:
+	|-|
+	49 5
+	TTYPE_OPERATOR_MINUS
+
+Token:
+	| |
+	49 6
+	TTYPE_WHITESPACE
+
+Token:
+	|DefineMacro|
+	49 7
+	TTYPE_IDENTIFIER
+
+Token:
+	|: |
+	49 18
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	| |
+	49 19
+	TTYPE_WHITESPACE
+
+Token:
+	|mac|
+	49 20
+	TTYPE_IDENTIFIER
+
+Token:
+	|
+|
+	49 23
+	TTYPE_ENDCHAR
+
+Token:
+	|-|
+	50 1
+	TTYPE_OPERATOR_MINUS
+
+Token:
+	| |
+	50 2
+	TTYPE_WHITESPACE
+
+Token:
+	|Orif|
+	50 3
+	TTYPE_IDENTIFIER
+
+Token:
+	| |
+	50 7
+	TTYPE_WHITESPACE
+
+Token:
+	|false|
+	50 8
+	TTYPE_KEYWORD_FALSE
+
+Token:
+	|:
+|
+	50 13
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	|
+|
+	50 14
+	TTYPE_ENDCHAR
+
+Token:
+	|    |
+	51 1
+	TTYPE_WHITESPACE
+
+Token:
+	|-|
+	51 5
+	TTYPE_OPERATOR_MINUS
+
+Token:
+	| |
+	51 6
+	TTYPE_WHITESPACE
+
+Token:
+	|DefineMacro|
+	51 7
+	TTYPE_IDENTIFIER
+
+Token:
+	|: |
+	51 18
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	| |
+	51 19
+	TTYPE_WHITESPACE
+
+Token:
+	|win|
+	51 20
+	TTYPE_IDENTIFIER
+
+Token:
+	|
+|
+	51 23
+	TTYPE_ENDCHAR
+
+Token:
+	|-|
+	52 1
+	TTYPE_OPERATOR_MINUS
+
+Token:
+	| |
+	52 2
+	TTYPE_WHITESPACE
+
+Token:
+	|Else|
+	52 3
+	TTYPE_IDENTIFIER
+
+Token:
+	|:
+|
+	52 7
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	|
+|
+	52 8
+	TTYPE_ENDCHAR
+
+Token:
+	|    |
+	53 1
+	TTYPE_WHITESPACE
+
+Token:
+	|-|
+	53 5
+	TTYPE_OPERATOR_MINUS
+
+Token:
+	| |
+	53 6
+	TTYPE_WHITESPACE
+
+Token:
+	|DefineMacro|
+	53 7
+	TTYPE_IDENTIFIER
+
+Token:
+	|: |
+	53 18
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	| |
+	53 19
+	TTYPE_WHITESPACE
+
+Token:
+	|lin|
+	53 20
+	TTYPE_IDENTIFIER
+
+Token:
+	|
+|
+	53 23
+	TTYPE_ENDCHAR
+
+Token:
+	|
+|
+	54 1
+	TTYPE_ENDCHAR
+
+Token:
+	|-|
+	55 1
+	TTYPE_OPERATOR_MINUS
+
+Token:
+	| |
+	55 2
+	TTYPE_WHITESPACE
+
+Token:
+	|IfDefined|
+	55 3
+	TTYPE_IDENTIFIER
+
+Token:
+	| |
+	55 12
+	TTYPE_WHITESPACE
+
+Token:
+	|mac|
+	55 13
+	TTYPE_IDENTIFIER
+
+Token:
+	|: |
+	55 16
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	| |
+	55 17
+	TTYPE_WHITESPACE
+
+Token:
+	|-|
+	55 18
+	TTYPE_OPERATOR_MINUS
+
+Token:
+	|Undefine|
+	55 19
+	TTYPE_IDENTIFIER
+
+Token:
+	|: |
+	55 27
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	| |
+	55 28
+	TTYPE_WHITESPACE
+
+Token:
+	|mac|
+	55 29
+	TTYPE_IDENTIFIER
+
+Token:
+	|
+|
+	55 32
+	TTYPE_ENDCHAR
+
+Token:
+	|
+|
+	56 1
+	TTYPE_ENDCHAR
+
+Token:
+	|-|
+	57 1
+	TTYPE_OPERATOR_MINUS
+
+Token:
+	| |
+	57 2
+	TTYPE_WHITESPACE
+
+Token:
+	|AccessFile|
+	57 3
+	TTYPE_IDENTIFIER
+
+Token:
+	|: |
+	57 13
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	| |
+	57 14
+	TTYPE_WHITESPACE
+
+Token:
+	|smooth|
+	57 15
+	TTYPE_IDENTIFIER
+
+Token:
+	|
+|
+	57 21
+	TTYPE_ENDCHAR
+
+Token:
+	|
+|
+	58 1
+	TTYPE_ENDCHAR
+
+Token:
+	|-|
+	59 1
+	TTYPE_OPERATOR_MINUS
+
+Token:
+	| |
+	59 2
+	TTYPE_WHITESPACE
+
+Token:
+	|UseCPP|
+	59 3
+	TTYPE_IDENTIFIER
+
+Token:
+	|: |
+	59 9
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	| |
+	59 10
+	TTYPE_WHITESPACE
+
+Token:
+	|iostream|
+	59 11
+	TTYPE_IDENTIFIER
+
+Token:
+	|
+|
+	59 19
+	TTYPE_ENDCHAR
+
+Token:
+	|
+|
+	60 1
+	TTYPE_ENDCHAR
+
+Token:
+	|-|
+	61 1
+	TTYPE_OPERATOR_MINUS
+
+Token:
+	| |
+	61 2
+	TTYPE_WHITESPACE
+
+Token:
+	|SetLine|
+	61 3
+	TTYPE_IDENTIFIER
+
+Token:
+	|: |
+	61 10
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	| |
+	61 11
+	TTYPE_WHITESPACE
+
+Token:
+	|2|
+	61 12
+	TTYPE_INTEGER_LITERAL
+
+Token:
+	| |
+	61 13
+	TTYPE_WHITESPACE
+
+Token:
+	|andFilename|
+	61 14
+	TTYPE_IDENTIFIER
+
+Token:
+	|: |
+	61 25
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	| |
+	61 26
+	TTYPE_WHITESPACE
+
+Token:
+	|file|
+	61 27
+	TTYPE_IDENTIFIER
+
+Token:
+	|.|
+	61 31
+	TTYPE_SYMBOL_PERIOD
+
+Token:
+	|cp2|
+	61 32
+	TTYPE_IDENTIFIER
+
+Token:
+	|
+|
+	61 35
+	TTYPE_ENDCHAR
+
+Token:
+	|
+|
+	62 1
+	TTYPE_ENDCHAR
+
+Token:
+	|for|
+	63 1
+	TTYPE_KEYWORD_FOR
+
+Token:
+	| |
+	63 4
+	TTYPE_WHITESPACE
+
+Token:
+	|i|
+	63 5
+	TTYPE_IDENTIFIER
+
+Token:
+	| |
+	63 6
+	TTYPE_WHITESPACE
+
+Token:
+	|: |
+	63 7
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	| |
+	63 8
+	TTYPE_WHITESPACE
+
+Token:
+	|int|
+	63 9
+	TTYPE_IDENTIFIER
+
+Token:
+	| |
+	63 12
+	TTYPE_WHITESPACE
+
+Token:
+	|from|
+	63 13
+	TTYPE_KEYWORD_FROM
+
+Token:
+	| |
+	63 17
+	TTYPE_WHITESPACE
+
+Token:
+	|1|
+	63 18
+	TTYPE_INTEGER_LITERAL
+
+Token:
+	| |
+	63 19
+	TTYPE_WHITESPACE
+
+Token:
+	|to|
+	63 20
+	TTYPE_IDENTIFIER
+
+Token:
+	| |
+	63 22
+	TTYPE_WHITESPACE
+
+Token:
+	|20|
+	63 23
+	TTYPE_INTEGER_LITERAL
+
+Token:
+	|:
+|
+	63 25
+	TTYPE_SYNTAX_ERROR
+
+Token:
+	|
+|
+	63 26
+	TTYPE_ENDCHAR
+
+Token:
+	|    |
+	64 1
+	TTYPE_WHITESPACE
+
+Token:
+	|skip|
+	64 5
+	TTYPE_IDENTIFIER
+
+Token:
+	|
+|
+	64 9
+	TTYPE_ENDCHAR
+
+Token:
+	|
+|
+	65 1
+	TTYPE_ENDCHAR
+
+Token:
+	|object|
+	66 1
+	TTYPE_IDENTIFIER
+
+Token:
+	|.|
+	66 7
+	TTYPE_SYMBOL_PERIOD
+
+Token:
+	|call|
+	66 8
+	TTYPE_IDENTIFIER
+
+Token:
+	|(|
+	66 12
+	TTYPE_SYMBOL_LPAR
+
+Token:
+	|function|
+	66 13
+	TTYPE_IDENTIFIER
+
+Token:
+	|,|
+	66 21
+	TTYPE_SYMBOL_COMMA
+
+Token:
+	| |
+	66 22
+	TTYPE_WHITESPACE
+
+Token:
+	|object|
+	66 23
+	TTYPE_IDENTIFIER
+
+Token:
+	|.|
+	66 29
+	TTYPE_SYMBOL_PERIOD
+
+Token:
+	|arg1|
+	66 30
+	TTYPE_IDENTIFIER
+
+Token:
+	|,|
+	66 34
+	TTYPE_SYMBOL_COMMA
+
+Token:
+	| |
+	66 35
+	TTYPE_WHITESPACE
+
+Token:
+	|2.1234|
+	66 36
+	TTYPE_DECIMAL_LITERAL
+
+Token:
+	|,|
+	66 42
+	TTYPE_SYMBOL_COMMA
+
+Token:
+	| |
+	66 43
+	TTYPE_WHITESPACE
+
+Token:
+	|-|
+	66 44
+	TTYPE_OPERATOR_MINUS
+
+Token:
+	|3|
+	66 45
+	TTYPE_INTEGER_LITERAL
+
+Token:
+	|)|
+	66 46
+	TTYPE_SYMBOL_RPAR
+
+Token:
+	|
+|
+	66 47
+	TTYPE_ENDCHAR
+
+Token:
+	|
+|
+	67 1
+	TTYPE_ENDCHAR
+
+Token:
+	|end|
+	68 1
+	TTYPE_KEYWORD_END
+
+Token:
+	|
+|
+	68 4
+	TTYPE_ENDCHAR
+

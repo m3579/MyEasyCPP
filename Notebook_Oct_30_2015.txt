@@ -1,0 +1,7 @@
+Today I sorted out some bugs in the lexer. Most of these bugs are caused by me simply forgetting to move to the next character
+in a test, causing an infinite loop. I also redirected the output to a file named output.txt because there was more output than
+the console window could scroll up.
+
+The test file compiled well, even with the new "static" keyword I just added. It ran through, and I am about to look at the results.
+
+I tweaked the format of the output. I will look at it later...

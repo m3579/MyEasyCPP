@@ -12,7 +12,6 @@ something else does not already have its name, etc.)
 <statement> ::= <start>
               | <end>
               | <var-stmt>
-              | <member-stmt>
               | <if-stmt>
               | <for-loop>
               | <while-loop>
@@ -20,6 +19,7 @@ something else does not already have its name, etc.)
               | <function>
               | <return-stmt>
               | <class>
+              | <class-stmt>
               | <namespace>
               | <use-stmt>
               | <directive>
@@ -53,8 +53,8 @@ something else does not already have its name, etc.)
 <end> ::= "end"
 
 <class-stmts> ::= ( <indent-whitespace>  ( <member-stmt>
-                                         | <access-mod>? <function>
-                                         | ("declare") <access-mod>? <func-decl-contents>) )*
+                                         | <method>
+                                         | "\n" )*
 
     (where the class is abstract if the keyword "abstract" comes before <function>)
 
@@ -105,8 +105,9 @@ something else does not already have its name, etc.)
 
 <member-stmt> ::= ("set")?
                  <access-mod>?
+                 "static"?
 
-                <identifier> ":" ("Copying" ":") <class-name> | <struct-name>) "(" (value ("," value))? ")" ("{" (<value> ("," <value>)*)? "}")?
+                <identifier> ":" ("Copying" ":")? <class-name> | <struct-name>) "(" (value ("," value))? ")" ("{" (<value> ("," <value>)*)? "}")?
                 | (<identifier> (":" <type>)?) | (<identifier> ":" <type> "[" "]" "of" <positive-integer>)?)
 
                 ("=" <value>)?
@@ -114,15 +115,23 @@ something else does not already have its name, etc.)
     (where <identifier> is a valid member name,
      where <value> is of type <type>,
      where <positive-integer> is a positive integer,
-     where the clause enclosed in braces contains the values that the container (if the variable is a container) will be initialized with)
+     where the clause enclosed in braces contains the values that the container (if the variable is a container) will be initialized with,
+     where the terms in the first parenthesized clause can come in any order)
 
 
-<func-decl-contents> ::= ("override")? "func " <identifier> ("<" <type> ("," <type>)* ">")? "(" ( (<identifier> ":")? <type> ("," (<identifier> ":")? <type>)* )? ")" ("->" <type>)?
+<func-decl-contents> ::= = "func " <identifier> ("<" <type> ("," <type>)* ">")? "(" ( (<identifier> ":")? <type> ("," (<identifier> ":")? <type>)* )? ")" ("->" <type>)?
 
-    (where <identifier> is a valid function name,
-     where "override" is only there if the function overrides one in the superclass)
+    (where <identifier> is a valid function name)
 
 <func-decl-only> ::= <func-decl-contents>
+
+<function> ::= <func-decl-contents> (<block-stmts>)?
+
+<method> ::= ("override"? <access-mod>? "static"?) <function>
+             | ("declare") <access-mod>? <func-decl-contents>)
+
+    (where "override" is only there if the method overrides one in the superclass,
+     where the terms in the first parenthesized clause can come in any order)
 
 ---------CONTROL
 
@@ -138,8 +147,6 @@ something else does not already have its name, etc.)
 <while-loop> ::= "while " <boolean-value> <block-stmts>
 
 <loop-control-stmt> ::= "break" | "continue"
-
-<function> ::= <func-decl-contents> (<block-stmts>)?
 
 <return-stmt> ::= "return" <value>
 

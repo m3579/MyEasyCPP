@@ -32,7 +32,7 @@ func doSomething<int, int> (arg1 : int, arg2 : int) -> int:
 declare func doSomethingElse()
 
 generic class Hello:
-    override func hi() -> std.string:
+    override static inherited func hi() -> std.string:
         @var = 2
         return "Hello, World!";
 

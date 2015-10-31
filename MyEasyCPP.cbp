@@ -57,6 +57,7 @@
 		<Unit filename="Notebook_Oct_19_2015.txt" />
 		<Unit filename="Notebook_Oct_23_2015.txt" />
 		<Unit filename="Notebook_Oct_24_2015.txt" />
+		<Unit filename="Notebook_Oct_30_2015.txt" />
 		<Unit filename="Notebook_Sep_10_2015.txt" />
 		<Unit filename="Notebook_Sep_11_2015.txt" />
 		<Unit filename="Notebook_Sep_12_2015.txt" />
@@ -67,6 +68,7 @@
 		<Unit filename="Smooth.hpp" />
 		<Unit filename="error.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="output.txt" />
 		<Unit filename="playground.hpp" />
 		<Unit filename="quitexception.hpp" />
 		<Unit filename="test.txt" />

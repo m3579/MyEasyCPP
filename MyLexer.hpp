@@ -65,6 +65,7 @@ createTokenType(TTYPE_KEYWORD_REF);
 createTokenType(TTYPE_KEYWORD_VISIBLE);
 createTokenType(TTYPE_KEYWORD_HIDDEN);
 createTokenType(TTYPE_KEYWORD_INHERITED);
+createTokenType(TTYPE_KEYWORD_STATIC);
 createTokenType(TTYPE_KEYWORD_TRUE);
 createTokenType(TTYPE_KEYWORD_FALSE);
 createTokenType(TTYPE_KEYWORD_AS);
@@ -187,7 +188,7 @@ lexer::Lexer createLexer(const char* sourceCode)
             int columnNumber = sc.getColumnNumber();
 
             while (contains(WHITESPACE_CHARS, sc.fetchNextChar())) {
-                whitespace += sc.getCurrentChar();
+                whitespace += sc.moveToNextChar();
             }
 
             return Token(lineNumber, columnNumber, whitespace, TTYPE_WHITESPACE);
@@ -252,7 +253,7 @@ lexer::Lexer createLexer(const char* sourceCode)
                     return Token(lineNumber, columnNumber, theString, TTYPE_SYNTAX_ERROR, "You need to close this string", false);
                 }
 
-                theString += c;
+                theString += sc.moveToNextChar();
 
                 if (c == '"') {
                     if (!(sc.getCurrentChar() == '\\')) {
@@ -468,6 +469,18 @@ lexer::Lexer createLexer(const char* sourceCode)
                     case '=': {
                         return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_EQUALS_SIGN);
                     }
+
+                    case '>': {
+                        return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_GREATER_THAN);
+                    }
+
+                    case '<': {
+                        return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_LESS_THAN);
+                    }
+
+                    default: {
+                        return Token(lineNumber, columnNumber, theOperator + sc.fetchNextChar(), TTYPE_SYNTAX_ERROR, "I cannot recognize this operator", false);
+                    }
                 }
             }
         }
@@ -620,6 +633,7 @@ void initTextToTTYPEMap()
     textToTTYPE["visible"]   = TTYPE_KEYWORD_VISIBLE;
     textToTTYPE["hidden"]    = TTYPE_KEYWORD_HIDDEN;
     textToTTYPE["inherited"] = TTYPE_KEYWORD_INHERITED;
+    textToTTYPE["static"]    = TTYPE_KEYWORD_STATIC;
     textToTTYPE["true"]      = TTYPE_KEYWORD_TRUE;
     textToTTYPE["false"]     = TTYPE_KEYWORD_FALSE;
     textToTTYPE["as"]        = TTYPE_KEYWORD_AS;
