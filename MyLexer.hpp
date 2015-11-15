@@ -126,38 +126,47 @@ createTokenType(TTYPE_SYMBOL_RBRACE);
 createTokenType(TTYPE_SYMBOL_COLON);
 createTokenType(TTYPE_SYMBOL_COMMA);
 createTokenType(TTYPE_SYMBOL_PERIOD);
+
 createTokenType(TTYPE_SYMBOL_ARROW);
+
+// comments
+createTokenType(TTYPE_MULTILINE_COMMENT);
+createTokenType(TTYPE_INLINE_COMMENT);
 
 // miscellaneous
 createTokenType(TTYPE_IDENTIFIER);
 createTokenType(TTYPE_SMOOTH_IDENTIFIER);
 createTokenType(TTYPE_SYNTAX_ERROR);
-createTokenType(TTYPE_COMMENT);
 
 // IDENTIFYING CHARACTERS
 const std::string& WHITESPACE_CHARS = " \t";
 const std::string& NUMBER_LITERAL_CHARS = "1234567890";
-const std::string& WORD_START_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
+const std::string& WORD_START_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_$";
 const std::string& WORD_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789";
-const std::string& FIRST_OPERATOR_CHARS = "+-*/%^><=:|";
+const std::string& FIRST_OPERATOR_CHARS = "+-*/%^><=|";
 const std::string& SECOND_OPERATOR_CHARS = "+-=";
+const std::string& THIRD_OPERATOR_CHARS = "->";
+const std::string& FIRST_SYMBOL_CHARS = "()[]{}:,.";
+const std::string& SECOND_SYMBOL_CHARS = "->";
 
 // DECLARATIONS
 bool contains(std::string str, const char sub);
 
 // MAPS
-void initTextToTTYPEMap();
-void initTextToPPDMap();
+void initTextToTTYPEMaps();
 
-std::map<std::string, TokenType> textToTTYPE;
+std::map<std::string, TokenType> textToWord;
 std::map<std::string, TokenType> textToPPD;
+std::map<std::string, TokenType> textToSingleCharSymbol;
+std::map<std::string, TokenType> textToMultiCharSymbol;
+std::map<std::string, TokenType> textToSingleCharOperator;
+std::map<std::string, TokenType> textToMultiCharOperator;
 
 lexer::Lexer createLexer(const char* sourceCode)
 {
     lexer::Lexer lexr(sourceCode);
 
-    initTextToTTYPEMap();
-    initTextToPPDMap();
+    initTextToTTYPEMaps();
 
     setLexer(lexr);
 
@@ -227,7 +236,7 @@ lexer::Lexer createLexer(const char* sourceCode)
             }
 
             if (sc.getCurrentChar() == '.') {
-                return Token(lineNumber, columnNumber, number, TTYPE_SYNTAX_ERROR, "You cannot end a number with a decimal point (add a 0 to the end)", false);
+                return Token(lineNumber, columnNumber, number, TTYPE_SYNTAX_ERROR, "You cannot end a number with a decimal point (add a 0 to the end)");
             }
 
             return Token(lineNumber, columnNumber, number, type);
@@ -250,7 +259,7 @@ lexer::Lexer createLexer(const char* sourceCode)
             while ((c=sc.fetchNextChar())) {
 
                 if (c == '\0') {
-                    return Token(lineNumber, columnNumber, theString, TTYPE_SYNTAX_ERROR, "You need to close this string", false);
+                    return Token(lineNumber, columnNumber, theString, TTYPE_SYNTAX_ERROR, "You need to close this string");
                 }
 
                 theString += sc.moveToNextChar();
@@ -287,52 +296,12 @@ lexer::Lexer createLexer(const char* sourceCode)
                 return Token(lineNumber, columnNumber, word, TTYPE_ENDCHAR);
             }
 
-            if (textToTTYPE.find(word) != textToTTYPE.end()) {
-                return Token(lineNumber, columnNumber, word, textToTTYPE[word]);
+            if (textToWord.find(word) != textToWord.end()) {
+                return Token(lineNumber, columnNumber, word, textToWord[word]);
             }
             else {
                 return Token(lineNumber, columnNumber, word, TTYPE_IDENTIFIER);
             }
-        }
-
-        return Token();
-    }
-    endTest
-
-    // SMOOTH
-    makeTest(sc)
-    {
-        char c = sc.getCurrentChar();
-        if (c == '$') {
-            int lineNumber = sc.getLineNumber();
-            int columnNumber = sc.getColumnNumber();
-            std::string smoothIdentifier(1, c);
-
-            while (contains(WORD_CHARS, sc.fetchNextChar())) {
-                smoothIdentifier += sc.moveToNextChar();
-            }
-
-            return Token(lineNumber, columnNumber, smoothIdentifier, TTYPE_SMOOTH_IDENTIFIER);
-        }
-
-        return Token();
-    }
-    endTest
-
-    // MEMBER MEMBER MEMBER MEMBER MEMBER
-    makeTest(sc)
-    {
-        char c = sc.getCurrentChar();
-        if (c == '@') {
-            int lineNumber = sc.getLineNumber();
-            int columnNumber = sc.getColumnNumber();
-            std::string member(1, c);
-
-            while (contains(WORD_CHARS, sc.fetchNextChar())) {
-                member += sc.moveToNextChar();
-            }
-
-            return Token(lineNumber, columnNumber, member, TTYPE_IDENTIFIER);
         }
 
         return Token();
@@ -348,141 +317,31 @@ lexer::Lexer createLexer(const char* sourceCode)
             int columnNumber = sc.getColumnNumber();
             std::string theOperator(1, c);
 
-            char n = sc.fetchNextChar();
+            if (contains(SECOND_OPERATOR_CHARS, sc.fetchNextChar())) {
+                theOperator += std::string(1, sc.moveToNextChar());
 
-            if (contains(SECOND_OPERATOR_CHARS, n)) {
-                switch(c)
-                {
-                    case '+': {
-                        if (n == '+') {
-                            theOperator += sc.moveToNextChar();
-                            return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_INCREMENT);
-                        }
-                        else if (n == '=') {
-                            theOperator += sc.moveToNextChar();
-                            return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_DECREMENT);
-                        }
-                    }
+                if (contains(THIRD_OPERATOR_CHARS, sc.fetchNextChar())) {
+                    theOperator += std::string(1, sc.moveToNextChar());
+                }
 
-                    case '-': {
-                        if (n == '-') {
-                            theOperator += sc.moveToNextChar();
-                            if (sc.fetchNextChar() == '>') {
-                                theOperator += sc.moveToNextChar();
-                                return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_RIGHT_ARROW);
-                            }
-                            else {
-                                return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_DECREMENT);
-                            }
-                        }
-                        else if (n == '=') {
-                            theOperator += sc.moveToNextChar();
-                            return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_MINUS_EQUALS);
-                        }
-                    }
-
-                    case '*': {
-                        if (n == '=') {
-                            theOperator += sc.moveToNextChar();
-                            return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_MULTIPLY_EQUALS);
-                        }
-                    }
-
-                    case '/': {
-                        if (n == '=') {
-                            theOperator += sc.moveToNextChar();
-                            return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_DIVIDE_EQUALS);
-                        }
-                    }
-
-                    case '%': {
-                        if (n == '=') {
-                            theOperator += sc.moveToNextChar();
-                            return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_MODULUS_EQUALS);
-                        }
-                    }
-
-                    case '^': {
-                        if (n == '=') {
-                            theOperator += sc.moveToNextChar();
-                            return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_EXPONENT_EQUALS);
-                        }
-                    }
-
-                    case '>': {
-                        if (n == '=') {
-                            theOperator += sc.moveToNextChar();
-                            return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_GREATER_THAN_OR_EQUAL_TO);
-                        }
-                    }
-
-                    case '<': {
-                        if (n == '=') {
-                            theOperator += sc.moveToNextChar();
-                            return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_LESS_THAN_OR_EQUAL_TO);
-                        }
-                        else if (n == '-') {
-                            theOperator += sc.moveToNextChar();
-                            if (sc.fetchNextChar() == '-') {
-                                theOperator += sc.moveToNextChar();
-                                return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_LEFT_ARROW);
-                            }
-                        }
-                    }
-
-                    default: {
-                        return Token(lineNumber, columnNumber, theOperator + sc.fetchNextChar(), TTYPE_SYNTAX_ERROR, "I cannot recognize this operator", false);
-                    }
+                if (textToMultiCharOperator.find(theOperator)
+                    != textToMultiCharOperator.end()) {
+                    return Token(lineNumber, columnNumber, theOperator, textToMultiCharOperator[theOperator]);
+                }
+                else {
+                    return Token(lineNumber, columnNumber, theOperator, TTYPE_SYNTAX_ERROR, "I cannot recognize this operator");
                 }
             }
             else {
-                switch(c)
-                {
-                    case '+': {
-                        return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_PLUS);
-                    }
-
-                    case '-': {
-                        return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_MINUS);
-                    }
-
-                    case '*': {
-                        return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_MULTIPLY);
-                    }
-
-                    case '/': {
-                        return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_DIVIDE);
-                    }
-
-                    case '%': {
-                        return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_MODULUS);
-                    }
-
-                    case '^': {
-                        return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_EXPONENT);
-                    }
-
-                    case '|': {
-                        return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_LITERALIZER);
-                    }
-
-                    case '=': {
-                        return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_EQUALS_SIGN);
-                    }
-
-                    case '>': {
-                        return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_GREATER_THAN);
-                    }
-
-                    case '<': {
-                        return Token(lineNumber, columnNumber, theOperator, TTYPE_OPERATOR_LESS_THAN);
-                    }
-
-                    default: {
-                        return Token(lineNumber, columnNumber, theOperator + sc.fetchNextChar(), TTYPE_SYNTAX_ERROR, "I cannot recognize this operator", false);
-                    }
+                if (textToSingleCharOperator.find(theOperator)
+                    != textToSingleCharOperator.end()) {
+                    return Token(lineNumber, columnNumber, theOperator, textToSingleCharOperator[theOperator]);
+                }
+                else {
+                    return Token(lineNumber, columnNumber, theOperator, TTYPE_SYNTAX_ERROR, "I cannot recognize this operator");
                 }
             }
+
         }
 
         return Token();
@@ -493,65 +352,29 @@ lexer::Lexer createLexer(const char* sourceCode)
     makeTest(sc)
     {
         char c = sc.getCurrentChar();
-        int lineNumber = sc.getLineNumber();
-        int columnNumber = sc.getColumnNumber();
+        if (contains(FIRST_SYMBOL_CHARS, c)) {
+            int lineNumber = sc.getLineNumber();
+            int columnNumber = sc.getColumnNumber();
+            std::string symbol(1, c);
 
-        switch(c)
-        {
-            case '(': { return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_LPAR);         break; }
-            case ')': { return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_RPAR);         break; }
-            case '[': { return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_LBRACKET);     break; }
-            case ']': { return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_RBRACKET);     break; }
-            case '{': { return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_LBRACE);       break; }
-            case '}': { return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_RBRACE);       break; }
-            case ':': { return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_COLON);        break; }
-            case ',': { return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_COMMA);        break; }
-            case '.': { return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_SYMBOL_PERIOD);       break; }
+            if (contains(SECOND_SYMBOL_CHARS, sc.fetchNextChar())) {
+                symbol += sc.moveToNextChar();
 
-            default: {
-                if (c == '-') {
-                    if (sc.fetchNextChar() == '>') {
-                        return Token(lineNumber, columnNumber, std::string(1, c) + std::string(1, sc.moveToNextChar()), TTYPE_SYMBOL_ARROW);
-                    }
-                    else {
-                        return Token(lineNumber, columnNumber, std::string(1, c), TTYPE_OPERATOR_MINUS);
-                    }
+                if (textToMultiCharSymbol.find(symbol)
+                    != textToMultiCharOperator.end()) {
+                    return Token(lineNumber, columnNumber, symbol, textToMultiCharSymbol[symbol]);
                 }
-
-                if (c == '#') {
-                    int lineNumber = sc.getLineNumber();
-                    int columnNumber = sc.getColumnNumber();
-                    std::string comment(1, c);
-
-                    if (sc.fetchNextChar() == '=') {
-                        sc.moveToNextChar();
-                        comment += sc.getCurrentChar();
-
-                        while (sc.hasMoreSource()) {
-                            sc.moveToNextChar();
-                            comment += sc.getCurrentChar();
-                            if (sc.getCurrentChar() == '=') {
-                                sc.moveToNextChar();
-                                comment += sc.getCurrentChar();
-                                if (sc.getCurrentChar() == '#') {
-                                    comment += sc.getCurrentChar();
-                                    return Token(lineNumber, columnNumber, comment, TTYPE_COMMENT);
-                                }
-                            }
-                        }
-
-                        return Token(sc.getLineNumber(), sc.getColumnNumber(), comment, TTYPE_SYNTAX_ERROR, "You never finished this comment", true);
-
-                    }
-                    else {
-                        while ((sc.fetchNextChar() != '\n')
-                               && (sc.fetchNextChar() != '\0')) {
-                            sc.moveToNextChar();
-                            comment += sc.getCurrentChar();
-                        }
-
-                        return Token(lineNumber, columnNumber, comment, TTYPE_COMMENT);
-                    }
+                else {
+                    return Token(lineNumber, columnNumber, symbol, TTYPE_SYNTAX_ERROR, "I cannot recognize this symbol");
+                }
+            }
+            else {
+                if (textToSingleCharSymbol.find(symbol)
+                    != textToSingleCharSymbol.end()) {
+                    return Token(lineNumber, columnNumber, symbol, textToSingleCharSymbol[symbol]);
+                }
+                else {
+                    return Token(lineNumber, columnNumber, symbol, TTYPE_SYNTAX_ERROR, "I cannot recognize this symbol");
                 }
             }
         }
@@ -586,7 +409,60 @@ lexer::Lexer createLexer(const char* sourceCode)
                 return Token(lineNumber, columnNumber, ppd, textToPPD[ppd]);
             }
             else {
-                return Token(lineNumber, columnNumber, ppd, TTYPE_SYNTAX_ERROR, "I cannot recognize this preprocessor directive", false);
+                return Token(lineNumber, columnNumber, ppd, TTYPE_SYNTAX_ERROR, "I cannot recognize this preprocessor directive");
+            }
+        }
+
+        return Token();
+    }
+    endTest
+
+    makeTest(sc)
+    {
+        char c = sc.getCurrentChar();
+        if (c == '#') {
+            int lineNumber = sc.getLineNumber();
+            int columnNumber = sc.getColumnNumber();
+            std::string comment(1, c);
+
+            if (sc.fetchNextChar() == '=') {
+                comment += sc.moveToNextChar();
+
+                char current;
+                // not actually meant to loop through rest of code
+                // return statements will exit loop
+                while (sc.hasMoreSource()) {
+                    current = sc.moveToNextChar();
+
+                    if (current == '\0') {
+                        sc.finished = true;
+                        return Token(lineNumber, columnNumber, comment, TTYPE_SYNTAX_ERROR, "This comment was not closed by a \"=#\"");
+                    }
+                    else if (current == '='
+                             && sc.fetchNextChar() == '#') {
+                        comment += current;
+                        comment += sc.moveToNextChar();
+
+                        return Token(lineNumber, columnNumber, comment, TTYPE_MULTILINE_COMMENT);
+
+                    }
+
+                    comment += current;
+                }
+            }
+
+            else {
+                char current;
+                while (sc.hasMoreSource()) {
+                    current = sc.moveToNextChar();
+
+                    if (current == '\0'
+                        || current == '\n') {
+                        return Token(lineNumber, columnNumber, comment, TTYPE_INLINE_COMMENT);
+                    }
+
+                    comment += current;
+                }
             }
         }
 
@@ -604,60 +480,98 @@ bool contains(std::string str, char sub)
 }
 
 // MAP IMPLEMTATIONS
-void initTextToTTYPEMap()
+void initTextToTTYPEMaps()
 {
-    textToTTYPE["namespace"] = TTYPE_KEYWORD_NAMESPACE;
-    textToTTYPE["use"]       = TTYPE_KEYWORD_USE;
-    textToTTYPE["of"]        = TTYPE_KEYWORD_OF;
-    textToTTYPE["declare"]   = TTYPE_KEYWORD_DECLARE;
-    textToTTYPE["init"]      = TTYPE_KEYWORD_INIT;
-    textToTTYPE["set"]       = TTYPE_KEYWORD_SET;
-    textToTTYPE["override"]  = TTYPE_KEYWORD_OVERRIDE;
-    textToTTYPE["func"]      = TTYPE_KEYWORD_FUNC;
-    textToTTYPE["if"]        = TTYPE_KEYWORD_IF;
-    textToTTYPE["orif"]      = TTYPE_KEYWORD_ORIF;
-    textToTTYPE["else"]      = TTYPE_KEYWORD_ELSE;
-    textToTTYPE["for"]       = TTYPE_KEYWORD_FOR;
-    textToTTYPE["from"]      = TTYPE_KEYWORD_FROM;
-    textToTTYPE["in"]        = TTYPE_KEYWORD_IN;
-    textToTTYPE["while"]     = TTYPE_KEYWORD_WHILE;
-    textToTTYPE["break"]     = TTYPE_KEYWORD_BREAK;
-    textToTTYPE["continue"]  = TTYPE_KEYWORD_CONTINUE;
-    textToTTYPE["generic"]   = TTYPE_KEYWORD_GENERIC;
-    textToTTYPE["is_a"]      = TTYPE_KEYWORD_IS_A_OR_AN;
-    textToTTYPE["is_an"]     = TTYPE_KEYWORD_IS_A_OR_AN;
-    textToTTYPE["Pointer"]   = TTYPE_KEYWORD_POINTER;
-    textToTTYPE["WeakSingle"]= TTYPE_KEYWORD_WEAKSINGLE;
-    textToTTYPE["Single"]    = TTYPE_KEYWORD_SINGLE;
-    textToTTYPE["Ref"]       = TTYPE_KEYWORD_REF;
-    textToTTYPE["visible"]   = TTYPE_KEYWORD_VISIBLE;
-    textToTTYPE["hidden"]    = TTYPE_KEYWORD_HIDDEN;
-    textToTTYPE["inherited"] = TTYPE_KEYWORD_INHERITED;
-    textToTTYPE["static"]    = TTYPE_KEYWORD_STATIC;
-    textToTTYPE["true"]      = TTYPE_KEYWORD_TRUE;
-    textToTTYPE["false"]     = TTYPE_KEYWORD_FALSE;
-    textToTTYPE["as"]        = TTYPE_KEYWORD_AS;
-    textToTTYPE["start"]     = TTYPE_KEYWORD_START;
-    textToTTYPE["end"]       = TTYPE_KEYWORD_END;
+    textToWord["namespace"] = TTYPE_KEYWORD_NAMESPACE;
+    textToWord["use"]       = TTYPE_KEYWORD_USE;
+    textToWord["of"]        = TTYPE_KEYWORD_OF;
+    textToWord["declare"]   = TTYPE_KEYWORD_DECLARE;
+    textToWord["init"]      = TTYPE_KEYWORD_INIT;
+    textToWord["set"]       = TTYPE_KEYWORD_SET;
+    textToWord["override"]  = TTYPE_KEYWORD_OVERRIDE;
+    textToWord["func"]      = TTYPE_KEYWORD_FUNC;
+    textToWord["if"]        = TTYPE_KEYWORD_IF;
+    textToWord["orif"]      = TTYPE_KEYWORD_ORIF;
+    textToWord["else"]      = TTYPE_KEYWORD_ELSE;
+    textToWord["for"]       = TTYPE_KEYWORD_FOR;
+    textToWord["from"]      = TTYPE_KEYWORD_FROM;
+    textToWord["in"]        = TTYPE_KEYWORD_IN;
+    textToWord["while"]     = TTYPE_KEYWORD_WHILE;
+    textToWord["break"]     = TTYPE_KEYWORD_BREAK;
+    textToWord["continue"]  = TTYPE_KEYWORD_CONTINUE;
+    textToWord["generic"]   = TTYPE_KEYWORD_GENERIC;
+    textToWord["is_a"]      = TTYPE_KEYWORD_IS_A_OR_AN;
+    textToWord["is_an"]     = TTYPE_KEYWORD_IS_A_OR_AN;
+    textToWord["Pointer"]   = TTYPE_KEYWORD_POINTER;
+    textToWord["WeakSingle"]= TTYPE_KEYWORD_WEAKSINGLE;
+    textToWord["Single"]    = TTYPE_KEYWORD_SINGLE;
+    textToWord["Ref"]       = TTYPE_KEYWORD_REF;
+    textToWord["visible"]   = TTYPE_KEYWORD_VISIBLE;
+    textToWord["hidden"]    = TTYPE_KEYWORD_HIDDEN;
+    textToWord["inherited"] = TTYPE_KEYWORD_INHERITED;
+    textToWord["static"]    = TTYPE_KEYWORD_STATIC;
+    textToWord["true"]      = TTYPE_KEYWORD_TRUE;
+    textToWord["false"]     = TTYPE_KEYWORD_FALSE;
+    textToWord["as"]        = TTYPE_KEYWORD_AS;
+    textToWord["start"]     = TTYPE_KEYWORD_START;
+    textToWord["end"]       = TTYPE_KEYWORD_END;
 
-    textToTTYPE["and"]       = TTYPE_OPERATOR_AND;
-    textToTTYPE["or"]        = TTYPE_OPERATOR_OR;
-    textToTTYPE["not"]       = TTYPE_OPERATOR_NOT;
+    textToWord["and"]       = TTYPE_OPERATOR_AND;
+    textToWord["or"]        = TTYPE_OPERATOR_OR;
+    textToWord["not"]       = TTYPE_OPERATOR_NOT;
 
-    textToTTYPE["is"]        = TTYPE_OPERATOR_IS;
-}
+    textToWord["is"]        = TTYPE_OPERATOR_IS;
 
-void initTextToPPDMap()
-{
-    textToPPD["DefineMacro"]    = TTYPE_PPD_MACRO;
-    textToPPD["RaiseError"]     = TTYPE_PPD_ERROR;
+
+    textToPPD["Macro"]    = TTYPE_PPD_MACRO;
+    textToPPD["Raise"]     = TTYPE_PPD_ERROR;
     textToPPD["If"]             = TTYPE_PPD_IF;
     textToPPD["IfDefined"]      = TTYPE_PPD_IFDEF;
     textToPPD["IfNotDefined"]   = TTYPE_PPD_IFNDEF;
     textToPPD["Undefine"]       = TTYPE_PPD_UNDEF;
-    textToPPD["AccessFile"]     = TTYPE_PPD_ACCESS;
-    textToPPD["UseCPPCode"]     = TTYPE_PPD_USE;
-    textToPPD["SetLine"]        = TTYPE_PPD_SETLINE;
+    textToPPD["Access"]     = TTYPE_PPD_ACCESS;
+    textToPPD["CPP"]     = TTYPE_PPD_USE;
+    textToPPD["Line"]        = TTYPE_PPD_SETLINE;
+
+
+    textToSingleCharSymbol["("] = TTYPE_SYMBOL_LPAR;
+    textToSingleCharSymbol[")"] = TTYPE_SYMBOL_RPAR;
+    textToSingleCharSymbol["["] = TTYPE_SYMBOL_LBRACKET;
+    textToSingleCharSymbol["]"] = TTYPE_SYMBOL_RBRACKET;
+    textToSingleCharSymbol["{"] = TTYPE_SYMBOL_LBRACE;
+    textToSingleCharSymbol["}"] = TTYPE_SYMBOL_RBRACE;
+    textToSingleCharSymbol[":"] = TTYPE_SYMBOL_COLON;
+    textToSingleCharSymbol[","] = TTYPE_SYMBOL_COMMA;
+    textToSingleCharSymbol["."] = TTYPE_SYMBOL_PERIOD;
+
+    textToMultiCharSymbol["->"] = TTYPE_SYMBOL_ARROW;
+
+
+    textToMultiCharOperator["++"]       = TTYPE_OPERATOR_INCREMENT;
+    textToMultiCharOperator["+="]       = TTYPE_OPERATOR_PLUS_EQUALS;
+    textToMultiCharOperator["--"]       = TTYPE_OPERATOR_DECREMENT;
+    textToMultiCharOperator["-="]       = TTYPE_OPERATOR_MINUS_EQUALS;
+    textToMultiCharOperator["*="]       = TTYPE_OPERATOR_MULTIPLY_EQUALS;
+    textToMultiCharOperator["/="]       = TTYPE_OPERATOR_DIVIDE_EQUALS;
+    textToMultiCharOperator["%="]       = TTYPE_OPERATOR_MODULUS_EQUALS;
+    textToMultiCharOperator["^="]       = TTYPE_OPERATOR_EXPONENT_EQUALS;
+    textToMultiCharOperator[">="]       = TTYPE_OPERATOR_GREATER_THAN_OR_EQUAL_TO;
+    textToMultiCharOperator["<="]       = TTYPE_OPERATOR_LESS_THAN_OR_EQUAL_TO;
+    textToMultiCharOperator["<--"]      = TTYPE_OPERATOR_LEFT_ARROW;
+    textToMultiCharOperator["-->"]      = TTYPE_OPERATOR_RIGHT_ARROW;
+
+
+    textToSingleCharOperator["+"]       = TTYPE_OPERATOR_PLUS;
+    textToSingleCharOperator["-"]       = TTYPE_OPERATOR_MINUS;
+    textToSingleCharOperator["*"]       = TTYPE_OPERATOR_MULTIPLY;
+    textToSingleCharOperator["/"]       = TTYPE_OPERATOR_DIVIDE;
+    textToSingleCharOperator["%"]       = TTYPE_OPERATOR_MODULUS;
+    textToSingleCharOperator["^"]       = TTYPE_OPERATOR_EXPONENT;
+    textToSingleCharOperator["|"]       = TTYPE_OPERATOR_LITERALIZER;
+    textToSingleCharOperator["="]       = TTYPE_OPERATOR_EQUALS;
+    textToSingleCharOperator[">"]       = TTYPE_OPERATOR_GREATER_THAN;
+    textToSingleCharOperator["<"]       = TTYPE_OPERATOR_LESS_THAN;
+
 }
 
 #endif // MYLEXER_H_INCLUDED

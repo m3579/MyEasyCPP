@@ -1,0 +1,271 @@
+I was working on the lexer today. I noticed that I used
+a map between keywords and tokentypes and preprocessor
+directives and tokentypes, but not between operators or
+symbols. I changed the code to use maps for those. Using maps
+allows be to keep track of all of the keywords/operators/symbols,
+which is a good thing. It also allows me to quickly add a new
+keyword or operator or symbol.
+
+I came across this website (or rather, question):
+
+https://www.quora.com/Why-is-C++-considered-a-bad-language
+
+(accessed on November 15, 2015)
+
+It outlines many of the bad features of C++, such as:
+
+"
+They don't like the fact that there is no 'Object' base class for every object. This makes an object hierarchy easier to handle, but also makes every object a vtable holder, which is a performance handicap (memory and speed wise).
+There is a tendency to treat C++ as C and write non-OOP code.
+You can have pointers to functions (Java programmers hate that, it's not pure OOP, and they are obsessed with that).
+C++ doesn't have reflection (RTTI is usually not enabled, and is avoided by most programmers).
+You don't have garbage collection (even if you can implement garbage collection, you don't have it in the language/core framework)
+You have to handle your memory allocations, free your resources.
+You can use mixed C and C++ APIs (this always confuses OOP users).
+Templates are complicated (for C# programmers) and useless (like any feature that Java doesn't have).
+You have to recompile for each target platform.
+Java/C# is faster than C++ (always, I always hear this claim)
+"
+
+(This is being written about Java/C# developers).
+
+C+2 solves many of these problems (or should solve).
+
+There will be a base class for all C+2 objects,
+The complaint about non-OOP code cannot be resolved,
+There should be a function object (maybe "Function:"?),
+There should be no reflection; things get messy very fast,
+There will be garbage collection,
+This is a good thing!,
+Templates...did I implement those in the BNF?...yes,
+This is again a problem,
+No, they are not.
+
+
+I think I need to restructure the way a C+2 program is compiled. The system with the data files and whatnot is too complicated.
+
+Here is what should happen when you compile the following program:
+
+- AccessFiles: smooth
+
+I think I will make PPDs one word.
+
+- Access: smooth
+
+class Object:
+
+    *to DoSomething():
+        $write("Hello")
+
+I think the asterisk before the to keyword looks nice.
+
+Actually, I forgot - I am using the keyword func.
+
+class Object:
+
+    *func DoSomething():
+        $write("Hello")
+
+Still looks nice.
+
+This will compile into:
+
+file.cpp
+file.h
+file.cp2data
+
+I know this is similar to the previous version.
+
+However, in this version, all C+2 files are .cp2. The cp2data file contains the imports, variable declarations, etc. in the
+source file.
+
+I will try to rewrite some C# code in C+2 now. This comes from a Windows Universal App:
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel;
+using Windows.ApplicationModel.Activation;
+using Windows.Foundation;
+using Windows.Foundation.Collections;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Navigation;
+
+namespace DefaultUniversalAppTemplate
+{
+    /// <summary>
+    /// Provides application-specific behavior to supplement the default Application class.
+    /// </summary>
+    sealed partial class App : Application
+    {
+        /// <summary>
+        /// Initializes the singleton application object.  This is the first line of authored code
+        /// executed, and as such is the logical equivalent of main() or WinMain().
+        /// </summary>
+        public App()
+        {
+            Microsoft.ApplicationInsights.WindowsAppInitializer.InitializeAsync(
+                Microsoft.ApplicationInsights.WindowsCollectors.Metadata |
+                Microsoft.ApplicationInsights.WindowsCollectors.Session);
+            this.InitializeComponent();
+            this.Suspending += OnSuspending;
+        }
+
+        /// <summary>
+        /// Invoked when the application is launched normally by the end user.  Other entry points
+        /// will be used such as when the application is launched to open a specific file.
+        /// </summary>
+        /// <param name="e">Details about the launch request and process.</param>
+        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        {
+
+#if DEBUG
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                this.DebugSettings.EnableFrameRateCounter = true;
+            }
+#endif
+
+            Frame rootFrame = Window.Current.Content as Frame;
+
+            // Do not repeat app initialization when the Window already has content,
+            // just ensure that the window is active
+            if (rootFrame == null)
+            {
+                // Create a Frame to act as the navigation context and navigate to the first page
+                rootFrame = new Frame();
+
+                rootFrame.NavigationFailed += OnNavigationFailed;
+
+                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
+                {
+                    //TODO: Load state from previously suspended application
+                }
+
+                // Place the frame in the current Window
+                Window.Current.Content = rootFrame;
+            }
+
+            if (rootFrame.Content == null)
+            {
+                // When the navigation stack isn't restored navigate to the first page,
+                // configuring the new page by passing required information as a navigation
+                // parameter
+                rootFrame.Navigate(typeof(MainPage), e.Arguments);
+            }
+            // Ensure the current window is active
+            Window.Current.Activate();
+        }
+
+        /// <summary>
+        /// Invoked when Navigation to a certain page fails
+        /// </summary>
+        /// <param name="sender">The Frame which failed navigation</param>
+        /// <param name="e">Details about the navigation failure</param>
+        void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
+        {
+            throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
+        }
+
+        /// <summary>
+        /// Invoked when application execution is being suspended.  Application state is saved
+        /// without knowing whether the application will be terminated or resumed with the contents
+        /// of memory still intact.
+        /// </summary>
+        /// <param name="sender">The source of the suspend request.</param>
+        /// <param name="e">Details about the suspend request.</param>
+        private void OnSuspending(object sender, SuspendingEventArgs e)
+        {
+            var deferral = e.SuspendingOperation.GetDeferral();
+            //TODO: Save application state and stop any background activity
+            deferral.Complete();
+        }
+    }
+}
+
+
+Here is the C+2:
+
+use System
+use System.Collections.Generic
+use System.IO
+use System.Linq
+use System.Runtime.InteropServices.WindowsRuntime
+use Windows.ApplicationModel
+use Windows.ApplicationModel.Activation
+use Windows.Foundation
+use Windows.Foundation.Collections
+use Windows.UI.Xaml
+use Windows.UI.Xaml.Controls
+use Windows.UI.Xaml.Controls.Primitives
+use Windows.UI.Xaml.Data
+use Windows.UI.Xaml.Input
+use Windows.UI.Xaml.Media
+use Windows.UI.Xaml.Navigation
+
+namespace DefaultUniversalAppTemplate:
+
+    /// <summary>
+    /// Provides application-specific behavior to supplement the default Application class.
+    /// </summary>
+    class App is_an Application:
+
+        /// <summary>
+        /// Initializes the singleton application object.  This is the first line of authored code
+        /// executed, and as such is the logical equivalent of main() or WinMain().
+        /// </summary>
+        *func Create():
+            Microsoft.ApplicationInsights.WindowsAppInitializer.InitializeAsync(
+                Microsoft.ApplicationInsights.WindowsCollectors.Metadata |
+                Microsoft.ApplicationInsights.WindowsCollectors.Session);
+            self.InitializeComponent();
+            self.Suspending += OnSuspending;
+
+        /// <summary>
+        /// Invoked when the application is launched normally by the end user.  Other entry points
+        /// will be used such as when the application is launched to open a specific file.
+        /// </summary>
+        /// <param name="e">Details about the launch request and process.</param>
+        *override inherited func OnLaunched(e : LaunchActivateEventArgs):
+ - IfDefined DEBUG
+            if System.Diagnostics.Debugger.IsAttached:
+                self.DebugSettings.EnableFrameRateCounter = true
+ - EndIf
+
+            frame : Frame(Windows.Current.Content as Frame)
+
+            if rootFrame is nonexistant:
+
+                rootFrame : Frame()
+
+                rootFrame.NavigationFailed(Function:OnNavigationFailed);
+
+                if e.PreviousExecutionState is ApplicationExecutionState.Terminated:
+                    2 + 2 // TODO
+
+                Window.Current.Context = rootFrame
+
+            if rootFrame.Content is nonexistant:
+                rootFrame.Navigate(MainPage.Type, e.Arguments)
+
+            Window.Current.Activate()
+
+
+I think I have seen enough.
+
+I realized that my compiler cannot check C++ code, since it does not have the necessary information about what has been
+declared in the C++ STL. Therefore, it cannot check C++ API calls. My modification to the language to account for this
+is that instead of Smooth API calls (which I think I will no longer make a separate module from the language), C++ STL
+calls (and references to members in it) will be prefixed with a $. What I mean about not making Smooth a separate module from
+the language is that it will simply be called the C+2 API instead of Smooth, because it is the standard API for C+2.
+
+I also think that instead of the @ sign, I will just use self. to denote members.
+
+From now on, identifiers starting with $ will not be checked to make sure that they have been declared and exist.

@@ -35,14 +35,17 @@ something else does not already have its name, etc.)
 <comment> ::= "#" <any-character-except-newline>*
               | "#=" <any-character>* "=#"
 
+<ppd-conditional> ::= <if-dir> |
+                      <ifdef> | <ifndef>
+
+                      <ppd-start-char> <endif-dir>
+
 <preprocessor-directive> ::= <ppd-start-char>
                               <macro>
                             | <error>
-                            | <if-dir>
-                            | <ifdef>
-                            | <ifndef>
+                            | <ppd-conditional>
                             | <access>
-                            | <use>
+                            | <use-cpp>
                             | <setline>
                             | <undef>
 
@@ -88,12 +91,14 @@ something else does not already have its name, etc.)
 
 <identifier> ::= ("@")? [A-Za-z_$] [A-Za-z_0-9]*
 
-    (where the "@" sign is only present if the identifier is a member)
+    (where the "@" sign is only present if the identifier is a member,
+     where the $ sign is present if and only if the identifier belongs to the C++ STL
+     or some other C++ code that the C+2 source code is referencing)
 
 ---------DECLARATIONS
 
 <var-stmt> ::= ("set")?
-                <identifier> ":" ("Copying" ":")? (<class-name> | <struct-name>) "(" (value ("," value))? ")" ("{" (<value> ("," <value>)*)? "}")?
+                <identifier> ":" (("Copying" ":") | ("Function" ":"))? (<class-name> | <struct-name>) "(" (value ("," value))? ")" ("{" (<value> ("," <value>)*)? "}")?
                 | (<identifier> (":" <type>)?) | (<identifier> ":" <type> "[" "]" "of" <positive-integer>)?
 
                 ("=" <value>)?
@@ -127,7 +132,7 @@ something else does not already have its name, etc.)
 
 <function> ::= <func-decl-contents> (<block-stmts>)?
 
-<method> ::= ("override"? <access-mod>? "static"?) <function>
+<method> ::= "*" ("override"? <access-mod>? "static"?) <function>
              | ("declare") <access-mod>? <func-decl-contents>)
 
     (where "override" is only there if the method overrides one in the superclass,
@@ -240,30 +245,33 @@ VALUES:
 
 (where <filename> is a valid filename on user's operating system)
 
-<macro> ::= "DefineMacro" ":" <identifier>
+<macro> ::= "Macro" ":" <identifier>
             "(" (("|" <identifier> "|") | <identifier>) ("," ("|" <identifier> "|") | <identifier>))*)? ")"
             "="
             ( ("|" <any-characters> "|") | <value>) )
 
     (where <identifier> is a valid macro name)
 
-<error> ::= "RaiseError" ":" <value>
+<error> ::= "Raise" ":" <value>
 
 <if-dir> ::= "If" <boolean-value> <block-stmts>
              (<ppd-start-char> "Orif" <boolean-value> <block-stmts>)*
              (<ppd-start-char> "Else" <block-stmts>)?
+             <endif-ppd>
 
 <ifdef> ::= "IfDefined" <identifier> <block-stmts>
 
 <ifndef> ::= "IfNotDefined" <identifier> <block-stmts>
 
+<endif-dir> ::= "EndIf"
+
 <undef> ::= "Undefine" ":" <identifier>
 
-<access> ::= "AccessFile" ":" ("\n")?  (<filename> (("." <member>)*)?) ("\n" (<filename> (("." <member>)*)?))*
+<access> ::= "Access" ":" ("\n")?  (<filename> (("." <member>)*)?) ("\n" (<filename> (("." <member>)*)?))*
 
-<use> ::= "UseCPP" ":" ("\n")? (<filename> (("." <member>)*)?) ("\n" (<filename> (("." <member>)*)?))*
+<use-cpp> ::= "CPP" ":" ("\n")? (<filename> (("." <member>)*)?) ("\n" (<filename> (("." <member>)*)?))*
 
-<setline> ::= "SetLine" ":" <numeric-value> "andFilename" ":" (<filename>)
+<setline> ::= "Line" ":" <numeric-value> "andFilename" ":" (<filename>)
 
 ---------MISCELLANEOUS
 

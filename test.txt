@@ -6,6 +6,8 @@ start
 
 declare array: int [] of 2
 
+stoptesting
+
 myclass : MyClass(value, value) { 1, 2, 3 }; set var : int = 2
 
 declare inherited member : int
